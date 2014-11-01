@@ -10,8 +10,8 @@ import flixel.FlxState;
 
 class Main extends Sprite 
 {
-	var gameWidth:Int = 640;
-	var gameHeight:Int = 480;
+	var gameWidth:Int = 480;
+	var gameHeight:Int = 270;
 	var initialState:Class<FlxState> = MenuState;
 	var zoom:Float = -1;
 	var framerate:Int = 60;
