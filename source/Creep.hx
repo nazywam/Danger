@@ -25,7 +25,7 @@ class Creep extends FlxSprite {
 	
 	private function changeAnimation() {
 		
-		flipX = (velocity.x > 0);
+		flipX = (velocity.x < 0);
 		
 		if (velocity.x == 0 && velocity.y == 0) {
 			animation.play("stand");
