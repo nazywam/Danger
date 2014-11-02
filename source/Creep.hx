@@ -17,7 +17,7 @@ class Creep extends FlxSprite {
 			super(X, Y);
 			destination = new FlxPoint(x, y);
 			
-			loadGraphic("assets/images/player.png", true, 17, 20);
+			loadGraphic(Data.CreepImage, true, 17, 20);
 			animation.add("stand", [0], 1);
 			animation.add("walk", [0, 1, 2, 3], 15);
 			animation.add("run", [10, 11, 12, 13], 15);

@@ -32,12 +32,7 @@ class PlayState extends FlxState {
 		
 		 
 		for (x in 0...20) {
-			
-			var r = map.firstFloor.getRandom();
-			
 			var c= new Creep(Std.random(400)+20, Std.random(400)+20);
-			//c.velocity.x = 40;
-			//c.velocity.y = 40;
 			creeps.add(c);		
 		}
 		
@@ -61,25 +56,24 @@ class PlayState extends FlxState {
 				touchScroll.set(touch.x, touch.y);
 			}
 			if (touch.pressed) {
-				if (Math.abs(touchScroll.x - touch.x) + Math.abs(touchScroll.y - touch.y) > 1) {
-					FlxG.camera.scroll.x += touchScroll.x - touch.x;
-					FlxG.camera.scroll.y += touchScroll.y - touch.y;
-					touchScroll.set(touch.x, touch.y);
-				}
+				FlxG.camera.scroll.x += (touchScroll.x - touch.x) / 1.5;
+				FlxG.camera.scroll.y += (touchScroll.y - touch.y) / 1.5;
+				touchScroll.x = touch.x;
+				touchScroll.y = touch.y;
 			}
 		}
 		#end
 		#if web
+
 			if (FlxG.mouse.justPressed) {
 				touchScrollActive = true;
 				touchScroll.set(FlxG.mouse.x, FlxG.mouse.y);
 			}
 			if (FlxG.mouse.pressed) {
-				if (Math.abs(touchScroll.x - FlxG.mouse.x) + Math.abs(touchScroll.y - FlxG.mouse.y) > 1) {
-					FlxG.camera.scroll.x += touchScroll.x - FlxG.mouse.x;
-					FlxG.camera.scroll.y += touchScroll.y - FlxG.mouse.y;
-					touchScroll.set(FlxG.mouse.x, FlxG.mouse.y);
-				}
+				FlxG.camera.scroll.x += (touchScroll.x - FlxG.mouse.x) / 1.5;
+				FlxG.camera.scroll.y += (touchScroll.y - FlxG.mouse.y) / 1.5;
+				touchScroll.x = FlxG.mouse.x;
+				touchScroll.y = FlxG.mouse.y;
 			}
 		#end
 	}

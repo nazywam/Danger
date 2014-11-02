@@ -25,19 +25,16 @@ class Main extends Sprite
 	public function new() {
 		super();
 		
-		if (stage != null) 
-		{
+		if (stage != null)  {
 			init();
 		}
-		else 
-		{
+		else  {
 			addEventListener(Event.ADDED_TO_STAGE, init);
 		}
 	}
 	
 	private function init(?E:Event) {
-		if (hasEventListener(Event.ADDED_TO_STAGE))
-		{
+		if (hasEventListener(Event.ADDED_TO_STAGE)) {
 			removeEventListener(Event.ADDED_TO_STAGE, init);
 		}
 		
@@ -48,8 +45,7 @@ class Main extends Sprite
 		var stageWidth:Int = Lib.current.stage.stageWidth;
 		var stageHeight:Int = Lib.current.stage.stageHeight;
 
-		if (zoom == -1)
-		{
+		if (zoom == -1) {
 			var ratioX:Float = stageWidth / gameWidth;
 			var ratioY:Float = stageHeight / gameHeight;
 			zoom = Math.min(ratioX, ratioY);
