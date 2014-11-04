@@ -1,6 +1,8 @@
 package ;
 
 import flixel.addons.editors.tiled.TiledMap;
+import flixel.addons.editors.tiled.TiledObject;
+import flixel.addons.editors.tiled.TiledObjectGroup;
 import flixel.addons.editors.tiled.TiledTileSet;
 import flixel.group.FlxGroup;
 import flixel.tile.FlxTilemap;
@@ -63,6 +65,31 @@ class TiledLevel extends TiledMap {
 			
 		}
 		
+	}
+	
+	public function loadObjects(state:PlayState) {
+		for (group in objectGroups) {
+			for (o in group.objects) {
+				loadObject(o, group, state);
+			}
+		}
+	}
+	
+	private function loadObject(o:TiledObject, g:TiledObjectGroup, state:PlayState) {
+		var x:Int = o.x;
+		var y:Int = o.y;
+		
+		if (o.gid != -1) {
+			y -= g.map.getGidOwner(o.gid).tileHeight;
+		}
+		
+		switch (o.type.toLowerCase()) {
+				
+			case "exit":
+				var exit = new Exit(x, y);
+				state.exit = exit;
+				state.add(exit);
+		}
 	}
 	
 }

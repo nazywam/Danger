@@ -11,12 +11,10 @@ import flixel.math.FlxMath;
 class MenuState extends FlxState {
 	override public function create() {
 		FlxG.log.redirectTraces = true;
-
 		
 		super.create();
 		
 		add(new FlxText(FlxG.width / 2, FlxG.height / 2, 0, "Click"));
-		
 	}
 
 	override public function destroy() {
@@ -26,8 +24,6 @@ class MenuState extends FlxState {
 	override public function update(elapsed : Float) {
 		super.update(elapsed);
 		
-		//if (FlxG.mouse.justPressed) {
-			FlxG.switchState(new PlayState());
-		//}
+		FlxG.switchState(new PlayState());
 	}
 }
