@@ -1,6 +1,8 @@
 package ;
 
+import flixel.FlxBasic;
 import flixel.FlxG;
+import flixel.FlxObject;
 import flixel.FlxSprite;
 import flixel.FlxState;
 import flixel.group.FlxGroup;
@@ -13,12 +15,19 @@ class PlayState extends FlxState {
 	
 	var map : TiledLevel;
 	
+	var hud : Hud;
+	
 	var creeps : FlxGroup;
 	var monsters : FlxGroup;
+	public var exit : Exit;
 	
+	
+	var allowScrolling : Bool = false;
 	var touchScroll : FlxPoint;
 	
-	public var exit : Exit;
+	public var score : Int = 0;
+	
+	var reset : FlxSprite;
 	
 	override public function create() {
 		super.create();
@@ -42,11 +51,22 @@ class PlayState extends FlxState {
 		}
 		
 		add(map.secondFloor);
-		
 		touchScroll = new FlxPoint(0, 0);
+		
+		hud = new Hud();
+		add(hud);
 		
 		FlxG.camera.setScrollBounds(0, map.width * 32, 0,  map.height * 32);
 		FlxG.worldBounds.set(0, 0, map.width * 32, map.height * 32);
+		
+		
+		/////////////////////////////////////////////////
+		reset = new FlxSprite(0, FlxG.height);
+		reset.makeGraphic(50, 30);
+		reset.y -= reset.height;
+		add(reset);
+		/////////////////////////////////////////////////
+		
 	}
 	
 	
@@ -95,7 +115,6 @@ class PlayState extends FlxState {
 					
 					m.velocity.x += currX;
 					m.velocity.y += currY;
-					
 				}
 			}
 			
@@ -122,12 +141,15 @@ class PlayState extends FlxState {
 		}
 		
 		FlxG.collide(monsters, map.secondFloor);
+		//creep completes the level
 		FlxG.overlap(creeps, exit, function(c : Creep, _) {
 			c.enterExit();
+			score++;
+			hud.scoreText.text = Std.string(score);
 		});
 		FlxG.collide(creeps, map.secondFloor, function(creep : Creep, _) { creep.bounce(); } );
 		FlxG.collide(creeps, creeps, function(m1 : Creep, m2: Creep) { m1.bounce(); m2.bounce(); } );
-		//kill creep
+		//kill creep when monster walks into it
 		FlxG.overlap(creeps, monsters, function(c : Creep, m : Monster) {
 			c.alpha = 0;
 			c.solid = false;
@@ -136,17 +158,17 @@ class PlayState extends FlxState {
 		
 		#if mobile
 		for (touch in FlxG.touches.list) {
-			if (touch.justPressed) touchScroll.set(touch.x, touch.y);
-			if (touch.pressed) handleScrolling(touch.x, touch.y);
+			FlxG.overlap(new FlxObject(touch.x, touch.y, 1,1), reset, function(_, _) { FlxG.switchState(new PlayState()); } );
+			if (touch.justPressed && allowScrolling) touchScroll.set(touch.x, touch.y);
+			if (touch.pressed && allowScrolling) handleScrolling(touch.x, touch.y);
 			if (touch.justPressed) {
 				monsters.add(new Monster(touch.x, touch.y));
 			}
 		}
 		#end
 		#if web
-			if (FlxG.mouse.justPressed) touchScroll.set(FlxG.mouse.x, FlxG.mouse.y);
-			if (FlxG.mouse.pressed) handleScrolling(FlxG.mouse.x, FlxG.mouse.y);
-			
+			if (FlxG.mouse.justPressed && allowScrolling) touchScroll.set(FlxG.mouse.x, FlxG.mouse.y);
+			if (FlxG.mouse.pressed && allowScrolling) handleScrolling(FlxG.mouse.x, FlxG.mouse.y);
 			if (FlxG.mouse.justPressedMiddle) {
 				monsters.add(new Monster(FlxG.mouse.x, FlxG.mouse.y));
 			}

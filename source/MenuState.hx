@@ -13,7 +13,6 @@ class MenuState extends FlxState {
 		FlxG.log.redirectTraces = true;
 		
 		super.create();
-		
 		add(new FlxText(FlxG.width / 2, FlxG.height / 2, 0, "Click"));
 	}
 
@@ -23,7 +22,6 @@ class MenuState extends FlxState {
 
 	override public function update(elapsed : Float) {
 		super.update(elapsed);
-		
 		FlxG.switchState(new PlayState());
 	}
 }
