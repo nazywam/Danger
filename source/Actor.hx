@@ -70,7 +70,6 @@ class Actor extends FlxSprite {
 		super.update(elapsed);
 		
 		if ( running) {
-			trace(running);
 			originPoint.set(x, y);
 			needAnotherDestination = true;
 		}
@@ -78,6 +77,12 @@ class Actor extends FlxSprite {
 			moveRandomly();
 		}
 		changeAnimation();
+	}
+	
+	//when hit wall look for another target
+	public function bounce() {
+		needAnotherDestination = true;
+		velocity.x *= 1.1;
 	}
 	
 }

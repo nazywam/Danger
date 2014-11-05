@@ -150,7 +150,7 @@ class PlayState extends FlxState {
 			}
 		}
 		
-		FlxG.collide(monsters, map.secondFloor);
+		FlxG.collide(monsters, map.secondFloor, function(monster : Monster, _) { monster.bounce(); } );
 		//creep completes the level
 		FlxG.overlap(creeps, exit, function(c : Creep, _) {
 			c.enterExit();
@@ -158,7 +158,8 @@ class PlayState extends FlxState {
 			hud.scoreText.text = Std.string(score);
 		});
 		FlxG.collide(creeps, map.secondFloor, function(creep : Creep, _) { creep.bounce(); } );
-		FlxG.collide(creeps, creeps, function(m1 : Creep, m2: Creep) { m1.bounce(); m2.bounce(); } );
+		//FlxG.collide(creeps, creeps, function(m1 : Creep, m2: Creep) { m1.bounce(); m2.bounce(); } );
+		
 		//kill creep when monster walks into it
 		FlxG.overlap(creeps, monsters, function(c : Creep, m : Monster) {
 			c.alpha = 0;
@@ -168,11 +169,32 @@ class PlayState extends FlxState {
 		
 		#if mobile
 		for (touch in FlxG.touches.list) {
-			FlxG.overlap(new FlxObject(touch.x, touch.y, 1,1), reset, function(_, _) { FlxG.switchState(new PlayState()); } );
-			if (touch.justPressed && allowScrolling) touchScroll.set(touch.x, touch.y);
-			if (touch.pressed && allowScrolling) handleScrolling(touch.x, touch.y);
 			if (touch.justPressed) {
-				monsters.add(new Monster(touch.x, touch.y));
+				FlxG.overlap(new FlxObject(touch.x, touch.y, 1,1), reset, function(_, _) { FlxG.switchState(new PlayState()); } );				
+			}
+			if (touch.justPressed) {
+				monsterDrop.visible = true;
+				if (allowScrolling) {					
+					touchScroll.set(touch.x, touch.y);
+				}
+			}
+			if (touch.pressed) {
+				monsterDrop.x = Math.round((touch.x - monsterDrop.width / 2) / 16) * 16;
+				monsterDrop.y = Math.round((touch.y - monsterDrop.height / 2) / 16) * 16;
+				
+				if (FlxG.overlap(monsterDrop, map.secondFloor)) {
+					monsterDrop.color = 0xFF0000;
+				} else {
+					monsterDrop.color = 0x00FF00;
+				}
+				
+				if (allowScrolling) {
+					handleScrolling(touch.x, touch.y);
+				}
+			}
+			if (touch.justReleased) {
+				monsterDrop.visible = false;
+				monsters.add(new Monster(Math.round((touch.x - monsterDrop.width / 2) / 16) * 16, Math.round((touch.y - monsterDrop.height / 2) / 16) * 16));
 			}
 		}
 		#end
@@ -189,6 +211,12 @@ class PlayState extends FlxState {
 			if (FlxG.mouse.pressed) {
 				monsterDrop.x = Math.round((FlxG.mouse.x - monsterDrop.width / 2) / 16) * 16;
 				monsterDrop.y = Math.round((FlxG.mouse.y - monsterDrop.height / 2) / 16) * 16;
+				
+				if (FlxG.overlap(monsterDrop, map.secondFloor)) {
+					monsterDrop.color = 0xFF0000;
+				} else {
+					monsterDrop.color = 0x00FF00;
+				}
 				
 				if (allowScrolling) {
 					handleScrolling(FlxG.mouse.x, FlxG.mouse.y);

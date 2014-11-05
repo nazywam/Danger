@@ -41,9 +41,4 @@ class Creep extends Actor {
 			scale.y = Math.max(scale.y - 0.02, 0);
 		}
 	}
-	//when hit wall look for another target
-	public function bounce() {
-		needAnotherDestination = true;
-		velocity.x *= 1.1;
-	}
 }
