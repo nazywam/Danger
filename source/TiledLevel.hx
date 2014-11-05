@@ -63,9 +63,7 @@ class TiledLevel extends TiledMap {
 			} else if (tileLayer.name == "Background") {
 				background.add(tilemap);
 			}
-			
 		}
-		
 	}
 	
 	public function loadObjects(state:PlayState) {

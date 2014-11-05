@@ -19,6 +19,7 @@ class PlayState extends FlxState {
 	
 	var creeps : FlxGroup;
 	var monsters : FlxGroup;
+	public var creepSpawns : Array<FlxPoint>;
 	public var exit : Exit;
 	
 	
@@ -27,7 +28,7 @@ class PlayState extends FlxState {
 	
 	public var score : Int = 0;
 	
-	public var creepSpawns : Array<FlxPoint>;
+	var monsterDrop : FlxSprite;
 	
 	var reset : FlxSprite;
 	
@@ -63,6 +64,12 @@ class PlayState extends FlxState {
 		
 		FlxG.camera.setScrollBounds(0, map.width * 32, 0,  map.height * 32);
 		FlxG.worldBounds.set(0, 0, map.width * 32, map.height * 32);
+		
+		
+		monsterDrop = new FlxSprite(0, 0);
+		monsterDrop.loadGraphic(Data.MonsterImage, false, 32, 32);
+		monsterDrop.visible = false;
+		add(monsterDrop);
 		
 		/////////////////////////////////////////////////
 		reset = new FlxSprite(0, FlxG.height);
@@ -173,10 +180,23 @@ class PlayState extends FlxState {
 			if (FlxG.mouse.justPressed) {
 				FlxG.overlap(new FlxObject(FlxG.mouse.x, FlxG.mouse.y, 1,1), reset, function(_, _) { FlxG.switchState(new PlayState()); } );				
 			}
-			if (FlxG.mouse.justPressed && allowScrolling) touchScroll.set(FlxG.mouse.x, FlxG.mouse.y);
-			if (FlxG.mouse.pressed && allowScrolling) handleScrolling(FlxG.mouse.x, FlxG.mouse.y);
-			if (FlxG.mouse.justPressedMiddle) {
-				monsters.add(new Monster(FlxG.mouse.x, FlxG.mouse.y));
+			if (FlxG.mouse.justPressed) {
+				monsterDrop.visible = true;
+				if (allowScrolling) {					
+					touchScroll.set(FlxG.mouse.x, FlxG.mouse.y);
+				}
+			}
+			if (FlxG.mouse.pressed) {
+				monsterDrop.x = Math.round((FlxG.mouse.x - monsterDrop.width / 2) / 16) * 16;
+				monsterDrop.y = Math.round((FlxG.mouse.y - monsterDrop.height / 2) / 16) * 16;
+				
+				if (allowScrolling) {
+					handleScrolling(FlxG.mouse.x, FlxG.mouse.y);
+				}
+			}
+			if (FlxG.mouse.justReleased) {
+				monsterDrop.visible = false;
+				monsters.add(new Monster(Math.round((FlxG.mouse.x - monsterDrop.width / 2) / 16) * 16, Math.round((FlxG.mouse.y - monsterDrop.height / 2) / 16) * 16));
 			}
 		#end
 	}
