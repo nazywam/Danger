@@ -27,6 +27,8 @@ class PlayState extends FlxState {
 	
 	public var score : Int = 0;
 	
+	public var creepSpawns : Array<FlxPoint>;
+	
 	var reset : FlxSprite;
 	
 	override public function create() {
@@ -38,6 +40,8 @@ class PlayState extends FlxState {
 		add(map.firstFloor);
 		add(map.bricks);
 
+		creepSpawns = new Array<FlxPoint>();
+		
 		map.loadObjects(this);
 		
 		creeps = new FlxGroup();
@@ -46,7 +50,8 @@ class PlayState extends FlxState {
 		add(monsters);
 		 
 		for (x in 0...20) {
-			var c= new Creep(Std.random(9*32)+96, Std.random(64)+32*3);
+			var randomIndex = Std.random(creepSpawns.length);
+			var c= new Creep(creepSpawns[randomIndex].x + Std.random(32), creepSpawns[randomIndex].y - Std.random(8));
 			creeps.add(c);	
 		}
 		
@@ -59,16 +64,13 @@ class PlayState extends FlxState {
 		FlxG.camera.setScrollBounds(0, map.width * 32, 0,  map.height * 32);
 		FlxG.worldBounds.set(0, 0, map.width * 32, map.height * 32);
 		
-		
 		/////////////////////////////////////////////////
 		reset = new FlxSprite(0, FlxG.height);
 		reset.makeGraphic(50, 30);
 		reset.y -= reset.height;
 		add(reset);
 		/////////////////////////////////////////////////
-		
 	}
-	
 	
 	function handleScrolling(x : Float, y : Float) {
 		FlxG.camera.scroll.x += (touchScroll.x - x) / 1.6;
@@ -85,26 +87,27 @@ class PlayState extends FlxState {
 	override public function update(elapsed : Float) {
 		super.update(elapsed);
 		
-		
 		//calculate positions of every monster for each creep
 		for (x in creeps.members) {
+			
 			var c = cast(x, Creep);
-			c.runningAway = false;
+			c.running = false;
+			
 			for (y in monsters.members) {
 				var m = cast(y, Monster);
-				if (!m.chasing) {
-					m.velocity.x = m.velocity.y = 0;
-					m.chasing = true;
-				}
 				
 				var dist = distance(c.x, c.y, m.x, m.y);
-				
 				if (dist < 75 && !c.disappearing) {
-					if (!c.runningAway) {
-						c.runningAway = true;	
+					
+					if (!m.running) {
+						m.velocity.x = m.velocity.y = 0;
+						m.running = true;
+					}
+					
+					if (!c.running) {
+						c.running = true;	
 						c.needAnotherDestination = true;
 						c.velocity.x = c.velocity.y = 0;
-					
 					}
 					//calculate velocity vector and apply it to creep and monster
 					var currX = c.x - m.x;
@@ -117,24 +120,24 @@ class PlayState extends FlxState {
 					m.velocity.y += currY;
 				}
 			}
-			
-			var dist = distance(c.x, c.y, exit.x, exit.y);
-			if (dist < 75) {
-					c.runningAway = true;
-					c.velocity.x += (exit.x - c.x)*2;
-					c.velocity.y += (exit.y - c.y)*2;
+			//attract creeps to exit
+			var dist = distance(c.x, c.y, exit.x + 16, exit.y + 16);
+			if (dist < 50) {
+					c.running = true;
+					c.velocity.x += (exit.x + 16 - c.x) * 2;
+					c.velocity.y += (exit.y + 16 - c.y) * 2;
 			}
 			//reduce creep speed
 			while (Math.abs(c.velocity.x) > 45 || Math.abs(c.velocity.y) > 45) {
 				c.velocity.x /= 2;
 				c.velocity.y /= 2;
 			}
-		}
+		}	
 		
 		//reduce monster speed
 		for (x in monsters.members) {
 			var m = cast(x, Monster);
-			while (Math.abs(m.velocity.x) > 30 || Math.abs(m.velocity.y) > 30) {
+			while (Math.abs(m.velocity.x) > 40 || Math.abs(m.velocity.y) > 40) {
 				m.velocity.x /= 2;
 				m.velocity.y /= 2;
 			}
@@ -167,6 +170,9 @@ class PlayState extends FlxState {
 		}
 		#end
 		#if web
+			if (FlxG.mouse.justPressed) {
+				FlxG.overlap(new FlxObject(FlxG.mouse.x, FlxG.mouse.y, 1,1), reset, function(_, _) { FlxG.switchState(new PlayState()); } );				
+			}
 			if (FlxG.mouse.justPressed && allowScrolling) touchScroll.set(FlxG.mouse.x, FlxG.mouse.y);
 			if (FlxG.mouse.pressed && allowScrolling) handleScrolling(FlxG.mouse.x, FlxG.mouse.y);
 			if (FlxG.mouse.justPressedMiddle) {
