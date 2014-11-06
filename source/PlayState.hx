@@ -10,6 +10,7 @@ import flixel.math.FlxPoint;
 import flixel.text.FlxText;
 import flixel.ui.FlxButton;
 import flixel.math.FlxMath;
+import flixel.util.FlxTimer;
 
 class PlayState extends FlxState {
 	
@@ -69,6 +70,7 @@ class PlayState extends FlxState {
 		monsterDrop = new FlxSprite(0, 0);
 		monsterDrop.loadGraphic(Data.MonsterImage, false, 32, 32);
 		monsterDrop.visible = false;
+		monsterDrop.solid = true;
 		add(monsterDrop);
 		
 		/////////////////////////////////////////////////
@@ -96,8 +98,8 @@ class PlayState extends FlxState {
 		
 		//calculate positions of every monster for each creep
 		for (x in creeps.members) {
-			
 			var c = cast(x, Creep);
+			if(c != null){
 			c.running = false;
 			
 			for (y in monsters.members) {
@@ -127,9 +129,10 @@ class PlayState extends FlxState {
 					m.velocity.y += currY;
 				}
 			}
+
 			//attract creeps to exit
 			var dist = distance(c.x, c.y, exit.x + 16, exit.y + 16);
-			if (dist < 50) {
+			if (dist < 60) {
 					c.running = true;
 					c.velocity.x += (exit.x + 16 - c.x) * 2;
 					c.velocity.y += (exit.y + 16 - c.y) * 2;
@@ -138,6 +141,7 @@ class PlayState extends FlxState {
 			while (Math.abs(c.velocity.x) > 45 || Math.abs(c.velocity.y) > 45) {
 				c.velocity.x /= 2;
 				c.velocity.y /= 2;
+			}
 			}
 		}	
 		
@@ -154,6 +158,7 @@ class PlayState extends FlxState {
 		//creep completes the level
 		FlxG.overlap(creeps, exit, function(c : Creep, _) {
 			c.enterExit();
+			new FlxTimer(1, function(_) { creeps.remove(c); } );
 			score++;
 			hud.scoreText.text = Std.string(score);
 		});
@@ -212,7 +217,7 @@ class PlayState extends FlxState {
 				monsterDrop.x = Math.round((FlxG.mouse.x - monsterDrop.width / 2) / 16) * 16;
 				monsterDrop.y = Math.round((FlxG.mouse.y - monsterDrop.height / 2) / 16) * 16;
 				
-				if (FlxG.overlap(monsterDrop, map.secondFloor)) {
+				if (FlxG.collide(monsterDrop, map.secondFloor)) {
 					monsterDrop.color = 0xFF0000;
 				} else {
 					monsterDrop.color = 0x00FF00;
@@ -224,7 +229,9 @@ class PlayState extends FlxState {
 			}
 			if (FlxG.mouse.justReleased) {
 				monsterDrop.visible = false;
-				monsters.add(new Monster(Math.round((FlxG.mouse.x - monsterDrop.width / 2) / 16) * 16, Math.round((FlxG.mouse.y - monsterDrop.height / 2) / 16) * 16));
+				if (monsterDrop.color == 0x00FF00) {
+					monsters.add(new Monster(Math.round((FlxG.mouse.x - monsterDrop.width / 2) / 16) * 16, Math.round((FlxG.mouse.y - monsterDrop.height / 2) / 16) * 16));
+				}
 			}
 		#end
 	}
