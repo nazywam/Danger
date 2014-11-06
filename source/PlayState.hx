@@ -19,6 +19,8 @@ class PlayState extends FlxState {
 	var hud : Hud;
 	
 	var creeps : FlxGroup;
+	var creepsGibs : FlxGroup;
+	
 	var monsters : FlxGroup;
 	public var creepSpawns : Array<FlxPoint>;
 	public var exit : Exit;
@@ -46,6 +48,8 @@ class PlayState extends FlxState {
 		
 		map.loadObjects(this);
 		
+		creepsGibs = new FlxGroup();
+		add(creepsGibs);
 		creeps = new FlxGroup();
 		add(creeps);
 		monsters = new FlxGroup();
@@ -53,8 +57,9 @@ class PlayState extends FlxState {
 		 
 		for (x in 0...20) {
 			var randomIndex = Std.random(creepSpawns.length);
-			var c= new Creep(creepSpawns[randomIndex].x + Std.random(32), creepSpawns[randomIndex].y - Std.random(8));
+			var c = new Creep(creepSpawns[randomIndex].x + Std.random(32), creepSpawns[randomIndex].y - Std.random(8));
 			creeps.add(c);	
+			creepsGibs.add(c.gibs);
 		}
 		
 		add(map.secondFloor);
@@ -81,6 +86,7 @@ class PlayState extends FlxState {
 		/////////////////////////////////////////////////
 	}
 	
+	//handle scrolling
 	function handleScrolling(x : Float, y : Float) {
 		FlxG.camera.scroll.x += (touchScroll.x - x) / 1.6;
 		FlxG.camera.scroll.y += (touchScroll.y - y) / 1.6;
@@ -98,50 +104,50 @@ class PlayState extends FlxState {
 		
 		//calculate positions of every monster for each creep
 		for (x in creeps.members) {
-			var c = cast(x, Creep);
-			if(c != null){
-			c.running = false;
-			
-			for (y in monsters.members) {
-				var m = cast(y, Monster);
+			if(x != null){
+				var c = cast(x, Creep);
+				c.running = false;
 				
-				var dist = distance(c.x, c.y, m.x, m.y);
-				if (dist < 75 && !c.disappearing) {
+				for (y in monsters.members) {
+					var m = cast(y, Monster);
 					
-					if (!m.running) {
-						m.velocity.x = m.velocity.y = 0;
-						m.running = true;
+					var dist = distance(c.x, c.y, m.x, m.y);
+					if (dist < 75 && !c.disappearing) {
+						
+						if (!m.running) {
+							m.velocity.x = m.velocity.y = 0;
+							m.running = true;
+						}
+						
+						if (!c.running) {
+							c.running = true;	
+							c.needAnotherDestination = true;
+							c.velocity.x = c.velocity.y = 0;
+						}
+						//calculate velocity vector and apply it to creep and monster
+						var currX = c.x - m.x;
+						var currY = c.y - m.y;
+						
+						c.velocity.x += currX;
+						c.velocity.y += currY;
+						
+						m.velocity.x += currX;
+						m.velocity.y += currY;
 					}
-					
-					if (!c.running) {
-						c.running = true;	
-						c.needAnotherDestination = true;
-						c.velocity.x = c.velocity.y = 0;
-					}
-					//calculate velocity vector and apply it to creep and monster
-					var currX = c.x - m.x;
-					var currY = c.y - m.y;
-					
-					c.velocity.x += currX;
-					c.velocity.y += currY;
-					
-					m.velocity.x += currX;
-					m.velocity.y += currY;
 				}
-			}
 
-			//attract creeps to exit
-			var dist = distance(c.x, c.y, exit.x + 16, exit.y + 16);
-			if (dist < 60) {
-					c.running = true;
-					c.velocity.x += (exit.x + 16 - c.x) * 2;
-					c.velocity.y += (exit.y + 16 - c.y) * 2;
-			}
-			//reduce creep speed
-			while (Math.abs(c.velocity.x) > 45 || Math.abs(c.velocity.y) > 45) {
-				c.velocity.x /= 2;
-				c.velocity.y /= 2;
-			}
+				//attract creeps to exit
+				var dist = distance(c.x, c.y, exit.x + 16, exit.y + 16);
+				if (dist < 60) {
+						c.running = true;
+						c.velocity.x += (exit.x + 16 - c.x) * 2;
+						c.velocity.y += (exit.y + 16 - c.y) * 2;
+				}
+				//reduce creep speed
+				while (Math.abs(c.velocity.x) > 45 || Math.abs(c.velocity.y) > 45) {
+					c.velocity.x /= 2;
+					c.velocity.y /= 2;
+				}
 			}
 		}	
 		
@@ -169,8 +175,18 @@ class PlayState extends FlxState {
 		FlxG.overlap(creeps, monsters, function(c : Creep, m : Monster) {
 			c.alpha = 0;
 			c.solid = false;
+			
+			c.gibs.setPosition(c.x + c.width / 2, c.y + c.height / 2);
+			c.gibs.start(true, 0.1, 20);
 			FlxG.camera.shake(0.01, 0.2);
 		});
+		
+		//collide gibs with walls
+		for (x in creeps) {
+			var m = cast(x, Creep);
+			FlxG.collide(m.gibs, map.bricks);
+			FlxG.collide(m.gibs, map.secondFloor);
+		}
 		
 		#if mobile
 		for (touch in FlxG.touches.list) {

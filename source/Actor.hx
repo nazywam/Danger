@@ -1,4 +1,5 @@
 package ;
+import flixel.effects.particles.FlxEmitter;
 import flixel.FlxSprite;
 import flixel.math.FlxPoint;
 import flixel.util.FlxTimer;
@@ -16,10 +17,18 @@ class Actor extends FlxSprite {
 	public var waiting : Bool = false;
 	public var running = false;
 	
+	public var gibs : FlxEmitter;
+	
 	public function new(X : Float, Y : Float) {
 		super(X, Y);
 		destinationPoint = new FlxPoint(x, y);
 		originPoint = new FlxPoint(x, y);
+		
+		gibs = new FlxEmitter();
+		gibs.solid = true;
+		gibs.launchMode = FlxEmitterMode.CIRCLE;
+		gibs.drag.set(50, 50, 100, 100, 50, 50, 100, 100);
+		gibs.lifespan.set(100, 10000);
 	}
 	
 	//change to appropiate animation/direction
