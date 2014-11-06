@@ -33,7 +33,9 @@ class PlayState extends FlxState {
 	
 	var monsterDrop : FlxSprite;
 	
+	
 	var reset : FlxSprite;
+	var framerate : FlxText;
 	
 	override public function create() {
 		super.create();
@@ -55,7 +57,7 @@ class PlayState extends FlxState {
 		monsters = new FlxGroup();
 		add(monsters);
 		 
-		for (x in 0...20) {
+		for (x in 0...10) {
 			var randomIndex = Std.random(creepSpawns.length);
 			var c = new Creep(creepSpawns[randomIndex].x + Std.random(32), creepSpawns[randomIndex].y - Std.random(8));
 			creeps.add(c);	
@@ -83,6 +85,9 @@ class PlayState extends FlxState {
 		reset.makeGraphic(50, 30);
 		reset.y -= reset.height;
 		add(reset);
+		
+		framerate = new FlxText(0, 0);
+		add(framerate);
 		/////////////////////////////////////////////////
 	}
 	
@@ -175,10 +180,9 @@ class PlayState extends FlxState {
 		FlxG.overlap(creeps, monsters, function(c : Creep, m : Monster) {
 			c.alpha = 0;
 			c.solid = false;
-			
 			c.gibs.setPosition(c.x + c.width / 2, c.y + c.height / 2);
-			c.gibs.start(true, 0.1, 20);
-			FlxG.camera.shake(0.01, 0.2);
+			c.gibs.start(true, 0.1, 10);
+			FlxG.camera.shake(0.007, 0.1);
 		});
 		
 		//collide gibs with walls
@@ -203,7 +207,7 @@ class PlayState extends FlxState {
 				monsterDrop.x = Math.round((touch.x - monsterDrop.width / 2) / 16) * 16;
 				monsterDrop.y = Math.round((touch.y - monsterDrop.height / 2) / 16) * 16;
 				
-				if (FlxG.overlap(monsterDrop, map.secondFloor)) {
+				if (FlxG.collide(monsterDrop, map.secondFloor)) {
 					monsterDrop.color = 0xFF0000;
 				} else {
 					monsterDrop.color = 0x00FF00;
@@ -215,7 +219,9 @@ class PlayState extends FlxState {
 			}
 			if (touch.justReleased) {
 				monsterDrop.visible = false;
-				monsters.add(new Monster(Math.round((touch.x - monsterDrop.width / 2) / 16) * 16, Math.round((touch.y - monsterDrop.height / 2) / 16) * 16));
+				if (monsterDrop.color == 0x00FF00) {
+					monsters.add(new Monster(Math.round((touch.x - monsterDrop.width / 2) / 16) * 16, Math.round((touch.y - monsterDrop.height / 2) / 16) * 16));
+				}
 			}
 		}
 		#end
@@ -250,5 +256,6 @@ class PlayState extends FlxState {
 				}
 			}
 		#end
+		framerate.text = Std.string(Math.round(1 / FlxG.elapsed));
 	}
 }

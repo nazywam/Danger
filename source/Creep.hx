@@ -21,7 +21,7 @@ class Creep extends Actor {
 			animation.add("walk", [0, 1, 2, 3], 15);
 			animation.add("run", [10, 11, 12, 13], 20);
 			
-			gibs.loadParticles(Data.CreepGibs, 20, 16, true);
+			gibs.loadParticles(Data.CreepGibs, 10, 16, true);
 			
 			width = 10;
 			offset.x = 3;

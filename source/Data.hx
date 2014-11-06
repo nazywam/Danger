@@ -9,4 +9,5 @@ class Data {
 	public static inline var MonsterImage = "assets/images/monster.png";
 	public static inline var Exit = "assets/images/exit.png";
 	
+	public static inline var LevelIcon = "assets/images/menu/levelIcon.png";
 }

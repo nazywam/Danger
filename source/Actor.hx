@@ -28,7 +28,7 @@ class Actor extends FlxSprite {
 		gibs.solid = true;
 		gibs.launchMode = FlxEmitterMode.CIRCLE;
 		gibs.drag.set(50, 50, 100, 100, 50, 50, 100, 100);
-		gibs.lifespan.set(100, 10000);
+		gibs.lifespan.set(1, 10);
 	}
 	
 	//change to appropiate animation/direction
