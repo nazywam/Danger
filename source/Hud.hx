@@ -17,6 +17,7 @@ class Hud extends FlxGroup {
 		scoreText = new FlxText(FlxG.width / 2, 2, 0, "0", 16);
 		scoreText.x -= scoreText.width / 2;
 		scoreText.y += scoreText.height;
+		scoreText.scrollFactor.x = scoreText.scrollFactor.y = 0;
 		add(scoreText);
 	}
 	

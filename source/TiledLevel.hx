@@ -47,10 +47,7 @@ class TiledLevel extends TiledMap {
 			var processedPath = "assets/images/" + imagePath.file + "." + imagePath.ext;
 			
 			var tilemap:FlxTilemap = new FlxTilemap();
-			tilemap.widthInTiles = width;
-			tilemap.heightInTiles = height;
-			
-			tilemap.loadMap(tileLayer.tileArray, processedPath, tileSet.tileWidth, tileSet.tileHeight, 1, 1);
+			tilemap.loadMapFromArray(tileLayer.tileArray, width, height, processedPath, tileSet.tileWidth, tileSet.tileHeight, 1, 1);
 			
 			if (tileLayer.name == "Bricks") {
 				tilemap.y -= 16;
@@ -90,6 +87,10 @@ class TiledLevel extends TiledMap {
 				state.add(exit);
 			case "creepspawn":
 				state.creepSpawns.push(new FlxPoint(x, y));
+			case "doors":
+				state.doors.add(new Doors(x, y - 16, Std.parseInt(o.custom.keys.get("id"))));
+			case "key":
+				state.keys.add(new Key(x, y, Std.parseInt(o.custom.keys.get("id"))));
 		}
 	}
 	

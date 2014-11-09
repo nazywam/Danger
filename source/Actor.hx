@@ -15,14 +15,17 @@ class Actor extends FlxSprite {
 	public var needAnotherDestination : Bool = true;
 	
 	public var waiting : Bool = false;
-	public var running = false;
+	public var running = true;
 	
 	public var gibs : FlxEmitter;
+	
+	public var finalVelocity : FlxPoint;
 	
 	public function new(X : Float, Y : Float) {
 		super(X, Y);
 		destinationPoint = new FlxPoint(x, y);
 		originPoint = new FlxPoint(x, y);
+		finalVelocity = new FlxPoint(0, 0);
 		
 		gibs = new FlxEmitter();
 		gibs.solid = true;
