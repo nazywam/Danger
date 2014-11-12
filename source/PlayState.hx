@@ -49,6 +49,8 @@ class PlayState extends FlxState {
 		if (Assets.getText("assets/data/level" + Std.string(Reg.activeLevel) + ".tmx") == null) {
 			throw("assets/data/level" + Std.string(Reg.activeLevel) + ".tmx, no such File");
 		}
+		
+		
 		map = new TiledLevel(("assets/data/level" + Std.string(Reg.activeLevel) + ".tmx"));
 		add(map.background);
 		add(map.firstFloor);
@@ -136,7 +138,7 @@ class PlayState extends FlxState {
 	function handleJustPressed(x : Float, y : Float) {
 		monsterDrop.visible = true;
 		if (allowScrolling) {					
-			touchScroll.set(FlxG.mouse.x, FlxG.mouse.y);
+			touchScroll.set(x, y);
 		}
 	}
 	function handlePressed(x : Float, y : Float) {
@@ -160,109 +162,85 @@ class PlayState extends FlxState {
 	override public function update(elapsed : Float) {
 		super.update(elapsed);
 		
-		//calculate positions of every monster for each creep
-		/*
-		for (x in creeps.members) {
-			if(x != null){
-				var c = cast(x, Creep);
-				c.running = false;
-				
-				for (y in monsters.members) {
-					var m = cast(y, Monster);
-					
-					var dist = distance(c.x, c.y, m.x, m.y);
-					if (dist < 75 && !c.disappearing) {
-						
-						if (!m.running) {
-							m.velocity.x = m.velocity.y = 0;
-							m.running = true;
-						}
-						
-						if (!c.running) {
-							c.running = true;	
-							c.needAnotherDestination = true;
-							c.velocity.x = c.velocity.y = 0;
-						}
-						//calculate velocity vector and apply it to creep and monster
-						var currX = c.x - m.x;
-						var currY = c.y - m.y;
-						
-						c.velocity.x += currX;
-						c.velocity.y += currY;
-						
-						m.velocity.x += currX;
-						m.velocity.y += currY;
-					}
-				}
-
-				//attract creeps to exit
-				var dist = distance(c.x, c.y, exit.x + 16, exit.y + 16);
-				if (dist < 60) {
-						c.running = true;
-						c.velocity.x += (exit.x + 16 - c.x) * 2;
-						c.velocity.y += (exit.y + 16 - c.y) * 2;
-				}
-				//reduce creep speed
-				while (Math.abs(c.velocity.x) > 45 || Math.abs(c.velocity.y) > 45) {
-					c.velocity.x /= 2;
-					c.velocity.y /= 2;
-				}
-			}
-		}*/
-		
 		for (c in creeps) {
 			var creep = cast(c, Creep);
 			
-			var lengthSum = 0.0;
-			
 			var xSum = 0.0;
 			var ySum = 0.0;
-			
-			
-			for (o in creeps) {
-				var otherCreep = cast(o, Creep);
-				if (otherCreep != creep) {
-		
-					var dx = otherCreep.x - creep.x;
-					var dy = otherCreep.y - creep.y;
-					
-					var length = distance(0, 0, dx, dy);
-					lengthSum += length;
-					
-					if (length < 100) {
-						if (length > 10) {
-							xSum += dx / length;
-							ySum += dy / length;
-						}
-						else {
-							xSum -= dx / length;
-							ySum -= dy / length;
-						}
-					}
-				}
-			}
-			
-			var monsterXSum = 0.0;
-			var monsterYSum = 0.0;
-			var monsterLength = 0;
-			
+						
+			//push creep away from monsters, atract monsters to creep
 			for (m in monsters) {
-				
 				var monster = cast(m, Monster);
 				
 				var dx = monster.x - creep.x;
 				var dy = monster.y - creep.y;
 				
 				var length = distance(0, 0, dx, dy);
-				lengthSum += length*3;
 				
-				xSum -= dx / length * 3;
-				ySum -= dy / length * 3;
+				if (length < 100) {
+					xSum -= dx / length * 3;
+					ySum -= dy / length * 3;
+				}
+				if (length < 150) {
+					monster.finalVelocity.x -= dx / length;
+					monster.finalVelocity.y -= dy / length;	
+				}
 			}
 			
+			//attract creep to exit
+			var dx = exit.x - creep.x;
+			var dy = exit.y - creep.y;
+			
+			var length = distance(0, 0, dx, dy);
+			
+			if (length < 50) {
+				xSum += dx / length * 2;
+				ySum += dy / length * 2;	
+			}
+			
+			//attract creeps to creep
+			if (creep.running) {
+				for (o in creeps) {
+					var otherCreep = cast(o, Creep);
+					if (otherCreep != creep) {
+			
+						var dx = otherCreep.x - creep.x;
+						var dy = otherCreep.y - creep.y;
+						
+						var length = distance(0, 0, dx, dy);
+						
+						if (length < 100) {
+							if (length > 20) {
+								xSum += dx / length;
+								ySum += dy / length;
+							}
+							else {
+								xSum -= dx / length *2;
+								ySum -= dy / length *2;
+							}
+						}
+					}
+				}
+			}
+
+			//normalize creep velocity
 			var dist = distance(0, 0, xSum, ySum);
 			if (dist != 0) {
-				creep.velocity.set(xSum / dist * 10, ySum / dist * 10);
+				creep.running = true;
+				creep.finalVelocity.set(xSum / dist * 20, ySum / dist * 20);
+			} else {
+				creep.running = false;
+			}
+		}
+		//normalize monsters velocities
+		for (m in monsters) {
+			var monster = cast(m, Monster);
+			var dist = distance(0, 0, monster.finalVelocity.x, monster.finalVelocity.y);
+			if (dist != 0) {
+				monster.finalVelocity.set(monster.finalVelocity.x / dist * 15, monster.finalVelocity.y / dist * 15);
+				monster.running = true;
+			} else {
+				monster.running = false;
 			}
 		}
 		
@@ -277,15 +255,6 @@ class PlayState extends FlxState {
 				}
 			}
 		});
-		
-		//reduce monster speed
-		for (x in monsters.members) {
-			var m = cast(x, Monster);
-			while (Math.abs(m.velocity.x) > 40 || Math.abs(m.velocity.y) > 40) {
-				m.velocity.x /= 2;
-				m.velocity.y /= 2;
-			}
-		}
 		
 		FlxG.collide(monsters, map.secondFloor, function(monster : Monster, _) { monster.bounce(); } );
 		FlxG.collide(creeps, doors);

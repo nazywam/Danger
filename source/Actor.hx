@@ -14,8 +14,8 @@ class Actor extends FlxSprite {
 	public var originPoint : FlxPoint;
 	public var needAnotherDestination : Bool = true;
 	
-	public var waiting : Bool = false;
-	public var running = true;
+	public var waitingForRandomMove : Bool = false;
+	public var running = false;
 	
 	public var gibs : FlxEmitter;
 	
@@ -38,7 +38,7 @@ class Actor extends FlxSprite {
 	private function changeAnimation() {
 		flipX = (velocity.x < 0);
 		
-		if (velocity.x == 0 && velocity.y == 0) {
+		if ( (velocity.x == 0 && velocity.y == 0) || (waitingForRandomMove && !running)) {
 			animation.play("stand");
 		} else if (!running) {
 			animation.play("walk");
@@ -55,46 +55,48 @@ class Actor extends FlxSprite {
 	//apply velocity, move randomly if not chased
 	private function moveRandomly() {
 		if (Math.abs(destinationPoint.x - x) > 1) {
-		if (destinationPoint.x < x) velocity.x = -20;
-		else velocity.x = 20;
+		if (destinationPoint.x < x) finalVelocity.x = -20;
+		else finalVelocity.x = 20;
 		} else {
-			velocity.x = 0;
+			finalVelocity.x = 0;
 		}
 		if (Math.abs(destinationPoint.y - y) > 1) {
-			if (destinationPoint.y < y) velocity.y = -20;
-			else velocity.y = 20;
+			if (destinationPoint.y < y) finalVelocity.y = -20;
+			else finalVelocity.y = 20;
 		} else {
-			velocity.y = 0;
+			finalVelocity.y = 0;
 		}
 		//If targetPoint is closer than 3 px look for another target
 		if (Math.abs(destinationPoint.x - x) < 3 && Math.abs(destinationPoint.y - y) < 3) needAnotherDestination = true;
 		//Generate another target
 		if (needAnotherDestination) {
-			destinationPoint.set(originPoint.x + Std.random(20) - 10, originPoint.y + (Std.random(20) - 10));
+			destinationPoint.set(originPoint.x + Std.random(30) - 15, originPoint.y + (Std.random(30) - 15));
 			needAnotherDestination = false;
 			
-			waiting = true;
-			new FlxTimer(Math.random()*5, function(_) { waiting = false; } );
+			waitingForRandomMove = true;
+			new FlxTimer(Math.random()*5, function(_) { waitingForRandomMove = false; } );
 		}
 	}
 	
 	override public function update(elapsed : Float) {
 		super.update(elapsed);
+		changeAnimation();
 		
-		if ( running) {
+		velocity.x += (finalVelocity.x - velocity.x) / 10;
+		velocity.y += (finalVelocity.y - velocity.y) / 10;
+		finalVelocity.x = finalVelocity.y = 0;
+		
+		if (running) {
 			originPoint.set(x, y);
-			needAnotherDestination = true;
 		}
-		if (!running && !waiting) {
+		if (!running && !waitingForRandomMove) {
 			moveRandomly();
 		}
-		changeAnimation();
 	}
 	
 	//when hit wall look for another target
 	public function bounce() {
 		needAnotherDestination = true;
-		velocity.x *= 1.1;
 	}
 	
 }
