@@ -52,27 +52,31 @@ class Actor extends FlxSprite {
 		return Math.sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2));
 	}
 	
+	//Generate another target
+	function getAnotherTarget() {
+		destinationPoint.set(originPoint.x + Std.random(30) - 15, originPoint.y + (Std.random(30) - 15));
+	}
+	
 	//apply velocity, move randomly if not chased
 	private function moveRandomly() {
 		if (Math.abs(destinationPoint.x - x) > 1) {
-		if (destinationPoint.x < x) finalVelocity.x = -20;
-		else finalVelocity.x = 20;
+		if (destinationPoint.x < x) finalVelocity.x = -25;
+		else finalVelocity.x = 25;
 		} else {
 			finalVelocity.x = 0;
 		}
 		if (Math.abs(destinationPoint.y - y) > 1) {
-			if (destinationPoint.y < y) finalVelocity.y = -20;
-			else finalVelocity.y = 20;
+			if (destinationPoint.y < y) finalVelocity.y = -25;
+			else finalVelocity.y = 25;
 		} else {
 			finalVelocity.y = 0;
 		}
-		//If targetPoint is closer than 3 px look for another target
+		//If targetPoint is close look for another target
 		if (Math.abs(destinationPoint.x - x) < 3 && Math.abs(destinationPoint.y - y) < 3) needAnotherDestination = true;
-		//Generate another target
+		
 		if (needAnotherDestination) {
-			destinationPoint.set(originPoint.x + Std.random(30) - 15, originPoint.y + (Std.random(30) - 15));
+			getAnotherTarget();
 			needAnotherDestination = false;
-			
 			waitingForRandomMove = true;
 			new FlxTimer(Math.random()*5, function(_) { waitingForRandomMove = false; } );
 		}
@@ -96,7 +100,11 @@ class Actor extends FlxSprite {
 	
 	//when hit wall look for another target
 	public function bounce() {
-		needAnotherDestination = true;
+		if (!running) {
+			getAnotherTarget();
+			waitingForRandomMove = true;
+			new FlxTimer(Math.random()*2, function(_) { waitingForRandomMove = false; } );
+		}
 	}
 	
 }

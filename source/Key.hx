@@ -10,7 +10,7 @@ class Key extends FlxSprite {
 	
 	public function new(X : Float, Y : Float, i : Int){
 		super(X, Y);
-		loadGraphic(Data.Keys, false, 32, 32);
+		loadGraphic(Data.Keys, true, 32, 32);
 		for (x in 0...16) {
 			animation.add(Std.string(x), [x]);
 		}

@@ -36,7 +36,7 @@ class PlayState extends FlxState {
 	
 	public var score : Int = 0;
 	
-	var monsterDrop : FlxSprite;
+	var monsterDrop : MonsterDrop;
 	var monsterButton : FlxSprite;
 	
 	var reset : FlxSprite;
@@ -49,7 +49,6 @@ class PlayState extends FlxState {
 		if (Assets.getText("assets/data/level" + Std.string(Reg.activeLevel) + ".tmx") == null) {
 			throw("assets/data/level" + Std.string(Reg.activeLevel) + ".tmx, no such File");
 		}
-		
 		
 		map = new TiledLevel(("assets/data/level" + Std.string(Reg.activeLevel) + ".tmx"));
 		add(map.background);
@@ -79,9 +78,8 @@ class PlayState extends FlxState {
 		monsters = new FlxGroup();
 		add(monsters);
 		 
-		for (x in 0...3) {
-			var randomIndex = Std.random(creepSpawns.length);
-			var c = new Creep(creepSpawns[randomIndex].x + Std.random(32), creepSpawns[randomIndex].y - Std.random(8));
+		for (index in 0...creepSpawns.length) {
+			var c = new Creep(creepSpawns[index].x + Std.random(8), creepSpawns[index].y - Std.random(8));
 			creeps.add(c);	
 			creepsGibs.add(c.gibs);
 		}
@@ -96,10 +94,7 @@ class PlayState extends FlxState {
 		FlxG.worldBounds.set(0, 0, map.width * 32, map.height * 32);
 		
 		
-		monsterDrop = new FlxSprite(0, 0);
-		monsterDrop.loadGraphic(Data.MonsterImage, true, 32, 32);
-		monsterDrop.visible = false;
-		monsterDrop.solid = true;
+		monsterDrop = new MonsterDrop(0, 0);
 		add(monsterDrop);
 		
 		monsterButton = new FlxSprite(0, FlxG.height / 2);
@@ -193,9 +188,9 @@ class PlayState extends FlxState {
 			
 			var length = distance(0, 0, dx, dy);
 			
-			if (length < 50) {
-				xSum += dx / length * 2;
-				ySum += dy / length * 2;	
+			if (length < 75) {
+				xSum += dx / length * 3;
+				ySum += dy / length * 3;	
 			}
 			
 			//attract creeps to creep

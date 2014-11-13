@@ -1,2 +1,5 @@
-trace somewhere
-better vectors
+levels
+menu
+scrolling
+
+monsterDrop colision to overlap

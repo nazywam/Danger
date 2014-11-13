@@ -40,8 +40,6 @@
  </layer>
  <objectgroup name="Objects" width="15" height="10">
   <object type="Exit" gid="158" x="352" y="160"/>
-  <object type="Creepspawn" gid="231" x="96" y="160"/>
-  <object type="Creepspawn" gid="231" x="96" y="192"/>
   <object type="Creepspawn" gid="231" x="128" y="192"/>
   <object type="Creepspawn" gid="231" x="128" y="160"/>
   <object type="Creepspawn" gid="231" x="192" y="192"/>
@@ -50,7 +48,6 @@
   <object type="Creepspawn" gid="231" x="192" y="160"/>
   <object type="Creepspawn" gid="231" x="192" y="128"/>
   <object type="Creepspawn" gid="231" x="160" y="128"/>
-  <object type="Creepspawn" gid="231" x="96" y="128"/>
   <object type="Creepspawn" gid="231" x="128" y="128"/>
  </objectgroup>
 </map>
