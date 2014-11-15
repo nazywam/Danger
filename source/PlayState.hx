@@ -34,10 +34,6 @@ class PlayState extends FlxState {
 	
 	
 	public var score : Int = 0;
-	var allowScrolling : Bool = false;
-	var touchScroll : FlxPoint;
-	
-	
 	
 	#if mobile
 	var tiltHandler : FlxAccelerometer;
@@ -102,7 +98,6 @@ class PlayState extends FlxState {
 		}
 		
 		add(map.secondFloor);
-		touchScroll = new FlxPoint(0, 0);
 		
 		FlxG.camera.setScrollBounds(0, map.width * 32, 0,  map.height * 32);
 		FlxG.worldBounds.set(0, 0, map.width * 32, map.height * 32);
@@ -122,14 +117,6 @@ class PlayState extends FlxState {
 		framerate.scrollFactor.x = framerate.scrollFactor.y = 0;
 		add(framerate);
 		/////////////////////////////////////////////////
-	}
-	
-	//handle scrolling
-	function handleScrolling(x : Float, y : Float) {
-		FlxG.camera.scroll.x += (touchScroll.x - x) / 1.6;
-		FlxG.camera.scroll.y += (touchScroll.y - y) / 1.6;
-		touchScroll.x = x;
-		touchScroll.y = y;
 	}
 	
 	//get distance between point 1 and 2
@@ -255,56 +242,34 @@ class PlayState extends FlxState {
 		});
 		
 		#if mobile
-		//trace(tiltHandler.x + " " + tiltHandler.y +  " " + tiltHandler.z);
-		
-		for (x in monsters) {
-			var m = cast(x, Monster);
-			m.finalVelocity.x = Math.min(tiltHandler.y * 100, 350);
-			m.finalVelocity.y = Math.min(tiltHandler.x * 100, 350);
-		}
-		
-		for (touch in FlxG.touches.list) {
-			if (touch.justPressed) {
-				FlxG.overlap(new FlxObject(touch.x, touch.y, 1,1), reset, function(_, _) { FlxG.switchState(new MenuState()); } );				
-				if (allowScrolling) {					
-					touchScroll.set(touch.x, touch.y);
+			for (x in monsters) {
+				var m = cast(x, Monster);
+				m.finalVelocity.x = Math.min(tiltHandler.y * 100, 350);
+				m.finalVelocity.y = Math.min(tiltHandler.x * 100, 350);
+			}
+			
+			for (touch in FlxG.touches.list) {
+				if (touch.justPressed) {
+					FlxG.overlap(new FlxObject(touch.x, touch.y, 1,1), reset, function(_, _) { FlxG.switchState(new MenuState()); } );				
 				}
 			}
-			if (touch.pressed) {
-				if (allowScrolling) {
-					handleScrolling(touch.x, touch.y);
-				}
-			}
-		}
 		#end
 		
 		#if web
 			if (FlxG.mouse.justPressed) {
-				//
 				FlxG.overlap(new FlxObject(FlxG.mouse.x, FlxG.mouse.y, 1, 1), reset, function(_, _) { FlxG.switchState(new MenuState()); } );
-				//
-				if (allowScrolling) {					
-					touchScroll.set(FlxG.mouse.x, FlxG.mouse.y);
-				}
-
 			}
-			if (FlxG.mouse.pressed) {
+			for (x in monsters) {
+				var m = cast(x, Monster);
 				
-				var dx = (FlxG.mouse.x - FlxG.width / 2) / (FlxG.width / 2);
-				var dy = (FlxG.mouse.y - FlxG.height / 2) / (FlxG.height / 2);
+				if (FlxG.keys.pressed.LEFT) m.finalVelocity.x = -100;
+				if (FlxG.keys.pressed.RIGHT) m.finalVelocity.x = 100;
+				if (FlxG.keys.pressed.UP) m.finalVelocity.y = -100;
+				if (FlxG.keys.pressed.DOWN) m.finalVelocity.y = 100;
 				
-				for (x in monsters) {
-					
-					var m = cast(x, Monster);
-					m.finalVelocity.x = Math.min(dx * 100, 250);
-					m.finalVelocity.y = Math.min(dy * 75, 250);
-				}
-				
-				if (allowScrolling) {
-					handleScrolling(FlxG.mouse.x, FlxG.mouse.y);
-				}
 			}
 		#end
+		
 		framerate.text = Std.string(Math.round(1 / FlxG.elapsed));
 	}
 }

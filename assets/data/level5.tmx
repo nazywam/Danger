@@ -40,22 +40,22 @@
  </layer>
  <objectgroup name="Objects" width="15" height="9">
   <object type="Creepspawn" gid="481" x="128" y="192"/>
-  <object type="Key" gid="482" x="288" y="96">
+  <object type="Key" gid="482" x="224" y="96">
    <properties>
     <property name="id" value="1"/>
    </properties>
   </object>
-  <object type="Key" gid="482" x="288" y="224">
+  <object type="Key" gid="482" x="320" y="224">
    <properties>
     <property name="id" value="0"/>
    </properties>
   </object>
-  <object type="Key" gid="482" x="288" y="192">
+  <object type="Key" gid="482" x="320" y="192">
    <properties>
     <property name="id" value="0"/>
    </properties>
   </object>
-  <object type="Key" gid="482" x="288" y="64">
+  <object type="Key" gid="482" x="224" y="64">
    <properties>
     <property name="id" value="1"/>
    </properties>
@@ -63,22 +63,22 @@
   <object type="Creepspawn" gid="481" x="128" y="224"/>
   <object type="Creepspawn" gid="481" x="128" y="64"/>
   <object type="Creepspawn" gid="481" x="128" y="96"/>
-  <object type="Doors" gid="9" x="320" y="64">
+  <object type="Doors" gid="9" x="256" y="64">
    <properties>
     <property name="id" value="0"/>
    </properties>
   </object>
-  <object type="Doors" gid="9" x="320" y="96">
+  <object type="Doors" gid="9" x="256" y="96">
    <properties>
     <property name="id" value="0"/>
    </properties>
   </object>
-  <object type="Doors" gid="9" x="320" y="192">
+  <object type="Doors" gid="9" x="352" y="192">
    <properties>
     <property name="id" value="1"/>
    </properties>
   </object>
-  <object type="Doors" gid="9" x="320" y="224">
+  <object type="Doors" gid="9" x="352" y="224">
    <properties>
     <property name="id" value="1"/>
    </properties>
