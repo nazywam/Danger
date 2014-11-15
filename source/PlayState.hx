@@ -221,7 +221,7 @@ class PlayState extends FlxState {
 			}
 		});
 		
-		FlxG.collide(monsters, map.secondFloor, function(monster : Monster, _) { monster.bounce(); } );
+		FlxG.collide(monsters, map.secondFloor);
 		FlxG.collide(creeps, doors);
 		FlxG.collide(monsters, doors);
 		//creep completes the level
@@ -238,7 +238,7 @@ class PlayState extends FlxState {
 		FlxG.overlap(creeps, monsters, function(c : Creep, m : Monster) {
 			c.alpha = 0;
 			c.solid = false;
-			FlxG.camera.shake(0.007, 0.1);
+			FlxG.camera.shake(0.02, 0.15);
 		});
 		
 		#if mobile
@@ -261,12 +261,10 @@ class PlayState extends FlxState {
 			}
 			for (x in monsters) {
 				var m = cast(x, Monster);
-				
 				if (FlxG.keys.pressed.LEFT) m.finalVelocity.x = -100;
 				if (FlxG.keys.pressed.RIGHT) m.finalVelocity.x = 100;
 				if (FlxG.keys.pressed.UP) m.finalVelocity.y = -100;
 				if (FlxG.keys.pressed.DOWN) m.finalVelocity.y = 100;
-				
 			}
 		#end
 		

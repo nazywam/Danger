@@ -17,7 +17,18 @@ class Monster extends Actor {
 		animation.play("stand");
 	}
 	
+	override private function changeAnimation() {
+		super.changeAnimation();
+		
+		if (velocity.x == 0 && velocity.y == 0) {
+			animation.play("stand");
+		} else {
+			animation.play("run");
+		}
+	}
+	
 	override public function update(elapsed : Float) {
 		super.update(elapsed);
+		changeAnimation();
 	}
 }
