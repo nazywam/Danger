@@ -107,5 +107,7 @@
     <property name="id" value="0"/>
    </properties>
   </object>
+  <object type="MonsterSpawn" gid="233" x="32" y="96"/>
+  <object type="MonsterSpawn" gid="233" x="32" y="256"/>
  </objectgroup>
 </map>

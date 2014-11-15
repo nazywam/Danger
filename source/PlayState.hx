@@ -6,6 +6,7 @@ import flixel.FlxObject;
 import flixel.FlxSprite;
 import flixel.FlxState;
 import flixel.group.FlxGroup;
+import flixel.input.FlxAccelerometer;
 import flixel.math.FlxPoint;
 import flixel.text.FlxText;
 import flixel.ui.FlxButton;
@@ -13,6 +14,7 @@ import flixel.math.FlxMath;
 import flixel.util.FlxTimer;
 import menu.MenuState;
 import openfl.Assets;
+
 class PlayState extends FlxState {
 	
 	var map : TiledLevel;
@@ -27,7 +29,9 @@ class PlayState extends FlxState {
 	public var keys : FlxGroup;
 	
 	var monsters : FlxGroup;
+	
 	public var creepSpawns : Array<FlxPoint>;
+	public var monsterSpawns : Array<FlxPoint>;
 	public var exits : FlxGroup;
 	
 	
@@ -42,6 +46,10 @@ class PlayState extends FlxState {
 	var reset : FlxSprite;
 	var framerate : FlxText;
 	
+	#if mobile
+	var tiltHandler : FlxAccelerometer;
+	#end
+	
 	override public function create() {
 		super.create();
 		
@@ -50,12 +58,17 @@ class PlayState extends FlxState {
 			throw("assets/data/level" + Std.string(Reg.activeLevel) + ".tmx, no such File");
 		}
 		
+		#if mobile
+		tiltHandler = new FlxAccelerometer();
+		#end
+		
 		map = new TiledLevel(("assets/data/level" + Std.string(Reg.activeLevel) + ".tmx"));
 		add(map.background);
 		add(map.firstFloor);
 		add(map.bricks);
 
 		creepSpawns = new Array<FlxPoint>();
+		monsterSpawns = new Array<FlxPoint>();
 		
 		doors  = new FlxGroup();
 		keys = new FlxGroup();
@@ -88,11 +101,13 @@ class PlayState extends FlxState {
 			creepsGibs.add(c.gibs);
 		}
 		
+		for (index in 0...monsterSpawns.length) {
+			var m = new Monster(monsterSpawns[index].x, monsterSpawns[index].y);
+			monsters.add(m);
+		}
+		
 		add(map.secondFloor);
 		touchScroll = new FlxPoint(0, 0);
-		
-		hud = new Hud();
-		add(hud);
 		
 		FlxG.camera.setScrollBounds(0, map.width * 32, 0,  map.height * 32);
 		FlxG.worldBounds.set(0, 0, map.width * 32, map.height * 32);
@@ -106,6 +121,9 @@ class PlayState extends FlxState {
 		monsterButton.scale.x = monsterButton.scale.y = 1.5;
 		monsterButton.y -= monsterButton.height / 2;
 		add(monsterButton);
+		
+		hud = new Hud();
+		add(hud);
 		
 		/////////////////////////////////////////////////
 		reset = new FlxSprite(0, FlxG.height);
@@ -179,18 +197,14 @@ class PlayState extends FlxState {
 				if (length < 100) {
 					xSum -= dx / length * 3;
 					ySum -= dy / length * 3;
-				}
-				if (length < 150) {
-					monster.finalVelocity.x -= dx / length;
-					monster.finalVelocity.y -= dy / length;	
-				}
+				}				
 			}
 			
 			var dx = 0.0;
 			var dy = 0.0;
 			var minDist = 75;
 			
-			//attract creep to exit
+			//attract creep to closest exit
 			for (e in exits) {
 				
 				var exit = cast(e, Exit);
@@ -207,8 +221,8 @@ class PlayState extends FlxState {
 				}
 			}
 			
-			xSum += dx / length * 3;
-			ySum += dy / length * 3;	
+			xSum += dx / length * 2;
+			ySum += dy / length * 2;	
 			
 			//attract creeps to creep
 			if (creep.running) {
@@ -239,22 +253,11 @@ class PlayState extends FlxState {
 			var dist = distance(0, 0, xSum, ySum);
 			if (dist != 0) {
 				creep.running = true;
-				creep.finalVelocity.set(xSum / dist * 30, ySum / dist * 30);
+				creep.finalVelocity.set(xSum / dist * 40, ySum / dist * 40);
 			} else {
 				creep.running = false;
 			}
-		}
-		//normalize monsters velocities
-		for (m in monsters) {
-			var monster = cast(m, Monster);
-			var dist = distance(0, 0, monster.finalVelocity.x, monster.finalVelocity.y);
-			if (dist != 0) {
-				monster.finalVelocity.set(monster.finalVelocity.x / dist * 22, monster.finalVelocity.y / dist * 22);
-				monster.running = true;
-			} else {
-				monster.running = false;
-			}
-		}
+		}	
 		
 		//collect key
 		FlxG.overlap(creeps, keys, function(_, x : Key) {
@@ -298,6 +301,16 @@ class PlayState extends FlxState {
 		}
 		
 		#if mobile
+		
+		
+		//trace(tiltHandler.x + " " + tiltHandler.y +  " " + tiltHandler.z);
+		
+		for (x in monsters) {
+			var m = cast(x, Monster);
+			m.finalVelocity.x = Math.min(tiltHandler.y * 100, 350);
+			m.finalVelocity.y = Math.min(tiltHandler.x * 100, 350);
+		}
+		
 		for (touch in FlxG.touches.list) {
 			if (touch.justPressed) {
 				FlxG.overlap(new FlxObject(touch.x, touch.y, 1,1), reset, function(_, _) { FlxG.switchState(new MenuState()); } );				
@@ -308,7 +321,6 @@ class PlayState extends FlxState {
 			}
 			if (touch.pressed) {
 				handlePressed(touch.x, touch.y);
-				
 				if (allowScrolling) {
 					handleScrolling(touch.x, touch.y);
 				}
@@ -331,6 +343,17 @@ class PlayState extends FlxState {
 
 			}
 			if (FlxG.mouse.pressed) {
+				
+				var dx = (FlxG.mouse.x - FlxG.width / 2) / (FlxG.width / 2);
+				var dy = (FlxG.mouse.y - FlxG.height / 2) / (FlxG.height / 2);
+				
+				for (x in monsters) {
+					
+					var m = cast(x, Monster);
+					m.finalVelocity.x = Math.min(dx * 100, 250);
+					m.finalVelocity.y = Math.min(dy * 75, 250);
+				}
+				
 				handlePressed(FlxG.mouse.x, FlxG.mouse.y);
 				if (allowScrolling) {
 					handleScrolling(FlxG.mouse.x, FlxG.mouse.y);

@@ -14,7 +14,11 @@ class MenuState extends FlxState {
 	
 	override public function create() {
 		super.create();
+		
+		#if web
 		FlxG.log.redirectTraces = true;
+		#end
+		
 		FlxG.fixedTimestep = false;
 		
 		levels = new Array<Level>();

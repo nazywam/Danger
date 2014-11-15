@@ -90,6 +90,8 @@ class TiledLevel extends TiledMap {
 				state.doors.add(new Doors(x, y - 16, Std.parseInt(o.custom.keys.get("id"))));
 			case "key":
 				state.keys.add(new Key(x, y, Std.parseInt(o.custom.keys.get("id"))));
+			case "monsterspawn":
+				state.monsterSpawns.push(new FlxPoint(x, y));
 		}
 	}
 	
