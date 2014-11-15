@@ -44,6 +44,6 @@
   <object type="Creepspawn" gid="231" x="64" y="192"/>
   <object type="Creepspawn" gid="231" x="96" y="192"/>
   <object type="Creepspawn" gid="231" x="96" y="224"/>
-  <object type="MonsterSpawn" gid="0" x="64" y="288"/>
+  <object type="MonsterSpawn" gid="233" x="32" y="288"/>
  </objectgroup>
 </map>

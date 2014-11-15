@@ -17,8 +17,6 @@ class Actor extends FlxSprite {
 	public var waitingForRandomMove : Bool = false;
 	public var running = false;
 	
-	public var gibs : FlxEmitter;
-	
 	public var finalVelocity : FlxPoint;
 	
 	public function new(X : Float, Y : Float) {
@@ -26,17 +24,16 @@ class Actor extends FlxSprite {
 		destinationPoint = new FlxPoint(x, y);
 		originPoint = new FlxPoint(x, y);
 		finalVelocity = new FlxPoint(0, 0);
-		
-		gibs = new FlxEmitter();
-		gibs.solid = true;
-		gibs.launchMode = FlxEmitterMode.CIRCLE;
-		gibs.drag.set(50, 50, 100, 100, 50, 50, 100, 100);
-		gibs.lifespan.set(1, 10);
 	}
 	
 	//change to appropiate animation/direction
 	private function changeAnimation() {
-		flipX = (velocity.x < 0);
+		
+		if (velocity.x < 0 ) {
+			flipX = true;
+		} else if (velocity.x > 0) {
+			flipX = false;
+		}
 		
 		if ( (velocity.x == 0 && velocity.y == 0) || (waitingForRandomMove && !running)) {
 			animation.play("stand");

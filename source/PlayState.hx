@@ -18,37 +18,35 @@ import openfl.Assets;
 class PlayState extends FlxState {
 	
 	var map : TiledLevel;
-	
 	var hud : Hud;
 	
-	var creeps : FlxGroup;
-
-	var creepsGibs : FlxGroup;
 	
+	var creeps : FlxGroup;
+	var monsters : FlxGroup;
+
 	public var doors : FlxGroup;
 	public var keys : FlxGroup;
 	
-	var monsters : FlxGroup;
 	
 	public var creepSpawns : Array<FlxPoint>;
 	public var monsterSpawns : Array<FlxPoint>;
 	public var exits : FlxGroup;
 	
 	
+	public var score : Int = 0;
 	var allowScrolling : Bool = false;
 	var touchScroll : FlxPoint;
 	
-	public var score : Int = 0;
 	
-	var monsterDrop : MonsterDrop;
-	var monsterButton : FlxSprite;
-	
-	var reset : FlxSprite;
-	var framerate : FlxText;
 	
 	#if mobile
 	var tiltHandler : FlxAccelerometer;
 	#end
+	
+	///
+	var reset : FlxSprite;
+	var framerate : FlxText;
+	///
 	
 	override public function create() {
 		super.create();
@@ -88,8 +86,6 @@ class PlayState extends FlxState {
 			throw("No exits on map");
 		}
 		
-		creepsGibs = new FlxGroup();
-		add(creepsGibs);
 		creeps = new FlxGroup();
 		add(creeps);
 		monsters = new FlxGroup();
@@ -98,11 +94,10 @@ class PlayState extends FlxState {
 		for (index in 0...creepSpawns.length) {
 			var c = new Creep(creepSpawns[index].x + Std.random(8), creepSpawns[index].y - Std.random(8));
 			creeps.add(c);	
-			creepsGibs.add(c.gibs);
 		}
 		
 		for (index in 0...monsterSpawns.length) {
-			var m = new Monster(monsterSpawns[index].x, monsterSpawns[index].y);
+			var m = new Monster(monsterSpawns[index].x, monsterSpawns[index].y-16);
 			monsters.add(m);
 		}
 		
@@ -112,15 +107,6 @@ class PlayState extends FlxState {
 		FlxG.camera.setScrollBounds(0, map.width * 32, 0,  map.height * 32);
 		FlxG.worldBounds.set(0, 0, map.width * 32, map.height * 32);
 		
-		
-		monsterDrop = new MonsterDrop(0, 0);
-		add(monsterDrop);
-		
-		monsterButton = new FlxSprite(0, FlxG.height / 2);
-		monsterButton.loadGraphic(Data.MonsterImage, true, 32, 32);
-		monsterButton.scale.x = monsterButton.scale.y = 1.5;
-		monsterButton.y -= monsterButton.height / 2;
-		add(monsterButton);
 		
 		hud = new Hud();
 		add(hud);
@@ -152,30 +138,6 @@ class PlayState extends FlxState {
 		return Math.sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2));
 	}
 	
-	function handleJustPressed(x : Float, y : Float) {
-		monsterDrop.visible = true;
-		if (allowScrolling) {					
-			touchScroll.set(x, y);
-		}
-	}
-	function handlePressed(x : Float, y : Float) {
-		monsterDrop.x = Math.round((x - monsterDrop.width / 2) / 1) * 1;
-		monsterDrop.y = Math.round((y - monsterDrop.height / 2) / 1) * 1;
-		
-		if (FlxG.collide(monsterDrop, map.secondFloor)) {
-			monsterDrop.color = 0xFF0000;
-		} else {
-			monsterDrop.color = 0x00FF00;
-		}
-	}
-	function handleReleased(x : Float, y : Float) {
-		monsterDrop.visible = false;
-		if (monsterDrop.color == 0x00FF00) {
-			monsters.add(new Monster(Math.round((x - monsterDrop.width / 2) / 1) * 1, Math.round((y - monsterDrop.height / 2) / 16) * 16));
-		}
-	}
-	
-	
 	override public function update(elapsed : Float) {
 		super.update(elapsed);
 		
@@ -202,7 +164,9 @@ class PlayState extends FlxState {
 			
 			var dx = 0.0;
 			var dy = 0.0;
-			var minDist = 75;
+			var length = 1.0;
+			
+			var minDist = 55;
 			
 			//attract creep to closest exit
 			for (e in exits) {
@@ -212,7 +176,7 @@ class PlayState extends FlxState {
 				var cx = exit.x - creep.x;
 				var cy = exit.y - creep.y;
 				
-				var length = distance(0, 0, cx, cy);
+				length = distance(0, 0, cx, cy);
 				
 				if (length < minDist) {
 					
@@ -288,21 +252,10 @@ class PlayState extends FlxState {
 		FlxG.overlap(creeps, monsters, function(c : Creep, m : Monster) {
 			c.alpha = 0;
 			c.solid = false;
-			c.gibs.setPosition(c.x + c.width / 2, c.y + c.height / 2);
-			c.gibs.start(true, 0.1, 10);
 			FlxG.camera.shake(0.007, 0.1);
 		});
 		
-		//collide gibs with walls
-		for (x in creeps) {
-			var m = cast(x, Creep);
-			FlxG.collide(m.gibs, map.bricks);
-			FlxG.collide(m.gibs, map.secondFloor);
-		}
-		
 		#if mobile
-		
-		
 		//trace(tiltHandler.x + " " + tiltHandler.y +  " " + tiltHandler.z);
 		
 		for (x in monsters) {
@@ -314,19 +267,14 @@ class PlayState extends FlxState {
 		for (touch in FlxG.touches.list) {
 			if (touch.justPressed) {
 				FlxG.overlap(new FlxObject(touch.x, touch.y, 1,1), reset, function(_, _) { FlxG.switchState(new MenuState()); } );				
-				monsterDrop.visible = true;
 				if (allowScrolling) {					
 					touchScroll.set(touch.x, touch.y);
 				}
 			}
 			if (touch.pressed) {
-				handlePressed(touch.x, touch.y);
 				if (allowScrolling) {
 					handleScrolling(touch.x, touch.y);
 				}
-			}
-			if (touch.justReleased) {
-				handleReleased(touch.x, touch.y);
 			}
 		}
 		#end
@@ -336,7 +284,6 @@ class PlayState extends FlxState {
 				//
 				FlxG.overlap(new FlxObject(FlxG.mouse.x, FlxG.mouse.y, 1, 1), reset, function(_, _) { FlxG.switchState(new MenuState()); } );
 				//
-				monsterDrop.visible = true;
 				if (allowScrolling) {					
 					touchScroll.set(FlxG.mouse.x, FlxG.mouse.y);
 				}
@@ -354,13 +301,9 @@ class PlayState extends FlxState {
 					m.finalVelocity.y = Math.min(dy * 75, 250);
 				}
 				
-				handlePressed(FlxG.mouse.x, FlxG.mouse.y);
 				if (allowScrolling) {
 					handleScrolling(FlxG.mouse.x, FlxG.mouse.y);
 				}
-			}
-			if (FlxG.mouse.justReleased) {
-				handleReleased(FlxG.mouse.x, FlxG.mouse.y);
 			}
 		#end
 		framerate.text = Std.string(Math.round(1 / FlxG.elapsed));
