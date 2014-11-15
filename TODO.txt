@@ -1,5 +1,1 @@
-levels
-menu
-scrolling
-
-monsterDrop colision to overlap
+pchanie klocków?

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" orientation="orthogonal" width="20" height="20" tilewidth="32" tileheight="32">
  <tileset firstgid="1" name="tiles" tilewidth="32" tileheight="32">
-  <image source="../images/tiles.png" width="736" height="320"/>
+  <image source="../images/tiles.png" width="480" height="1024"/>
  </tileset>
- <tileset firstgid="231" name="objects" tilewidth="32" tileheight="32">
+ <tileset firstgid="481" name="objects" tilewidth="32" tileheight="32">
   <image source="../images/objects.png" width="256" height="256"/>
  </tileset>
  <layer name="Bricks" width="20" height="20" opacity="0.97">
@@ -39,7 +39,7 @@
   </data>
  </layer>
  <objectgroup name="Objects" width="20" height="20">
-  <object type="Creepspawn" gid="231" x="0" y="320"/>
-  <object type="Exit" gid="158" x="0" y="320"/>
+  <object type="Creepspawn" gid="481" x="0" y="320"/>
+  <object type="Exit" gid="110" x="64" y="288"/>
  </objectgroup>
 </map>

@@ -19,6 +19,5 @@ class Monster extends Actor {
 	
 	override public function update(elapsed : Float) {
 		super.update(elapsed);
-		trace(velocity);
 	}
 }

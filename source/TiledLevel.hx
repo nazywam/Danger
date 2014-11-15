@@ -50,14 +50,14 @@ class TiledLevel extends TiledMap {
 			tilemap.loadMapFromArray(tileLayer.tileArray, width, height, processedPath, tileSet.tileWidth, tileSet.tileHeight, 1, 1);
 			
 			if (tileLayer.name == "Bricks") {
-				tilemap.y -= 16;
 				bricks.add(tilemap);
-			} else if(tileLayer.name == "firstFloor"){
+			} else if (tileLayer.name == "firstFloor") {
+				tilemap.y += 16;
 				firstFloor.add(tilemap);
 			} else if (tileLayer.name == "secondFloor") {
-				tilemap.y -= 16;
 				secondFloor.add(tilemap);
 			} else if (tileLayer.name == "Background") {
+				tilemap.y += 16;
 				background.add(tilemap);
 			}
 		}
@@ -82,12 +82,12 @@ class TiledLevel extends TiledMap {
 		switch (o.type.toLowerCase()) {
 				
 			case "exit":
-				var exit = new Exit(x, y);
+				var exit = new Exit(x, y + 16);
 				state.exits.add(exit);
 			case "creepspawn":
 				state.creepSpawns.push(new FlxPoint(x, y));
 			case "doors":
-				state.doors.add(new Doors(x, y - 16, Std.parseInt(o.custom.keys.get("id"))));
+				state.doors.add(new Doors(x, y, Std.parseInt(o.custom.keys.get("id"))));
 			case "key":
 				state.keys.add(new Key(x, y, Std.parseInt(o.custom.keys.get("id"))));
 			case "monsterspawn":

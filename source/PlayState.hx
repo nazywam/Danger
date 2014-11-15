@@ -92,7 +92,7 @@ class PlayState extends FlxState {
 		add(monsters);
 		 
 		for (index in 0...creepSpawns.length) {
-			var c = new Creep(creepSpawns[index].x + Std.random(8), creepSpawns[index].y - Std.random(8));
+			var c = new Creep(creepSpawns[index].x + Std.random(8), creepSpawns[index].y + Std.random(8));
 			creeps.add(c);	
 		}
 		
@@ -106,7 +106,6 @@ class PlayState extends FlxState {
 		
 		FlxG.camera.setScrollBounds(0, map.width * 32, 0,  map.height * 32);
 		FlxG.worldBounds.set(0, 0, map.width * 32, map.height * 32);
-		
 		
 		hud = new Hud();
 		add(hud);
@@ -166,7 +165,7 @@ class PlayState extends FlxState {
 			var dy = 0.0;
 			var length = 1.0;
 			
-			var minDist = 55;
+			var minDist = 70;
 			
 			//attract creep to closest exit
 			for (e in exits) {
