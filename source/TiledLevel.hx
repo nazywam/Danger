@@ -83,8 +83,7 @@ class TiledLevel extends TiledMap {
 				
 			case "exit":
 				var exit = new Exit(x, y);
-				state.exit = exit;
-				state.add(exit);
+				state.exits.add(exit);
 			case "creepspawn":
 				state.creepSpawns.push(new FlxPoint(x, y));
 			case "doors":

@@ -28,7 +28,7 @@ class PlayState extends FlxState {
 	
 	var monsters : FlxGroup;
 	public var creepSpawns : Array<FlxPoint>;
-	public var exit : Exit;
+	public var exits : FlxGroup;
 	
 	
 	var allowScrolling : Bool = false;
@@ -62,13 +62,17 @@ class PlayState extends FlxState {
 		add(doors);
 		add(keys);
 		
+		exits = new FlxGroup();
+		add(exits);
+		
 		map.loadObjects(this);
+		
 		
 		if (creepSpawns.length == 0) {
 			throw("No creepspawn on map");
 		}
-		if (exit == null) {
-			throw("No exit on map");
+		if (exits.length == 0) {
+			throw("No exits on map");
 		}
 		
 		creepsGibs = new FlxGroup();
@@ -182,16 +186,29 @@ class PlayState extends FlxState {
 				}
 			}
 			
+			var dx = 0.0;
+			var dy = 0.0;
+			var minDist = 75;
+			
 			//attract creep to exit
-			var dx = exit.x - creep.x;
-			var dy = exit.y - creep.y;
-			
-			var length = distance(0, 0, dx, dy);
-			
-			if (length < 75) {
-				xSum += dx / length * 3;
-				ySum += dy / length * 3;	
+			for (e in exits) {
+				
+				var exit = cast(e, Exit);
+				
+				var cx = exit.x - creep.x;
+				var cy = exit.y - creep.y;
+				
+				var length = distance(0, 0, cx, cy);
+				
+				if (length < minDist) {
+					
+					dx = cx;
+					dy = cy;
+				}
 			}
+			
+			xSum += dx / length * 3;
+			ySum += dy / length * 3;	
 			
 			//attract creeps to creep
 			if (creep.running) {
@@ -222,7 +239,7 @@ class PlayState extends FlxState {
 			var dist = distance(0, 0, xSum, ySum);
 			if (dist != 0) {
 				creep.running = true;
-				creep.finalVelocity.set(xSum / dist * 20, ySum / dist * 20);
+				creep.finalVelocity.set(xSum / dist * 30, ySum / dist * 30);
 			} else {
 				creep.running = false;
 			}
@@ -232,7 +249,7 @@ class PlayState extends FlxState {
 			var monster = cast(m, Monster);
 			var dist = distance(0, 0, monster.finalVelocity.x, monster.finalVelocity.y);
 			if (dist != 0) {
-				monster.finalVelocity.set(monster.finalVelocity.x / dist * 15, monster.finalVelocity.y / dist * 15);
+				monster.finalVelocity.set(monster.finalVelocity.x / dist * 22, monster.finalVelocity.y / dist * 22);
 				monster.running = true;
 			} else {
 				monster.running = false;
@@ -255,7 +272,7 @@ class PlayState extends FlxState {
 		FlxG.collide(creeps, doors);
 		FlxG.collide(monsters, doors);
 		//creep completes the level
-		FlxG.overlap(creeps, exit, function(c : Creep, _) {
+		FlxG.overlap(creeps, exits, function(c : Creep, _) {
 			c.enterExit();
 			new FlxTimer(1, function(_) { creeps.remove(c); } );
 			score++;
