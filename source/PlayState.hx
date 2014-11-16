@@ -86,7 +86,7 @@ class PlayState extends FlxState {
 		}
 	
 		for (index in 0...monsterSpawns.length) {
-			var m = new Monster(monsterSpawns[index].x, monsterSpawns[index].y-16);
+			var m = new Monster(monsterSpawns[index].x, monsterSpawns[index].y);
 			monsters.add(m);
 		}
 		
@@ -138,7 +138,7 @@ class PlayState extends FlxState {
 				
 				var length = distance(0, 0, dx, dy);
 				
-				if (length < 100) {
+				if (length < 75) {
 					xSum -= dx / length * 3;
 					ySum -= dy / length * 3;
 				}				
