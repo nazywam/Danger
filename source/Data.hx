@@ -13,4 +13,7 @@ class Data {
 	public static inline var LevelIcon = "assets/images/menu/levelIcon.png";
 	public static inline var PlayButton = "assets/images/menu/play.png";
 	public static inline var OptionsButton = "assets/images/menu/options.png";
+	public static inline var LevelsBackground = "assets/images/menu/levelsBackground.png";
+	public static inline var background = "assets/images/menu/background.png";
+	
 }

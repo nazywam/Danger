@@ -111,8 +111,6 @@ class PlayState extends FlxState {
 		framerate.scrollFactor.x = framerate.scrollFactor.y = 0;
 		add(framerate);
 		/////////////////////////////////////////////////
-				
-
 		
 	}
 	

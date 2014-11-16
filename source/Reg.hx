@@ -11,4 +11,5 @@ class Reg {
 	*/
 	
 	public static var activeLevel : Int = 0;
+	
 }
