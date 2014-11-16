@@ -33,7 +33,7 @@ class Creep extends Actor {
 			width = 10;
 			offset.x = 3;
 	}
-	
+
 	override private function changeAnimation() {
 		super.changeAnimation();
 		
@@ -50,7 +50,6 @@ class Creep extends Actor {
 	function getAnotherTarget() {
 		destinationPoint.set(originPoint.x + Std.random(30) - 15, originPoint.y + (Std.random(30) - 15));
 	}
-	
 	//apply velocity, move randomly if not chased
 	private function moveRandomly() {
 		if (Math.abs(destinationPoint.x - x) > 1) {
@@ -110,6 +109,5 @@ class Creep extends Actor {
 		if (!running && !waitingForRandomMove) {
 			moveRandomly();
 		}
-		
 	}
 }

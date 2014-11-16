@@ -1,16 +1,13 @@
 package ;
 
-import flixel.FlxBasic;
 import flixel.FlxG;
 import flixel.FlxObject;
 import flixel.FlxSprite;
 import flixel.FlxState;
 import flixel.group.FlxGroup;
-import flixel.input.FlxAccelerometer;
 import flixel.math.FlxPoint;
+import flixel.input.FlxAccelerometer;
 import flixel.text.FlxText;
-import flixel.ui.FlxButton;
-import flixel.math.FlxMath;
 import flixel.util.FlxTimer;
 import menu.MenuState;
 import openfl.Assets;
@@ -20,18 +17,15 @@ class PlayState extends FlxState {
 	var map : TiledLevel;
 	var hud : Hud;
 	
-	
 	var creeps : FlxGroup;
 	var monsters : FlxGroup;
 
 	public var doors : FlxGroup;
 	public var keys : FlxGroup;
 	
-	
 	public var creepSpawns : Array<FlxPoint>;
 	public var monsterSpawns : Array<FlxPoint>;
 	public var exits : FlxGroup;
-	
 	
 	public var score : Int = 0;
 	
@@ -74,7 +68,6 @@ class PlayState extends FlxState {
 		
 		map.loadObjects(this);
 		
-		
 		if (creepSpawns.length == 0) {
 			throw("No creepspawn on map");
 		}
@@ -86,19 +79,20 @@ class PlayState extends FlxState {
 		add(creeps);
 		monsters = new FlxGroup();
 		add(monsters);
-		 
+		
 		for (index in 0...creepSpawns.length) {
 			var c = new Creep(creepSpawns[index].x + Std.random(8), creepSpawns[index].y + Std.random(8));
 			creeps.add(c);	
 		}
-		
+	
 		for (index in 0...monsterSpawns.length) {
 			var m = new Monster(monsterSpawns[index].x, monsterSpawns[index].y-16);
 			monsters.add(m);
 		}
 		
 		add(map.secondFloor);
-		
+				
+
 		FlxG.camera.setScrollBounds(0, map.width * 32, 0,  map.height * 32);
 		FlxG.worldBounds.set(0, 0, map.width * 32, map.height * 32);
 		
@@ -117,6 +111,9 @@ class PlayState extends FlxState {
 		framerate.scrollFactor.x = framerate.scrollFactor.y = 0;
 		add(framerate);
 		/////////////////////////////////////////////////
+				
+
+		
 	}
 	
 	//get distance between point 1 and 2
@@ -126,6 +123,7 @@ class PlayState extends FlxState {
 	
 	override public function update(elapsed : Float) {
 		super.update(elapsed);
+
 		
 		for (c in creeps) {
 			var creep = cast(c, Creep);
@@ -208,6 +206,8 @@ class PlayState extends FlxState {
 				creep.running = false;
 			}
 		}	
+
+
 		
 		//collect key
 		FlxG.overlap(creeps, keys, function(_, x : Key) {
@@ -220,10 +220,11 @@ class PlayState extends FlxState {
 				}
 			}
 		});
-		
+
 		FlxG.collide(monsters, map.secondFloor);
 		FlxG.collide(creeps, doors);
 		FlxG.collide(monsters, doors);
+
 		//creep completes the level
 		FlxG.overlap(creeps, exits, function(c : Creep, _) {
 			c.enterExit();
@@ -240,12 +241,13 @@ class PlayState extends FlxState {
 			c.solid = false;
 			FlxG.camera.shake(0.02, 0.15);
 		});
-		
+
 		#if mobile
+			
 			for (x in monsters) {
 				var m = cast(x, Monster);
-				m.finalVelocity.x = Math.min(tiltHandler.y * 100, 350);
-				m.finalVelocity.y = Math.min(tiltHandler.x * 100, 350);
+				m.finalVelocity.x = Math.min(tiltHandler.y * 150, 350);
+				m.finalVelocity.y = Math.min(tiltHandler.x * 150, 350);
 			}
 			
 			for (touch in FlxG.touches.list) {
@@ -253,9 +255,10 @@ class PlayState extends FlxState {
 					FlxG.overlap(new FlxObject(touch.x, touch.y, 1,1), reset, function(_, _) { FlxG.switchState(new MenuState()); } );				
 				}
 			}
+			
 		#end
 		
-		#if web
+		#if !mobile
 			if (FlxG.mouse.justPressed) {
 				FlxG.overlap(new FlxObject(FlxG.mouse.x, FlxG.mouse.y, 1, 1), reset, function(_, _) { FlxG.switchState(new MenuState()); } );
 			}
@@ -269,5 +272,6 @@ class PlayState extends FlxState {
 		#end
 		
 		framerate.text = Std.string(Math.round(1 / FlxG.elapsed));
+
 	}
 }
