@@ -61,7 +61,7 @@ class MenuState extends FlxState {
 		for (y in 0...3) {
 			for (x in 0...4) {
 				if (Assets.getText("assets/data/level" + Std.string(y * 4 + x) + ".tmx") != null) {
-					var l = new Level(x * 65 + 593, y * 68 + 34);
+					var l = new Level(x * 65 + levelsBackground.x + 26, y * 68 + levelsBackground.y + 28);
 					l.ID = y * 4 + x;
 					l.text.text = Std.string(l.ID);
 					l.text.x -= l.text.width / 2;
@@ -71,6 +71,9 @@ class MenuState extends FlxState {
 				}
 			}	
 		}	
+		
+		Reg.calibrationPoint = new FlxPoint(0, 0);
+		
 	}
 	
 	function switchLevel(lvl : Int) {
@@ -79,7 +82,7 @@ class MenuState extends FlxState {
 		} else {
 			activeScreen = lvl;
 		}
-		FlxTween.tween(FlxG.camera.scroll, { x:480*activeScreen }, .75, { ease:FlxEase.cubeOut, type:FlxTween.PERSIST } );				
+		FlxTween.tween(FlxG.camera.scroll, { x:FlxG.width*activeScreen }, .75, { ease:FlxEase.cubeOut, type:FlxTween.PERSIST } );				
 	}
 
 	function clickLevel(id : Int) {

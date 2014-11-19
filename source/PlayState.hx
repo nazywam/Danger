@@ -47,7 +47,8 @@ class PlayState extends FlxState {
 		}
 		
 		#if mobile
-		tiltHandler = new FlxAccelerometer();
+			tiltHandler = new FlxAccelerometer();
+			Reg.calibrationPoint.set(tiltHandler.x, tiltHandler.y);
 		#end
 		
 		map = new TiledLevel(("assets/data/level" + Std.string(Reg.activeLevel) + ".tmx"));
@@ -231,7 +232,6 @@ class PlayState extends FlxState {
 			hud.scoreText.text = Std.string(score);
 		});
 		FlxG.collide(creeps, map.secondFloor, function(creep : Creep, _) { creep.bounce(); } );
-		//FlxG.collide(creeps, creeps, function(m1 : Creep, m2: Creep) { m1.bounce(); m2.bounce(); } );
 		
 		//kill creep when monster walks into it
 		FlxG.overlap(creeps, monsters, function(c : Creep, m : Monster) {
@@ -244,8 +244,9 @@ class PlayState extends FlxState {
 			
 			for (x in monsters) {
 				var m = cast(x, Monster);
-				m.finalVelocity.x = Math.min(tiltHandler.y * 150, 350);
-				m.finalVelocity.y = Math.min(tiltHandler.x * 150, 350);
+				m.finalVelocity.x = Math.min((tiltHandler.y) * 200, 300);
+				m.finalVelocity.y = Math.min((tiltHandler.x) * 150, 300);
+				
 			}
 			
 			for (touch in FlxG.touches.list) {
