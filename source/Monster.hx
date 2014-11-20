@@ -25,7 +25,6 @@ class Monster extends Actor {
 		} else {
 			animation.play("run");
 		}
-		trace(velocity);
 	}
 	
 	override public function update(elapsed : Float) {

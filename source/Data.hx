@@ -14,6 +14,11 @@ class Data {
 	public static inline var PlayButton = "assets/images/menu/play.png";
 	public static inline var OptionsButton = "assets/images/menu/options.png";
 	public static inline var LevelsBackground = "assets/images/menu/levelsBackground.png";
-	public static inline var background = "assets/images/menu/background.png";
+	public static inline var Background = "assets/images/menu/background.png";
+	
+	
+	public static inline var PanelBackground = "assets/images/hud/panelBackground.png";
+	public static inline var SwitchState = "assets/images/hud/switchState.png";
+	public static inline var PanelExit = "assets/images/hud/panelExit.png";
 	
 }

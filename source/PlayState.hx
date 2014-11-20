@@ -40,6 +40,7 @@ class PlayState extends FlxState {
 	
 	override public function create() {
 		super.create();
+	
 		
 		//load map
 		if (Assets.getText("assets/data/level" + Std.string(Reg.activeLevel) + ".tmx") == null) {
@@ -121,8 +122,13 @@ class PlayState extends FlxState {
 	}
 	
 	override public function update(elapsed : Float) {
-		super.update(elapsed);
-
+		
+		if (hud.panel.state == 1) {
+			hud.update(elapsed);
+			return;
+		}
+		
+		super.update(elapsed);		
 		
 		for (c in creeps) {
 			var creep = cast(c, Creep);
@@ -249,18 +255,9 @@ class PlayState extends FlxState {
 				
 			}
 			
-			for (touch in FlxG.touches.list) {
-				if (touch.justPressed) {
-					FlxG.overlap(new FlxObject(touch.x, touch.y, 1,1), reset, function(_, _) { FlxG.switchState(new MenuState()); } );				
-				}
-			}
-			
 		#end
 		
 		#if !mobile
-			if (FlxG.mouse.justPressed) {
-				FlxG.overlap(new FlxObject(FlxG.mouse.x, FlxG.mouse.y, 1, 1), reset, function(_, _) { FlxG.switchState(new MenuState()); } );
-			}
 			for (x in monsters) {
 				var m = cast(x, Monster);
 				if (FlxG.keys.pressed.LEFT) m.finalVelocity.x = -100;

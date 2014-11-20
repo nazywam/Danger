@@ -38,7 +38,7 @@ class MenuState extends FlxState {
 		touchPoint = new FlxPoint(0, 0);
 		
 		background = new FlxSprite(0, 0);
-		background.loadGraphic(Data.background);
+		background.loadGraphic(Data.Background);
 		background.scrollFactor.x = background.scrollFactor.y = 0;
 		add(background);
 		
