@@ -5,6 +5,7 @@ import flixel.group.FlxGroup;
 import flixel.FlxG;
 import flixel.tweens.FlxTween;
 import flixel.tweens.FlxEase;
+import flixel.util.FlxTimer;
 import menu.MenuState;
 /**
  * ...
@@ -56,15 +57,21 @@ class Panel extends FlxGroup {
 	
 	private function handleClick(x : Float, y : Float) {
 		if (overlaps(x, y, switchState)) {
-					
-			state = (state+1) % 2;
+
+			state = (state+1) % 2; 
 			
-			FlxTween.tween(background, { x: -188 + 188 * state }, .75, { ease:FlxEase.cubeOut, type:FlxTween.PERSIST } );				
-			FlxTween.tween(switchState, { x: 188 * state }, .75, { ease:FlxEase.cubeOut, type:FlxTween.PERSIST } );				
+			var time = .75;
+			if (state == 0) {
+				time -= .25;
+			}
 			
-			FlxTween.tween(restart, { x: -170 + 188 * state }, .75, { ease:FlxEase.cubeOut, type:FlxTween.PERSIST } );
-			FlxTween.tween(calibrate, { x: -170 + 188 * state }, .75, { ease:FlxEase.cubeOut, type:FlxTween.PERSIST } );
-			FlxTween.tween(exit, { x: -170 + 188 * state }, .75, { ease:FlxEase.cubeOut, type:FlxTween.PERSIST } );
+				
+			FlxTween.tween(background, { x: -188 + 188 * state }, time, { ease:FlxEase.cubeOut, type:FlxTween.PERSIST } );				
+			FlxTween.tween(switchState, { x: 188 * state }, time, { ease:FlxEase.cubeOut, type:FlxTween.PERSIST } );				
+			
+			FlxTween.tween(restart, { x: -170 + 188 * state }, time, { ease:FlxEase.cubeOut, type:FlxTween.PERSIST } );
+			FlxTween.tween(calibrate, { x: -170 + 188 * state }, time, { ease:FlxEase.cubeOut, type:FlxTween.PERSIST } );
+			FlxTween.tween(exit, { x: -170 + 188 * state }, time, { ease:FlxEase.cubeOut, type:FlxTween.PERSIST } );
 		}
 			
 		if (overlaps(x, y, restart)) {

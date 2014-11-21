@@ -243,8 +243,8 @@ class PlayState extends FlxState {
 			
 			for (x in monsters) {
 				var m = cast(x, Monster);
-				m.finalVelocity.x = Math.min((tiltHandler.y) * 200, 300);
-				m.finalVelocity.y = Math.min((tiltHandler.x) * 150, 300);
+				m.finalVelocity.x = Math.min((tiltHandler.y) * 150, 250);
+				m.finalVelocity.y = Math.min((tiltHandler.x) * 125, 250);
 				
 			}
 			
