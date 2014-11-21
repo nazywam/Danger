@@ -20,5 +20,7 @@ class Data {
 	public static inline var PanelBackground = "assets/images/hud/panelBackground.png";
 	public static inline var SwitchState = "assets/images/hud/switchState.png";
 	public static inline var PanelExit = "assets/images/hud/panelExit.png";
+	public static inline var PanelRestart = "assets/images/hud/panelRestart.png";
+	public static inline var PanelCalibrate = "assets/images/hud/panelCalibrate.png";
 	
 }

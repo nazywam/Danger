@@ -34,7 +34,6 @@ class PlayState extends FlxState {
 	#end
 	
 	///
-	var reset : FlxSprite;
 	var framerate : FlxText;
 	///
 	
@@ -102,12 +101,6 @@ class PlayState extends FlxState {
 		add(hud);
 		
 		/////////////////////////////////////////////////
-		reset = new FlxSprite(0, FlxG.height);
-		reset.makeGraphic(50, 30);
-		reset.y -= reset.height;
-		reset.scrollFactor.x = reset.scrollFactor.y = 0;
-		add(reset);
-		
 		
 		framerate = new FlxText(0, 0);
 		framerate.scrollFactor.x = framerate.scrollFactor.y = 0;

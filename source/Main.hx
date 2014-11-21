@@ -11,8 +11,8 @@ import menu.MenuState;
 
 class Main extends Sprite 
 {
-	var gameWidth:Int = 640;
-	var gameHeight:Int = 360;
+	var gameWidth:Int = 544;
+	var gameHeight:Int = 306;
 	var initialState:Class<FlxState> = menu.MenuState;
 	var zoom:Float = -1;
 	var framerate:Int = 60;
