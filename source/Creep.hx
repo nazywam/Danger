@@ -72,7 +72,8 @@ class Creep extends Actor {
 			getAnotherTarget();
 			needAnotherDestination = false;
 			waitingForRandomMove = true;
-			new FlxTimer(Math.random()*5, function(_) { waitingForRandomMove = false; } );
+			var timer = new FlxTimer();
+			timer.start(Math.random()*5, function(_) { waitingForRandomMove = false; } );
 		}
 	}	
 	
@@ -87,7 +88,8 @@ class Creep extends Actor {
 		if (!running) {
 			getAnotherTarget();
 			waitingForRandomMove = true;
-			new FlxTimer(Math.random()*2, function(_) { waitingForRandomMove = false; } );
+			var timer = new FlxTimer();
+			timer.start(Math.random()*2, function(_) { waitingForRandomMove = false; } );
 		}
 	}
 	

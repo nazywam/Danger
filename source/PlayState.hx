@@ -102,8 +102,8 @@ class PlayState extends FlxState {
 		
 		/////////////////////////////////////////////////
 		
-		framerate = new FlxText(0, 0);
-		framerate.scrollFactor.x = framerate.scrollFactor.y = 0;
+		framerate = new FlxText(20, 20, 100, "AAAA", 32);
+		//framerate.scrollFactor.x = framerate.scrollFactor.y = 0;
 		add(framerate);
 		/////////////////////////////////////////////////
 		
@@ -113,6 +113,7 @@ class PlayState extends FlxState {
 	function distance(x1 : Float, y1 : Float, x2 : Float, y2 : Float) : Float {
 		return Math.sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2));
 	}
+
 	
 	override public function update(elapsed : Float) {
 		
@@ -226,7 +227,8 @@ class PlayState extends FlxState {
 		//creep completes the level
 		FlxG.overlap(creeps, exits, function(c : Creep, _) {
 			c.enterExit();
-			new FlxTimer(1, function(_) { creeps.remove(c); } );
+			var timer = new FlxTimer();
+			timer.start(1, function(_) { creeps.remove(c); } );
 			score++;
 			hud.scoreText.text = Std.string(score);
 		});
@@ -243,9 +245,8 @@ class PlayState extends FlxState {
 			
 			for (x in monsters) {
 				var m = cast(x, Monster);
-				m.finalVelocity.x = Math.min((tiltHandler.y) * 150, 250);
-				m.finalVelocity.y = Math.min((tiltHandler.x) * 125, 250);
-				
+				m.finalVelocity.x = Math.min((tiltHandler.y - Reg.calibrationPoint.y) * 150, 250);
+				m.finalVelocity.y = Math.min((tiltHandler.x - Reg.calibrationPoint.x) * 125, 250);
 			}
 			
 		#end
@@ -260,7 +261,7 @@ class PlayState extends FlxState {
 			}
 		#end
 		
-		framerate.text = Std.string(Math.round(1 / FlxG.elapsed));
+		//framerate.text = Std.string(Math.round(1 / FlxG.elapsed));
 
 	}
 }

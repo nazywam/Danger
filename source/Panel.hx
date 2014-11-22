@@ -3,6 +3,7 @@ package ;
 import flixel.FlxSprite;
 import flixel.group.FlxGroup;
 import flixel.FlxG;
+import flixel.input.FlxAccelerometer;
 import flixel.tweens.FlxTween;
 import flixel.tweens.FlxEase;
 import flixel.util.FlxTimer;
@@ -21,6 +22,10 @@ class Panel extends FlxGroup {
 	public var exit : FlxSprite;
 	public var restart : FlxSprite;
 	public var calibrate : FlxSprite;
+	
+	#if mobile
+		var tiltHandler : FlxAccelerometer;
+	#end
 	
 	public function new() {
 			super();
@@ -45,6 +50,11 @@ class Panel extends FlxGroup {
 			exit = new FlxSprite( -170, 215);
 			exit.loadGraphic(Data.PanelExit);
 			add(exit);
+			
+			#if mobile
+				tiltHandler = new FlxAccelerometer();
+			#end
+			
 	}
 	
 	
@@ -79,7 +89,7 @@ class Panel extends FlxGroup {
 		}
 			
 		if (overlaps(x, y, calibrate)) {
-			
+			Reg.calibrationPoint.set(tiltHandler.x, tiltHandler.y);
 		}
 		
 		if (overlaps(x, y, exit)) {

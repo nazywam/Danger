@@ -2,6 +2,7 @@ package ;
 
 import flixel.math.FlxPoint;
 import flixel.util.FlxSave;
+import flixel.input.FlxAccelerometer;
 
 class Reg {
 	/*
