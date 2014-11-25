@@ -64,11 +64,8 @@ class Panel extends FlxGroup {
 		return true;
 	}
 	
-	
-	private function handleClick(x : Float, y : Float) {
-		if (overlaps(x, y, switchState)) {
-
-			state = (state+1) % 2; 
+	function switchPanel() {
+		state = (state+1) % 2; 
 			
 			var time = .75;
 			if (state == 0) {
@@ -82,6 +79,11 @@ class Panel extends FlxGroup {
 			FlxTween.tween(restart, { x: -170 + 188 * state }, time, { ease:FlxEase.cubeOut, type:FlxTween.PERSIST } );
 			FlxTween.tween(calibrate, { x: -170 + 188 * state }, time, { ease:FlxEase.cubeOut, type:FlxTween.PERSIST } );
 			FlxTween.tween(exit, { x: -170 + 188 * state }, time, { ease:FlxEase.cubeOut, type:FlxTween.PERSIST } );
+	}
+	
+	private function handleClick(x : Float, y : Float) {
+		if (overlaps(x, y, switchState)) {
+			switchPanel();
 		}
 			
 		if (overlaps(x, y, restart)) {
@@ -89,7 +91,10 @@ class Panel extends FlxGroup {
 		}
 			
 		if (overlaps(x, y, calibrate)) {
-			Reg.calibrationPoint.set(tiltHandler.x, tiltHandler.y);
+			#if mobile
+				Reg.calibrationPoint.set(tiltHandler.x, tiltHandler.y);
+			#end
+			switchPanel();
 		}
 		
 		if (overlaps(x, y, exit)) {

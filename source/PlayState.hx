@@ -21,6 +21,7 @@ class PlayState extends FlxState {
 	var monsters : FlxGroup;
 
 	public var doors : FlxGroup;
+	public var spikes : FlxGroup;
 	public var keys : FlxGroup;
 	
 	public var creepSpawns : Array<FlxPoint>;
@@ -36,6 +37,8 @@ class PlayState extends FlxState {
 	///
 	var framerate : FlxText;
 	///
+	
+	var paused : Bool = true;
 	
 	override public function create() {
 		super.create();
@@ -61,8 +64,10 @@ class PlayState extends FlxState {
 		
 		doors  = new FlxGroup();
 		keys = new FlxGroup();
+		spikes = new FlxGroup();
 		add(doors);
 		add(keys);
+		add(spikes);
 		
 		exits = new FlxGroup();
 		add(exits);
@@ -101,11 +106,13 @@ class PlayState extends FlxState {
 		add(hud);
 		
 		/////////////////////////////////////////////////
-		
-		framerate = new FlxText(20, 20, 100, "AAAA", 32);
-		//framerate.scrollFactor.x = framerate.scrollFactor.y = 0;
+		framerate = new FlxText(0, 0);
+		framerate.scrollFactor.x = framerate.scrollFactor.y = 0;
 		add(framerate);
 		/////////////////////////////////////////////////
+	
+		var t = new FlxTimer();
+		t.start(1, function(_) { paused = false; } );
 		
 	}
 	
@@ -117,6 +124,8 @@ class PlayState extends FlxState {
 	
 	override public function update(elapsed : Float) {
 		
+		if (paused) return;
+		
 		if (hud.panel.state == 1) {
 			hud.update(elapsed);
 			return;
@@ -127,86 +136,96 @@ class PlayState extends FlxState {
 		for (c in creeps) {
 			var creep = cast(c, Creep);
 			
-			var xSum = 0.0;
-			var ySum = 0.0;
-						
-			//push creep away from monsters, atract monsters to creep
-			for (m in monsters) {
-				var monster = cast(m, Monster);
+			if (creep.alive) {
 				
-				var dx = monster.x - creep.x;
-				var dy = monster.y - creep.y;
-				
-				var length = distance(0, 0, dx, dy);
-				
-				if (length < 75) {
-					xSum -= dx / length * 3;
-					ySum -= dy / length * 3;
-				}				
-			}
-			
-			var dx = 0.0;
-			var dy = 0.0;
-			var length = 1.0;
-			
-			var minDist = 70;
-			
-			//attract creep to closest exit
-			for (e in exits) {
-				
-				var exit = cast(e, Exit);
-				
-				var cx = exit.x - creep.x;
-				var cy = exit.y - creep.y;
-				
-				length = distance(0, 0, cx, cy);
-				
-				if (length < minDist) {
+				var xSum = 0.0;
+				var ySum = 0.0;
+							
+				//push creep away from monsters, atract monsters to creep
+				for (m in monsters) {
+					var monster = cast(m, Monster);
 					
-					dx = cx;
-					dy = cy;
+					var dx = monster.x - creep.x;
+					var dy = monster.y - creep.y;
+					
+					var length = distance(0, 0, dx, dy);
+					
+					if (length < 75) {
+						xSum -= dx / length * 3;
+						ySum -= dy / length * 3;
+					}				
 				}
-			}
-			
-			xSum += dx / length * 2;
-			ySum += dy / length * 2;	
-			
-			//attract creeps to creep
-			if (creep.running) {
-				for (o in creeps) {
-					var otherCreep = cast(o, Creep);
-					if (otherCreep != creep) {
-			
-						var dx = otherCreep.x - creep.x;
-						var dy = otherCreep.y - creep.y;
+				
+				var dx = 0.0;
+				var dy = 0.0;
+				var length = 1.0;
+				
+				var minDist = 70;
+				
+				//attract creep to closest exit
+				for (e in exits) {
+					
+					var exit = cast(e, Exit);
+					
+					var cx = exit.x - creep.x;
+					var cy = exit.y - creep.y;
+					
+					length = distance(0, 0, cx, cy);
+					
+					if (length < minDist) {
 						
-						var length = distance(0, 0, dx, dy);
-						
-						if (length < 100) {
-							if (length > 20) {
-								xSum += dx / length;
-								ySum += dy / length;
-							}
-							else {
-								xSum -= dx / length *2;
-								ySum -= dy / length *2;
+						dx = cx;
+						dy = cy;
+					}
+				}
+				
+				xSum += dx / length * 2;
+				ySum += dy / length * 2;			
+				
+				//attract creeps to creep
+				if (creep.running) {
+					for (o in creeps) {
+						var otherCreep = cast(o, Creep);
+						if (otherCreep != creep && otherCreep.alive) {
+				
+							var dx = otherCreep.x - creep.x;
+							var dy = otherCreep.y - creep.y;
+							
+							var length = distance(0, 0, dx, dy);
+							
+							if (length < 100) {
+								if (length > 20) {
+									xSum += dx / length;
+									ySum += dy / length;
+								}
+								else {
+									xSum -= dx / length *2;
+									ySum -= dy / length *2;
+								}
 							}
 						}
 					}
 				}
-			}
 
-			//normalize creep velocity
-			var dist = distance(0, 0, xSum, ySum);
-			if (dist != 0) {
-				creep.running = true;
-				creep.finalVelocity.set(xSum / dist * 40, ySum / dist * 40);
-			} else {
-				creep.running = false;
+				//normalize creep velocity
+				var dist = distance(0, 0, xSum, ySum);
+				if (dist != 0) {
+					creep.running = true;
+					creep.finalVelocity.set(xSum / dist * 40, ySum / dist * 40);
+				} else {
+					creep.running = false;
+				}
 			}
 		}	
 
-
+		//kill creep when he walks into spikes
+		FlxG.overlap(creeps, spikes, function(creep : Creep, _) {
+			if (creep.alive) {				
+				creep.animation.play("dead");
+				creep.alive = false;
+				FlxG.camera.shake(0.02, 0.15);
+			}
+		});
 		
 		//collect key
 		FlxG.overlap(creeps, keys, function(_, x : Key) {
@@ -235,18 +254,20 @@ class PlayState extends FlxState {
 		FlxG.collide(creeps, map.secondFloor, function(creep : Creep, _) { creep.bounce(); } );
 		
 		//kill creep when monster walks into it
-		FlxG.overlap(creeps, monsters, function(c : Creep, m : Monster) {
-			c.alpha = 0;
-			c.solid = false;
-			FlxG.camera.shake(0.02, 0.15);
+		FlxG.overlap(creeps, monsters, function(creep : Creep, m : Monster) {
+			if (creep.alive) {
+				FlxG.camera.shake(0.02, 0.15);
+				creep.alive = false;
+				creep.animation.play("dead");
+			}
 		});
 
 		#if mobile
 			
 			for (x in monsters) {
 				var m = cast(x, Monster);
-				m.finalVelocity.x = Math.min((tiltHandler.y - Reg.calibrationPoint.y) * 150, 250);
-				m.finalVelocity.y = Math.min((tiltHandler.x - Reg.calibrationPoint.x) * 125, 250);
+				m.finalVelocity.x = Math.min((tiltHandler.y) * 250, 250);
+				m.finalVelocity.y = Math.min((tiltHandler.x - Reg.calibrationPoint.x) * 200, 250);
 			}
 			
 		#end
@@ -261,7 +282,7 @@ class PlayState extends FlxState {
 			}
 		#end
 		
-		//framerate.text = Std.string(Math.round(1 / FlxG.elapsed));
+		framerate.text = Std.string(Math.round(1 / FlxG.elapsed));
 
 	}
 }

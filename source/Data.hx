@@ -9,6 +9,7 @@ class Data {
 	public static inline var Exit = "assets/images/exit.png";
 	public static inline var Keys = "assets/images/keys.png";
 	public static inline var Doors = "assets/images/doors.png";
+	public static inline var Spike = "assets/images/trap.png";
 	
 	public static inline var LevelIcon = "assets/images/menu/levelIcon.png";
 	public static inline var PlayButton = "assets/images/menu/play.png";

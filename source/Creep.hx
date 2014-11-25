@@ -28,7 +28,8 @@ class Creep extends Actor {
 			loadGraphic(Data.CreepImage, true, 17, 20);
 			animation.add("stand", [0], 1);
 			animation.add("walk", [0, 1, 2, 3], 15);
-			animation.add("run", [10, 11, 12, 13], 20);
+			animation.add("run", [4, 5, 6, 7], 20);
+			animation.add("dead", [8]);
 			
 			width = 10;
 			offset.x = 3;
@@ -96,20 +97,23 @@ class Creep extends Actor {
 	override public function update(elapsed : Float) {
 		super.update(elapsed);
 		
-		changeAnimation();
+		if (alive) {
 		
-		//disappear from map
-		if (disappearing) {
-			angle += 13;
-			scale.x = Math.max(scale.x - 0.02, 0);
-			scale.y = Math.max(scale.y - 0.02, 0);
-		}
-		
-		if (running) {
-			originPoint.set(x, y);
-		}
-		if (!running && !waitingForRandomMove) {
-			moveRandomly();
+			changeAnimation();
+			
+			//disappear from map
+			if (disappearing) {
+				angle += 13;
+				scale.x = Math.max(scale.x - 0.02, 0);
+				scale.y = Math.max(scale.y - 0.02, 0);
+			}
+			
+			if (running) {
+				originPoint.set(x, y);
+			}
+			if (!running && !waitingForRandomMove) {
+				moveRandomly();
+			}
 		}
 	}
 }
