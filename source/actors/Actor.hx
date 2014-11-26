@@ -1,4 +1,4 @@
-package ;
+package actors ;
 import flixel.effects.particles.FlxEmitter;
 import flixel.FlxSprite;
 import flixel.math.FlxPoint;

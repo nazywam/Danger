@@ -6,8 +6,8 @@
     <movie input="" />
     <movie path="Project.xml" />
     <movie fps="60" />
-    <movie width="860" />
-    <movie height="540" />
+    <movie width="1088" />
+    <movie height="612" />
     <movie version="3" />
     <movie minorVersion="0" />
     <movie platform="NME" />
@@ -16,15 +16,15 @@
   <!-- Other classes to be compiled into your SWF -->
   <classpaths>
     <class path="D:\Development\flixel-addons\git" />
-    <class path="D:\Development\openfl\2,1,5" />
-    <class path="D:\Development\flixel\git" />
-    <class path="D:\Development\lime\2,0,0-beta" />
+    <class path="d:\Development\openfl\2,1,6" />
+    <class path="d:\Development\flixel\git" />
+    <class path="d:\Development\lime\2,0,0" />
     <class path="source" />
     <class path="export\flash\haxe" />
   </classpaths>
   <!-- Build options -->
   <build>
-    <option directives="flixel-addons=1.1.0&#xA;openfl=2.1.5&#xA;flixel=3.3.5&#xA;lime=2.0.0-beta&#xA;tools=2.0.0-beta&#xA;FLX_NO_DEBUG&#xA;no-compilation&#xA;openfl-flash&#xA;web" />
+    <option directives="flixel-addons=1.1.0&#xA;openfl=2.1.6&#xA;flixel=3.3.6&#xA;lime=2.0.0&#xA;FLX_NO_FOCUS_LOST_SCREEN&#xA;tools=2.0.0&#xA;no-compilation&#xA;openfl-flash&#xA;web" />
     <option flashStrict="False" />
     <option noInlineOnDebug="False" />
     <option mainClass="ApplicationMain" />

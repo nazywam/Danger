@@ -82,18 +82,18 @@ class TiledLevel extends TiledMap {
 		switch (o.type.toLowerCase()) {
 				
 			case "exit":
-				var exit = new Exit(x, y + 16);
+				var exit = new objects.Exit(x, y + 16);
 				state.exits.add(exit);
 			case "creepspawn":
 				state.creepSpawns.push(new FlxPoint(x, y));
 			case "doors":
-				state.doors.add(new Doors(x, y, Std.parseInt(o.custom.keys.get("id"))));
+				state.doors.add(new objects.Doors(x, y, Std.parseInt(o.custom.keys.get("id"))));
 			case "key":
-				state.keys.add(new Key(x, y, Std.parseInt(o.custom.keys.get("id"))));
+				state.keys.add(new objects.Key(x, y, Std.parseInt(o.custom.keys.get("id"))));
 			case "monsterspawn":
 				state.monsterSpawns.push(new FlxPoint(x, y));
 			case "spike":
-				state.spikes.add(new Spike(x, y));
+				state.spikes.add(new objects.Spike(x, y));
 		}
 	}
 	

@@ -15,7 +15,7 @@ import openfl.Assets;
 class PlayState extends FlxState {
 	
 	var map : TiledLevel;
-	var hud : Hud;
+	var hud : hud.Hud;
 	
 	var creeps : FlxGroup;
 	var monsters : FlxGroup;
@@ -87,12 +87,12 @@ class PlayState extends FlxState {
 		add(monsters);
 		
 		for (index in 0...creepSpawns.length) {
-			var c = new Creep(creepSpawns[index].x + Std.random(8), creepSpawns[index].y + Std.random(8));
+			var c = new actors.Creep(creepSpawns[index].x + Std.random(8), creepSpawns[index].y + Std.random(8));
 			creeps.add(c);	
 		}
 	
 		for (index in 0...monsterSpawns.length) {
-			var m = new Monster(monsterSpawns[index].x, monsterSpawns[index].y);
+			var m = new actors.Monster(monsterSpawns[index].x, monsterSpawns[index].y);
 			monsters.add(m);
 		}
 		
@@ -102,7 +102,7 @@ class PlayState extends FlxState {
 		FlxG.camera.setScrollBounds(0, map.width * 32, 0,  map.height * 32);
 		FlxG.worldBounds.set(0, 0, map.width * 32, map.height * 32);
 		
-		hud = new Hud();
+		hud = new hud.Hud();
 		add(hud);
 		
 		/////////////////////////////////////////////////
@@ -134,7 +134,7 @@ class PlayState extends FlxState {
 		super.update(elapsed);		
 		
 		for (c in creeps) {
-			var creep = cast(c, Creep);
+			var creep = cast(c, actors.Creep);
 			
 			if (creep.alive) {
 				
@@ -143,7 +143,7 @@ class PlayState extends FlxState {
 							
 				//push creep away from monsters, atract monsters to creep
 				for (m in monsters) {
-					var monster = cast(m, Monster);
+					var monster = cast(m, actors.Monster);
 					
 					var dx = monster.x - creep.x;
 					var dy = monster.y - creep.y;
@@ -165,7 +165,7 @@ class PlayState extends FlxState {
 				//attract creep to closest exit
 				for (e in exits) {
 					
-					var exit = cast(e, Exit);
+					var exit = cast(e, objects.Exit);
 					
 					var cx = exit.x - creep.x;
 					var cy = exit.y - creep.y;
@@ -185,7 +185,7 @@ class PlayState extends FlxState {
 				//attract creeps to creep
 				if (creep.running) {
 					for (o in creeps) {
-						var otherCreep = cast(o, Creep);
+						var otherCreep = cast(o, actors.Creep);
 						if (otherCreep != creep && otherCreep.alive) {
 				
 							var dx = otherCreep.x - creep.x;
@@ -219,7 +219,7 @@ class PlayState extends FlxState {
 		}	
 
 		//kill creep when he walks into spikes
-		FlxG.overlap(creeps, spikes, function(creep : Creep, _) {
+		FlxG.overlap(creeps, spikes, function(creep : actors.Creep, _) {
 			if (creep.alive) {				
 				creep.animation.play("dead");
 				creep.alive = false;
@@ -228,11 +228,11 @@ class PlayState extends FlxState {
 		});
 		
 		//collect key
-		FlxG.overlap(creeps, keys, function(_, x : Key) {
-			var key = cast(x, Key);
+		FlxG.overlap(creeps, keys, function(_, x : objects.Key) {
+			var key = cast(x, objects.Key);
 			key.taken = true;
 			for (y in doors) {
-				var d = cast(y, Doors);
+				var d = cast(y, objects.Doors);
 				if (d.ID == key.ID) {
 					d.disappear();
 				}
@@ -244,17 +244,17 @@ class PlayState extends FlxState {
 		FlxG.collide(monsters, doors);
 
 		//creep completes the level
-		FlxG.overlap(creeps, exits, function(c : Creep, _) {
+		FlxG.overlap(creeps, exits, function(c : actors.Creep, _) {
 			c.enterExit();
 			var timer = new FlxTimer();
 			timer.start(1, function(_) { creeps.remove(c); } );
 			score++;
-			hud.scoreText.text = Std.string(score);
+			hud.scorePanel.score.text = Std.string(score);
 		});
-		FlxG.collide(creeps, map.secondFloor, function(creep : Creep, _) { creep.bounce(); } );
+		FlxG.collide(creeps, map.secondFloor, function(creep : actors.Creep, _) { creep.bounce(); } );
 		
 		//kill creep when monster walks into it
-		FlxG.overlap(creeps, monsters, function(creep : Creep, m : Monster) {
+		FlxG.overlap(creeps, monsters, function(creep : actors.Creep, m : actors.Monster) {
 			if (creep.alive) {
 				FlxG.camera.shake(0.02, 0.15);
 				creep.alive = false;
@@ -274,7 +274,7 @@ class PlayState extends FlxState {
 		
 		#if !mobile
 			for (x in monsters) {
-				var m = cast(x, Monster);
+				var m = cast(x, actors.Monster);
 				if (FlxG.keys.pressed.LEFT) m.finalVelocity.x = -100;
 				if (FlxG.keys.pressed.RIGHT) m.finalVelocity.x = 100;
 				if (FlxG.keys.pressed.UP) m.finalVelocity.y = -100;

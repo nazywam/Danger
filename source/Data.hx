@@ -24,4 +24,5 @@ class Data {
 	public static inline var PanelRestart = "assets/images/hud/panelRestart.png";
 	public static inline var PanelCalibrate = "assets/images/hud/panelCalibrate.png";
 	
+	public static inline var ScorePanel = "assets/images/hud/scorePanel.png";
 }
