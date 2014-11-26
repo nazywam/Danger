@@ -1,12 +1,12 @@
 package hud ;
 
+import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.group.FlxGroup;
 import flixel.text.FlxText;
-import flixel.FlxG;
-
-import flixel.tweens.FlxTween;
 import flixel.tweens.FlxEase;
+import flixel.tweens.FlxTween;
+
 
 /**
  * ...
@@ -27,7 +27,7 @@ class ScorePanel extends FlxGroup {
 		background.x -= background.width / 2;
 		add(background);
 		
-		score = new FlxText(290, 20, 0, "0", 24);
+		score = new FlxText(280, 20, 0, "0", 24);
 		add(score);	
 	}
 	

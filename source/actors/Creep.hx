@@ -1,8 +1,6 @@
 package actors ;
 
-import flixel.FlxSprite;
 import flixel.math.FlxPoint;
-import flixel.FlxG;
 import flixel.util.FlxTimer;
 
 /**

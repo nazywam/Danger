@@ -1,10 +1,6 @@
 package hud ;
 
-import flixel.FlxSprite;
 import flixel.group.FlxGroup;
-import flixel.text.FlxText;
-import flixel.FlxG;
-import flixel.tweens.FlxTween;
 import hud.ScorePanel;
 
 /**

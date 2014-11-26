@@ -3,15 +3,11 @@ package menu ;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.FlxState;
-import flixel.input.FlxPointer;
 import flixel.math.FlxPoint;
-import flixel.text.FlxText;
-import flixel.ui.FlxButton;
-import flixel.math.FlxMath;
-import flixel.tweens.FlxTween;
 import flixel.tweens.FlxEase;
-
+import flixel.tweens.FlxTween;
 import openfl.Assets;
+
 
 class MenuState extends FlxState {
 	

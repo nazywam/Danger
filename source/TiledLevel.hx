@@ -8,7 +8,6 @@ import flixel.group.FlxGroup;
 import flixel.math.FlxPoint;
 import flixel.tile.FlxTilemap;
 import haxe.io.Path;
-import flixel.tile.FlxBaseTilemap.FlxTilemapAutoTiling;
 
 /**
  * ...

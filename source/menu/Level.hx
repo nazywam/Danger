@@ -2,7 +2,6 @@ package menu;
 
 import flixel.FlxSprite;
 import flixel.group.FlxGroup;
-import flixel.system.FlxAssets.FlxGraphicAsset;
 import flixel.text.FlxText;
 
 /**
