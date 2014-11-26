@@ -25,7 +25,7 @@ class Creep extends Actor {
 			destinationPoint = new FlxPoint(x, y);
 			originPoint = new FlxPoint(x, y);
 			
-			loadGraphic(Data.CreepImage, true, 17, 20);
+			loadGraphic(Data.CreepImg, true, 17, 20);
 			animation.add("stand", [0], 1);
 			animation.add("walk", [0, 1, 2, 3], 15);
 			animation.add("run", [4, 5, 6, 7], 20);

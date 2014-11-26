@@ -10,7 +10,7 @@ class Monster extends Actor {
 	
 	public function new(X : Float, Y : Float)  {
 		super(X, Y);
-		loadGraphic(Data.MonsterImage, true, 19, 23);
+		loadGraphic(Data.MonsterImg, true, 19, 23);
 		animation.add("stand", [0]);
 		animation.add("walk", [0, 1, 2, 3], 12);
 		animation.add("run", [4, 5, 6, 7], 12);

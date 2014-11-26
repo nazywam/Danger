@@ -18,7 +18,7 @@ class ScorePanel extends FlxGroup {
 		super();
 		
 		background = new FlxSprite(FlxG.width / 2, 10);
-		background.loadGraphic(Data.ScorePanel);
+		background.loadGraphic(Data.ScorePanelImg);
 		background.x -= background.width / 2;
 		add(background);
 		

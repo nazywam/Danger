@@ -11,7 +11,7 @@ class Doors extends FlxSprite {
 	
 	public function new(X : Float, Y : Float, i : Int) {
 		super(X, Y);
-		loadGraphic(Data.Doors, true, 32, 48);
+		loadGraphic(Data.DoorsImg, true, 32, 48);
 		ID = i;
 		immovable = true;
 	}

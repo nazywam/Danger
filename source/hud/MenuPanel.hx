@@ -12,7 +12,7 @@ import menu.MenuState;
  * ...
  * @author Michael
  */
-class Panel extends FlxGroup {
+class MenuPanel extends FlxGroup {
 
 	public var state : Int = 0;
 	
@@ -31,24 +31,24 @@ class Panel extends FlxGroup {
 			super();
 			
 			background = new FlxSprite( -188, 20);
-			background.loadGraphic(Data.PanelBackground);
+			background.loadGraphic(Data.MenuPanelImg);
 			add(background);
 			
 			
 			switchState = new FlxSprite(0, background.y);
-			switchState.loadGraphic(Data.SwitchState);
+			switchState.loadGraphic(Data.MenuPanelSwitchStateImg);
 			add(switchState);
 			
 			restart = new FlxSprite(-170, 105);
-			restart.loadGraphic(Data.PanelRestart);
+			restart.loadGraphic(Data.MenuPanelRestartImg);
 			add(restart);
 
 			calibrate = new FlxSprite(-170, 160);
-			calibrate.loadGraphic(Data.PanelCalibrate);
+			calibrate.loadGraphic(Data.MenuPanelCalibrateImg);
 			add(calibrate);
 			
 			exit = new FlxSprite( -170, 215);
-			exit.loadGraphic(Data.PanelExit);
+			exit.loadGraphic(Data.MenuPanelExitImg);
 			add(exit);
 			
 			#if mobile

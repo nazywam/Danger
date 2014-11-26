@@ -15,7 +15,7 @@ class Hud extends FlxGroup {
 	
 	public var scorePanel : ScorePanel;
 	
-	public var panel : Panel;
+	public var panel : MenuPanel;
 	
 	public function new() {
 		super();
@@ -23,7 +23,7 @@ class Hud extends FlxGroup {
 		scorePanel = new ScorePanel();
 		add(scorePanel);
 
-		panel = new Panel();
+		panel = new MenuPanel();
 		add(panel);
 	}	
 }
