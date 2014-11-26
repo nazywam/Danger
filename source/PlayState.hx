@@ -9,6 +9,7 @@ import flixel.math.FlxPoint;
 import flixel.input.FlxAccelerometer;
 import flixel.text.FlxText;
 import flixel.util.FlxTimer;
+import haxe.Timer;
 import menu.MenuState;
 import openfl.Assets;
 
@@ -112,7 +113,7 @@ class PlayState extends FlxState {
 		/////////////////////////////////////////////////
 	
 		var t = new FlxTimer();
-		t.start(1, function(_) { paused = false; } );
+		t.start(1, function(_) { paused = false; hud.scorePanel.toggle(); } );
 		
 	}
 	
@@ -249,6 +250,16 @@ class PlayState extends FlxState {
 			var timer = new FlxTimer();
 			timer.start(1, function(_) { creeps.remove(c); } );
 			score++;
+			
+			if (hud.scorePanel.state == 0) {
+				hud.scorePanel.toggle();	
+				var t = new FlxTimer();
+				t.start(1, function(_) {
+					hud.scorePanel.toggle();
+				});
+			}
+			
+			
 			hud.scorePanel.score.text = Std.string(score);
 		});
 		FlxG.collide(creeps, map.secondFloor, function(creep : actors.Creep, _) { creep.bounce(); } );

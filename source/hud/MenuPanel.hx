@@ -64,7 +64,7 @@ class MenuPanel extends FlxGroup {
 		return true;
 	}
 	
-	function switchPanel() {
+	function toggle() {
 		state = (state+1) % 2; 
 			
 			var time = .75;
@@ -83,7 +83,7 @@ class MenuPanel extends FlxGroup {
 	
 	private function handleClick(x : Float, y : Float) {
 		if (overlaps(x, y, switchState)) {
-			switchPanel();
+			toggle();
 		}
 			
 		if (overlaps(x, y, restart)) {
@@ -94,7 +94,7 @@ class MenuPanel extends FlxGroup {
 			#if mobile
 				Reg.calibrationPoint.set(tiltHandler.x, tiltHandler.y);
 			#end
-			switchPanel();
+			toggle();
 		}
 		
 		if (overlaps(x, y, exit)) {

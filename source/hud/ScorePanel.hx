@@ -5,6 +5,9 @@ import flixel.group.FlxGroup;
 import flixel.text.FlxText;
 import flixel.FlxG;
 
+import flixel.tweens.FlxTween;
+import flixel.tweens.FlxEase;
+
 /**
  * ...
  * @author Michael
@@ -13,6 +16,8 @@ class ScorePanel extends FlxGroup {
 
 	public var score : FlxText;
 	public var background : FlxSprite;
+	
+	public var state : Int = 1;
 	
 	public function new() {
 		super();
@@ -24,6 +29,13 @@ class ScorePanel extends FlxGroup {
 		
 		score = new FlxText(290, 20, 0, "0", 24);
 		add(score);	
+	}
+	
+	public function toggle() {
+		
+		state = (state+1) % 2;
+		FlxTween.tween(background, { y: -background.height + background.height * state }, .5, { ease:FlxEase.cubeOut, type:FlxTween.PERSIST } );				
+		FlxTween.tween(score, { y: -score.height + (10 + score.height) * state }, .5, { ease:FlxEase.cubeOut, type:FlxTween.PERSIST } );				
 	}
 	
 }

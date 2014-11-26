@@ -14,7 +14,6 @@ import hud.ScorePanel;
 class Hud extends FlxGroup {
 	
 	public var scorePanel : ScorePanel;
-	
 	public var panel : MenuPanel;
 	
 	public function new() {
