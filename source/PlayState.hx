@@ -127,7 +127,7 @@ class PlayState extends FlxState {
 		
 		if (paused) return;
 		
-		if (hud.panel.state == 1) {
+		if (hud.menuPanel.state == 1) {
 			hud.update(elapsed);
 			return;
 		}
@@ -250,6 +250,10 @@ class PlayState extends FlxState {
 			var timer = new FlxTimer();
 			timer.start(1, function(_) { creeps.remove(c); } );
 			score++;
+			
+			if (score == creeps.length) {
+				hud.finishPanel.visible = true;
+			}
 			
 			if (hud.scorePanel.state == 0) {
 				hud.scorePanel.toggle();	

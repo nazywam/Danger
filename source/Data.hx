@@ -28,4 +28,5 @@ class Data {
 	public static inline var MenuPanelCalibrateImg = "assets/images/hud/panelCalibrate.png";
 	
 	public static inline var ScorePanelImg = "assets/images/hud/scorePanel.png";
+	public static inline var FinishPanelImg = "assets/images/hud/finishPanel.png";
 }

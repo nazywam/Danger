@@ -10,7 +10,8 @@ import hud.ScorePanel;
 class Hud extends FlxGroup {
 	
 	public var scorePanel : ScorePanel;
-	public var panel : MenuPanel;
+	public var menuPanel : MenuPanel;
+	public var finishPanel : FinishPanel;
 	
 	public function new() {
 		super();
@@ -18,7 +19,10 @@ class Hud extends FlxGroup {
 		scorePanel = new ScorePanel();
 		add(scorePanel);
 
-		panel = new MenuPanel();
-		add(panel);
+		menuPanel = new MenuPanel();
+		add(menuPanel);
+		
+		finishPanel = new FinishPanel();
+		add(finishPanel);
 	}	
 }
