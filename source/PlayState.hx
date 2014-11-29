@@ -1,5 +1,6 @@
 package ;
 
+import actors.Monster;
 import flixel.FlxG;
 import flixel.FlxObject;
 import flixel.FlxSprite;
@@ -11,7 +12,10 @@ import flixel.text.FlxText;
 import flixel.util.FlxTimer;
 import haxe.Timer;
 import menu.MenuState;
+import objects.Crate;
 import openfl.Assets;
+
+import flixel.FlxObject;
 
 class PlayState extends FlxState {
 	
@@ -26,6 +30,7 @@ class PlayState extends FlxState {
 	public var doors : FlxGroup;
 	public var spikes : FlxGroup;
 	public var keys : FlxGroup;
+	public var crates : FlxGroup;
 	
 	public var creepSpawns : Array<FlxPoint>;
 	public var monsterSpawns : Array<FlxPoint>;
@@ -77,6 +82,9 @@ class PlayState extends FlxState {
 		
 		exits = new FlxGroup();
 		add(exits);
+		
+		crates = new FlxGroup();
+		add(crates);
 		
 		map.loadObjects(this);
 		
@@ -247,6 +255,27 @@ class PlayState extends FlxState {
 		FlxG.collide(creeps, doors);
 		FlxG.collide(monsters, doors);
 
+		FlxG.collide(creeps, crates);
+		FlxG.collide(monsters, crates, function(m : Monster, c : FlxSprite) {
+			/*
+			var crate = cast(c, FlxSprite);
+			switch(crate.touching) {
+			
+				case FlxObject.LEFT:
+					crate.x += 16;
+				case FlxObject.RIGHT:
+					crate.x -= 16;
+				case FlxObject.UP:
+					crate.y += 16;
+				case FlxObject.DOWN:
+					crate.y -= 16;
+					
+			}*/
+			
+		});
+
+		FlxG.collide(crates, map.secondFloor);
+		
 		//creep completes the level
 		FlxG.overlap(creeps, exits, function(c : actors.Creep, _) {
 			c.enterExit();

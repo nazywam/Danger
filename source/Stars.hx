@@ -18,7 +18,8 @@ class Stars extends FlxGroup {
 		var r = new FlxRandom();
 		for (x in 0...70) {
 			var a = new FlxSprite(Std.random(Std.int(FlxG.width / 16)) * 16, Std.random(Std.int(FlxG.height / 16)) * 16);
-			a.makeGraphic(16, 16, 0xFF37946e + Std.random(0x000088) - 0x000044);
+			a.loadGraphic(Data.StarImg);
+			a.color = 0xFF37946e + Std.random(0x000088) - 0x000044;
 			add(a);
 		}
 		

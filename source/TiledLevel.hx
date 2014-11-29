@@ -8,6 +8,7 @@ import flixel.group.FlxGroup;
 import flixel.math.FlxPoint;
 import flixel.tile.FlxTilemap;
 import haxe.io.Path;
+import objects.Crate;
 
 /**
  * ...
@@ -93,6 +94,8 @@ class TiledLevel extends TiledMap {
 				state.monsterSpawns.push(new FlxPoint(x, y));
 			case "spike":
 				state.spikes.add(new objects.Spike(x, y));
+			case "crate":
+				state.crates.add(new Crate(x, y));
 		}
 	}
 	

@@ -12,6 +12,7 @@ class Data {
 	public static inline var KeysImg = "assets/images/keys.png";
 	public static inline var DoorsImg = "assets/images/doors.png";
 	public static inline var SpikeImg = "assets/images/trap.png";
+	public static inline var CrateImg = "assets/images/crate.png";
 	
 	//menu
 	public static inline var LevelIcon = "assets/images/menu/levelIcon.png";
@@ -29,4 +30,8 @@ class Data {
 	
 	public static inline var ScorePanelImg = "assets/images/hud/scorePanel.png";
 	public static inline var FinishPanelImg = "assets/images/hud/finishPanel.png";
+	
+	public static inline var StarImg = "assets/images/star.png";
+	
+	
 }
