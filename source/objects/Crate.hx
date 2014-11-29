@@ -16,7 +16,7 @@ class Crate extends FlxGroup {
 		super();
 		
 		top = new FlxSprite(x, y);
-		//top.immovable = true;
+		top.immovable = true;
 		top.loadGraphic(Data.CrateImg);
 		top.height = 32;
 		add(top);	
