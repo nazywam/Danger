@@ -280,7 +280,7 @@ class PlayState extends FlxState {
 		#if mobile
 			
 			for (x in monsters) {
-				var m = cast(x, Monster);
+				var m = cast(x, actors.Monster);
 				m.finalVelocity.x = Math.min((tiltHandler.y) * 250, 250);
 				m.finalVelocity.y = Math.min((tiltHandler.x - Reg.calibrationPoint.x) * 200, 250);
 			}
