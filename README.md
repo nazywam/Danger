@@ -3,10 +3,11 @@ Danger
 
 Entry for Mobicas "Game of Codes"
 
-Used stuff:
-Haxe
-Openfl
-Haxeflixel
+ Used stuff:
+* [Haxe](http://haxe.org/)
+* [Openfl](http://www.openfl.org/)
+* [Haxeflixel](http://haxeflixel.com/)
+* [Tiled](http://www.mapeditor.org/)
 
 ======
 Screenshot saturday posts:
