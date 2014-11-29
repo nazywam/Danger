@@ -34,8 +34,8 @@ class Actor extends FlxSprite {
 	override public function update(elapsed : Float) {
 		super.update(elapsed);
 		
-		velocity.x += (finalVelocity.x - velocity.x) / 10;
-		velocity.y += (finalVelocity.y - velocity.y) / 10;
+		velocity.x += (finalVelocity.x - velocity.x) / Rules.VelocityPercentChange;
+		velocity.y += (finalVelocity.y - velocity.y) / Rules.VelocityPercentChange;
 		
 		finalVelocity.x = finalVelocity.y = 0;
 	}

@@ -29,7 +29,6 @@ class MenuState extends FlxState {
 		
 		FlxG.log.redirectTraces = true;
 		FlxG.fixedTimestep = false;
-		FlxG.camera.bgColor = 0x2B2F36;
 		
 		touchPoint = new FlxPoint(0, 0);
 		
@@ -78,7 +77,7 @@ class MenuState extends FlxState {
 		} else {
 			activeScreen = lvl;
 		}
-		FlxTween.tween(FlxG.camera.scroll, { x:FlxG.width*activeScreen }, .75, { ease:FlxEase.cubeOut, type:FlxTween.PERSIST } );				
+		FlxTween.tween(FlxG.camera.scroll, { x:FlxG.width*activeScreen }, Rules.SwitchLevelTweenTime, { ease:FlxEase.cubeOut, type:FlxTween.PERSIST } );				
 	}
 
 	function clickLevel(id : Int) {

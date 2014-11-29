@@ -113,7 +113,7 @@ class PlayState extends FlxState {
 		/////////////////////////////////////////////////
 	
 		var t = new FlxTimer();
-		t.start(1, function(_) { paused = false; hud.scorePanel.toggle(); } );
+		t.start(Rules.InitialPlayStatePauseTime, function(_) { paused = false; hud.scorePanel.toggle(); } );
 		
 	}
 	
@@ -151,17 +151,15 @@ class PlayState extends FlxState {
 					
 					var length = distance(0, 0, dx, dy);
 					
-					if (length < 75) {
-						xSum -= dx / length * 3;
-						ySum -= dy / length * 3;
+					if (length < Rules.CreepToMonsterMinRange) {
+						xSum -= dx / length * Rules.CreepToMonsterPower;
+						ySum -= dy / length * Rules.CreepToMonsterPower;
 					}				
 				}
 				
 				var dx = 0.0;
 				var dy = 0.0;
 				var length = 1.0;
-				
-				var minDist = 70;
 				
 				//attract creep to closest exit
 				for (e in exits) {
@@ -173,15 +171,15 @@ class PlayState extends FlxState {
 					
 					length = distance(0, 0, cx, cy);
 					
-					if (length < minDist) {
+					if (length < Rules.CreepToExitMinRange) {
 						
 						dx = cx;
 						dy = cy;
 					}
 				}
 				
-				xSum += dx / length * 2;
-				ySum += dy / length * 2;			
+				xSum += dx / length * Rules.CreepToExitPower;
+				ySum += dy / length * Rules.CreepToExitPower;			
 				
 				//attract creeps to creep
 				if (creep.running) {
@@ -194,14 +192,14 @@ class PlayState extends FlxState {
 							
 							var length = distance(0, 0, dx, dy);
 							
-							if (length < 100) {
-								if (length > 20) {
+							if (length < Rules.CreepToCreepMaxRange) {
+								if (length > Rules.CreepToCreepMinRange) {
 									xSum += dx / length;
 									ySum += dy / length;
 								}
 								else {
-									xSum -= dx / length *2;
-									ySum -= dy / length *2;
+									xSum -= dx / length;
+									ySum -= dy / length;
 								}
 							}
 						}
@@ -212,7 +210,7 @@ class PlayState extends FlxState {
 				var dist = distance(0, 0, xSum, ySum);
 				if (dist != 0) {
 					creep.running = true;
-					creep.finalVelocity.set(xSum / dist * 40, ySum / dist * 40);
+					creep.finalVelocity.set(xSum / dist * Rules.CreepMaxVelocity, ySum / dist * Rules.CreepMaxVelocity);
 				} else {
 					creep.running = false;
 				}
@@ -290,10 +288,10 @@ class PlayState extends FlxState {
 		#if !mobile
 			for (x in monsters) {
 				var m = cast(x, actors.Monster);
-				if (FlxG.keys.pressed.LEFT) m.finalVelocity.x = -100;
-				if (FlxG.keys.pressed.RIGHT) m.finalVelocity.x = 100;
-				if (FlxG.keys.pressed.UP) m.finalVelocity.y = -100;
-				if (FlxG.keys.pressed.DOWN) m.finalVelocity.y = 100;
+				if (FlxG.keys.pressed.LEFT) m.finalVelocity.x = -Rules.KeyMaxVelocity;
+				if (FlxG.keys.pressed.RIGHT) m.finalVelocity.x = Rules.KeyMaxVelocity;
+				if (FlxG.keys.pressed.UP) m.finalVelocity.y = -Rules.KeyMaxVelocity;
+				if (FlxG.keys.pressed.DOWN) m.finalVelocity.y = Rules.KeyMaxVelocity;
 			}
 		#end
 		

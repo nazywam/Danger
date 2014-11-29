@@ -47,19 +47,19 @@ class Creep extends Actor {
 	
 	//Generate another target
 	function getAnotherTarget() {
-		destinationPoint.set(originPoint.x + Std.random(30) - 15, originPoint.y + (Std.random(30) - 15));
+		destinationPoint.set(originPoint.x + Std.random(Rules.CreepRandomMoveMaxRange*2) - Rules.CreepRandomMoveMaxRange, originPoint.y + (Std.random(Rules.CreepRandomMoveMaxRange*2) - Rules.CreepRandomMoveMaxRange));
 	}
 	//apply velocity, move randomly if not chased
 	private function moveRandomly() {
 		if (Math.abs(destinationPoint.x - x) > 1) {
-		if (destinationPoint.x < x) finalVelocity.x = -25;
-		else finalVelocity.x = 25;
+		if (destinationPoint.x < x) finalVelocity.x = -Rules.CreepRandomMoveVelocity;
+		else finalVelocity.x = Rules.CreepRandomMoveVelocity;
 		} else {
 			finalVelocity.x = 0;
 		}
 		if (Math.abs(destinationPoint.y - y) > 1) {
-			if (destinationPoint.y < y) finalVelocity.y = -25;
-			else finalVelocity.y = 25;
+			if (destinationPoint.y < y) finalVelocity.y = -Rules.CreepRandomMoveVelocity;
+			else finalVelocity.y = Rules.CreepRandomMoveVelocity;
 		} else {
 			finalVelocity.y = 0;
 		}
@@ -101,9 +101,9 @@ class Creep extends Actor {
 			
 			//disappear from map
 			if (disappearing) {
-				angle += 13;
-				scale.x = Math.max(scale.x - 0.02, 0);
-				scale.y = Math.max(scale.y - 0.02, 0);
+				angle += Rules.CreepDisappearingAngleChange;
+				scale.x = Math.max(scale.x - Rules.CreepDisappearingScaleChange, 0);
+				scale.y = Math.max(scale.y - Rules.CreepDisappearingScaleChange, 0);
 			}
 			
 			if (running) {

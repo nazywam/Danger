@@ -34,8 +34,8 @@ class ScorePanel extends FlxGroup {
 	public function toggle() {
 		
 		state = (state+1) % 2;
-		FlxTween.tween(background, { y: -background.height + background.height * state }, .5, { ease:FlxEase.cubeOut, type:FlxTween.PERSIST } );				
-		FlxTween.tween(score, { y: -score.height + (10 + score.height) * state }, .5, { ease:FlxEase.cubeOut, type:FlxTween.PERSIST } );				
+		FlxTween.tween(background, { y: -background.height + background.height * state }, Rules.ScorePanelTweenTime, { ease:FlxEase.cubeOut, type:FlxTween.PERSIST } );				
+		FlxTween.tween(score, { y: -score.height + (10 + score.height) * state }, Rules.ScorePanelTweenTime, { ease:FlxEase.cubeOut, type:FlxTween.PERSIST } );				
 	}
 	
 }

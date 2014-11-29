@@ -66,7 +66,7 @@ class MenuPanel extends FlxGroup {
 	function toggle() {
 		state = (state+1) % 2; 
 			
-			var time = .75;
+			var time = Rules.MenuPanelTweenTime;
 			if (state == 0) {
 				time -= .25;
 			}
