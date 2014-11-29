@@ -12,6 +12,9 @@ class FinishPanel extends FlxGroup {
 
 	var background : FlxSprite;
 	
+	var continueButton : FlxSprite;
+	var restartButton : FlxSprite;
+	
 	public function new()  {
 		super();
 	
@@ -22,6 +25,12 @@ class FinishPanel extends FlxGroup {
 		background.x -= background.width / 2;
 		background.y -= background.height / 2;
 		add(background);
+		
+		continueButton = new FlxSprite();
+		add(continueButton);
+		
+		restartButton = new FlxSprite();
+		add(restartButton);
 		
 	}
 	

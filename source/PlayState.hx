@@ -21,6 +21,8 @@ class PlayState extends FlxState {
 	var creeps : FlxGroup;
 	var monsters : FlxGroup;
 
+	var stars : Stars;
+	
 	public var doors : FlxGroup;
 	public var spikes : FlxGroup;
 	public var keys : FlxGroup;
@@ -54,6 +56,9 @@ class PlayState extends FlxState {
 			tiltHandler = new FlxAccelerometer();
 			Reg.calibrationPoint.set(tiltHandler.x, tiltHandler.y);
 		#end
+		
+		stars = new Stars();
+		add(stars);
 		
 		map = new TiledLevel(("assets/data/level" + Std.string(Reg.activeLevel) + ".tmx"));
 		add(map.background);
