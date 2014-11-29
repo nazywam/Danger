@@ -13,6 +13,8 @@ class Doors extends FlxSprite {
 		super(X, Y);
 		loadGraphic(Data.DoorsImg, true, 32, 48);
 		ID = i;
+		animation.add("default", [i]);
+		animation.play("default");
 		immovable = true;
 	}
 	

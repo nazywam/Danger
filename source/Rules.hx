@@ -27,7 +27,7 @@ class Rules {
 	public static inline var CreepToExitPower = 2;
 	
 	public static inline var CreepToCreepMaxRange = 100;
-	public static inline var CreepToCreepMinRange = 100;
+	public static inline var CreepToCreepMinRange = 20;
 	
 	public static inline var CreepMaxVelocity = 40;
 	

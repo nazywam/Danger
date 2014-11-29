@@ -43,6 +43,13 @@ class FinishPanel extends FlxGroup {
 			}
 		#end
 		
+		#if web
+			if (FlxG.mouse.justPressed && overlaps(FlxG.mouse.x, FlxG.mouse.y, background) && visible) {
+				Reg.activeLevel++;
+				FlxG.switchState(new PlayState());
+			}
+		#end
+		
 	}
 	
 }
