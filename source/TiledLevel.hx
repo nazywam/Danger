@@ -9,6 +9,7 @@ import flixel.math.FlxPoint;
 import flixel.tile.FlxTilemap;
 import haxe.io.Path;
 import objects.Crate;
+import objects.Hole;
 
 /**
  * ...
@@ -96,6 +97,8 @@ class TiledLevel extends TiledMap {
 				state.spikes.add(new objects.Spike(x, y));
 			case "crate":
 				state.crates.add(new Crate(x, y));
+			case "hole":
+				state.holes.add(new Hole(x, y));
 		}
 	}
 	

@@ -32,6 +32,7 @@ class Data {
 	public static inline var FinishPanelImg = "assets/images/hud/finishPanel.png";
 	
 	public static inline var StarImg = "assets/images/star.png";
+	public static inline var EmptyImg = "assets/images/empty.png";
 	
 	
 }

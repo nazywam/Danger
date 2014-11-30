@@ -13,6 +13,7 @@ import flixel.util.FlxTimer;
 import haxe.Timer;
 import menu.MenuState;
 import objects.Crate;
+import objects.Hole;
 import openfl.Assets;
 
 import flixel.FlxObject;
@@ -31,6 +32,7 @@ class PlayState extends FlxState {
 	public var spikes : FlxGroup;
 	public var keys : FlxGroup;
 	public var crates : FlxGroup;
+	public var holes : FlxGroup;
 	
 	public var creepSpawns : Array<FlxPoint>;
 	public var monsterSpawns : Array<FlxPoint>;
@@ -51,7 +53,6 @@ class PlayState extends FlxState {
 	override public function create() {
 		super.create();
 	
-		
 		//load map
 		if (Assets.getText("assets/data/level" + Std.string(Reg.activeLevel) + ".tmx") == null) {
 			throw("assets/data/level" + Std.string(Reg.activeLevel) + ".tmx, no such File");
@@ -62,8 +63,8 @@ class PlayState extends FlxState {
 			Reg.calibrationPoint.set(tiltHandler.x, tiltHandler.y);
 		#end
 		
-		stars = new Stars();
-		add(stars);
+		//stars = new Stars();
+		//add(stars);
 		
 		map = new TiledLevel(("assets/data/level" + Std.string(Reg.activeLevel) + ".tmx"));
 		add(map.background);
@@ -85,6 +86,9 @@ class PlayState extends FlxState {
 		
 		crates = new FlxGroup();
 		add(crates);
+		
+		holes = new FlxGroup();
+		add(holes);
 		
 		map.loadObjects(this);
 		
@@ -255,19 +259,49 @@ class PlayState extends FlxState {
 		FlxG.collide(creeps, doors);
 		FlxG.collide(monsters, doors);
 
+		FlxG.overlap(holes, crates, function(hole : Hole, crate : Crate) {
+			if (!hole.filled && crate.y% 32 == 0 && crate.x % 32 == 0) {
+				hole.filled = true;
+				crate.pop();
+			}
+		});
+		FlxG.overlap(monsters, crates, function(m : Monster, c : Crate) {
+			if (c.popped == 1 || c.tweening) {
+				FlxG.collide(m, c, function(monster : Monster, crate : Crate) {	
+				if (!crate.tweening) {
+					switch(crate.touching) {
+						case FlxObject.LEFT:
+							crate.x += 1;
+							if (map.secondFloor.overlaps(crate) || FlxG.overlap(crate, crates)) {
+								crate.x -= 1;
+							} else {
+								crate.x += 15;
+							}
+						case FlxObject.RIGHT:
+							crate.x -= 1;
+							if (map.secondFloor.overlaps(crate) || FlxG.overlap(crate, crates)) {
+								crate.x += 1;
+							} else {
+								crate.x -= 15;
+							}
+						case FlxObject.UP:
+							crate.y += 1;
+							if (map.secondFloor.overlaps(crate) || FlxG.overlap(crate, crates)) {
+								crate.y -= 1;
+							} else {
+								crate.y += 15;
+							}
+						case FlxObject.DOWN:
+							crate.y -= 1;
+							if (map.secondFloor.overlaps(crate) || FlxG.overlap(crate, crates)) {
+								crate.y += 1;
+							} else {
+								crate.y -= 15;
+							}
+						}
+					}
+				});
 
-		FlxG.collide(monsters, crates, function(m : Monster, c : FlxSprite) {
-			
-			var crate = cast(c, FlxSprite);
-			switch(crate.touching) {
-				case FlxObject.LEFT:
-					crate.x += 1;
-				case FlxObject.RIGHT:
-					crate.x -= 1;
-				case FlxObject.UP:
-					crate.y += 1;
-				case FlxObject.DOWN:
-					crate.y -= 1;
 			}
 		});
 		

@@ -71,7 +71,6 @@ class MenuPanel extends FlxGroup {
 				time -= .25;
 			}
 			
-				
 			FlxTween.tween(background, { x: -188 + 188 * state }, time, { ease:FlxEase.cubeOut, type:FlxTween.PERSIST } );				
 			FlxTween.tween(switchState, { x: 188 * state }, time, { ease:FlxEase.cubeOut, type:FlxTween.PERSIST } );				
 			
