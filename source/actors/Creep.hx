@@ -83,7 +83,7 @@ class Creep extends Actor {
 	}
 	
 	//when hit wall look for another target
-	public function bounce() {
+	public function bounceFromWall() {
 		if (!running) {
 			getAnotherTarget();
 			waitingForRandomMove = true;

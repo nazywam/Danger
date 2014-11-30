@@ -316,8 +316,7 @@ class PlayState extends FlxState {
 		FlxG.overlap(creeps, exits, function(c : actors.Creep, _) {
 			c.enterExit();
 			var timer = new FlxTimer();
-			//timer.start(.5, function(_) { creeps.remove(c); } );
-			timer.start(.5, function(_) { c.exists = false; } );
+			timer.start(.5, function(_) { c.kill(); } );
 			score++;
 			
 			if (score == creeps.length) {
@@ -335,7 +334,7 @@ class PlayState extends FlxState {
 			
 			hud.scorePanel.score.text = Std.string(score);
 		});
-		FlxG.collide(creeps, map.secondFloor, function(creep : actors.Creep, _) { creep.bounce(); } );
+		FlxG.collide(creeps, map.secondFloor, function(creep : actors.Creep, _) { creep.bounceFromWall(); } );
 		
 		//kill creep when monster walks into it
 		FlxG.overlap(creeps, monsters, function(creep : actors.Creep, m : actors.Monster) {
