@@ -29,8 +29,10 @@ class MenuPanel extends FlxGroup {
 	public function new() {
 			super();
 			
-			background = new FlxSprite( -188, 20);
+			background = new FlxSprite(0, FlxG.height / 2);
 			background.loadGraphic(Data.MenuPanelImg);
+			background.x -= background.width;
+			background.y -= background.height / 2;
 			add(background);
 			
 			
@@ -38,16 +40,25 @@ class MenuPanel extends FlxGroup {
 			switchState.loadGraphic(Data.MenuPanelSwitchStateImg);
 			add(switchState);
 			
-			restart = new FlxSprite(-170, 105);
-			restart.loadGraphic(Data.MenuPanelRestartImg);
+			restart = new FlxSprite(2-170, 67);
+			restart.loadGraphic(Data.MenuPanelRestartImg, true, 155, 60);
+			restart.animation.add("default", [0]);
+			restart.animation.add("pressed", [1]);
+			restart.animation.play("default");
 			add(restart);
 
-			calibrate = new FlxSprite(-170, 160);
-			calibrate.loadGraphic(Data.MenuPanelCalibrateImg);
+			calibrate = new FlxSprite(2-170, restart.y + 60);
+			calibrate.loadGraphic(Data.MenuPanelCalibrateImg, true, 155, 60);
+			calibrate.animation.add("default", [0]);
+			calibrate.animation.add("pressed", [1]);
+			calibrate.animation.play("default");
 			add(calibrate);
 			
-			exit = new FlxSprite( -170, 215);
-			exit.loadGraphic(Data.MenuPanelExitImg);
+			exit = new FlxSprite(2-170, calibrate.y + 60);
+			exit.loadGraphic(Data.MenuPanelExitImg, true, 155, 60);
+			exit.animation.add("default", [0]);
+			exit.animation.add("pressed", [1]);
+			exit.animation.play("default");
 			add(exit);
 			
 			#if mobile
@@ -74,31 +85,51 @@ class MenuPanel extends FlxGroup {
 			FlxTween.tween(background, { x: -188 + 188 * state }, time, { ease:FlxEase.cubeOut, type:FlxTween.PERSIST } );				
 			FlxTween.tween(switchState, { x: 188 * state }, time, { ease:FlxEase.cubeOut, type:FlxTween.PERSIST } );				
 			
-			FlxTween.tween(restart, { x: -170 + 188 * state }, time, { ease:FlxEase.cubeOut, type:FlxTween.PERSIST } );
-			FlxTween.tween(calibrate, { x: -170 + 188 * state }, time, { ease:FlxEase.cubeOut, type:FlxTween.PERSIST } );
-			FlxTween.tween(exit, { x: -170 + 188 * state }, time, { ease:FlxEase.cubeOut, type:FlxTween.PERSIST } );
+			FlxTween.tween(restart, { x: 2-170 + 188 * state }, time, { ease:FlxEase.cubeOut, type:FlxTween.PERSIST } );
+			FlxTween.tween(calibrate, { x: 2-170 + 188 * state }, time, { ease:FlxEase.cubeOut, type:FlxTween.PERSIST } );
+			FlxTween.tween(exit, { x: 2-170 + 188 * state }, time, { ease:FlxEase.cubeOut, type:FlxTween.PERSIST } );
 	}
 	
-	private function handleClick(x : Float, y : Float) {
+	private function handlePress(x : Float, y : Float) {
+		if (overlaps(x, y, switchState)) {
+		}
+		if (overlaps(x, y, restart)) {
+			restart.animation.play("pressed");
+		}
+		if (overlaps(x, y, calibrate)) {
+			calibrate.animation.play("pressed");
+		}
+		if (overlaps(x, y, exit)) {
+			exit.animation.play("pressed");
+		}
+	}
+	
+	private function handleRelease(x : Float, y : Float) {
 		if (overlaps(x, y, switchState)) {
 			toggle();
 		}
-			
+		
 		if (overlaps(x, y, restart)) {
-			FlxG.switchState(new PlayState());
+		//	FlxG.switchState(new PlayState());
 		}
 			
 		if (overlaps(x, y, calibrate)) {
 			#if mobile
 				Reg.calibrationPoint.set(tiltHandler.x, tiltHandler.y);
 			#end
-			toggle();
+		//	toggle();
 		}
 		
 		if (overlaps(x, y, exit)) {
-			FlxG.switchState(new MenuState());
+		//	FlxG.switchState(new MenuState());
 		}
+		
+		restart.animation.play("default");
+		calibrate.animation.play("default");
+		exit.animation.play("default");
+
 	}
+	
 	
 	override public function update(elapsed : Float) {
 		super.update(elapsed);
@@ -106,7 +137,11 @@ class MenuPanel extends FlxGroup {
 		#if web
 			
 			if (FlxG.mouse.justPressed) {
-				handleClick(FlxG.mouse.x, FlxG.mouse.y);
+				handlePress(FlxG.mouse.x, FlxG.mouse.y);
+			}
+			
+			if (FlxG.mouse.justReleased) {
+				handleRelease(FlxG.mouse.x, FlxG.mouse.y);
 			}
 		
 		#end
@@ -115,8 +150,12 @@ class MenuPanel extends FlxGroup {
 		
 			for (touch in FlxG.touches.list) {
 				if (touch.justPressed) {	
-					handleClick(touch.x, touch.y);
+					handlePress(touch.x, touch.y);
 					break;
+				}
+				
+				if (touch.justReleased) {
+					handleRelease(touch.x, touch.y);
 				}
 			}
 		
