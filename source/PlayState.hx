@@ -255,23 +255,23 @@ class PlayState extends FlxState {
 		FlxG.collide(creeps, doors);
 		FlxG.collide(monsters, doors);
 
-		FlxG.collide(crates, map.secondFloor);
 
 		FlxG.collide(monsters, crates, function(m : Monster, c : FlxSprite) {
 			
 			var crate = cast(c, FlxSprite);
 			switch(crate.touching) {
 				case FlxObject.LEFT:
-					crate.x += 16;
+					crate.x += 1;
 				case FlxObject.RIGHT:
-					crate.x -= 16;
+					crate.x -= 1;
 				case FlxObject.UP:
-					crate.y += 16;
+					crate.y += 1;
 				case FlxObject.DOWN:
-					crate.y -= 16;
+					crate.y -= 1;
 			}
 		});
-
+		
+		FlxG.collide(crates, map.secondFloor);
 		
 		//creep completes the level
 		FlxG.overlap(creeps, exits, function(c : actors.Creep, _) {

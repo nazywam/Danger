@@ -16,18 +16,18 @@ import objects.Crate;
  */
 class TiledLevel extends TiledMap {
 
-	public var firstFloor : FlxGroup;
-	public var secondFloor : FlxGroup;
-	public var bricks : FlxGroup;
-	public var background : FlxGroup;
+	public var firstFloor : FlxTilemap;
+	public var secondFloor : FlxTilemap;
+	public var bricks : FlxTilemap;
+	public var background : FlxTilemap;
 	
 	public function new(Data:Dynamic){
 		super(Data);
 		
-		firstFloor = new FlxGroup();
-		secondFloor = new FlxGroup();
-		bricks = new FlxGroup();
-		background = new FlxGroup();
+		firstFloor = new FlxTilemap();
+		secondFloor = new FlxTilemap();
+		bricks = new FlxTilemap();
+		background = new FlxTilemap();
 		
 		for (tileLayer in layers) {
 			
@@ -50,15 +50,15 @@ class TiledLevel extends TiledMap {
 			tilemap.loadMapFromArray(tileLayer.tileArray, width, height, processedPath, tileSet.tileWidth, tileSet.tileHeight, 1, 1);
 			
 			if (tileLayer.name == "Bricks") {
-				bricks.add(tilemap);
+				bricks = tilemap;
 			} else if (tileLayer.name == "firstFloor") {
 				tilemap.y += 16;
-				firstFloor.add(tilemap);
+				firstFloor = tilemap;
 			} else if (tileLayer.name == "secondFloor") {
-				secondFloor.add(tilemap);
+				secondFloor = tilemap;
 			} else if (tileLayer.name == "Background") {
 				tilemap.y += 16;
-				background.add(tilemap);
+				background = tilemap;
 			}
 		}
 	}
