@@ -1,29 +1,26 @@
 package ;
 
-import objects.*;
-import menu.*;
 import actors.*;
-
 import flixel.FlxG;
 import flixel.FlxObject;
-import flixel.FlxSprite;
 import flixel.FlxState;
-import flixel.group.FlxGroup;
-import flixel.math.FlxPoint;
+import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.input.FlxAccelerometer;
+import flixel.math.FlxPoint;
 import flixel.text.FlxText;
-import flixel.util.FlxTimer;
-import haxe.Timer;
-
-import openfl.Assets;
 import flixel.util.FlxSort;
+import flixel.util.FlxTimer;
+import hud.*;
+import menu.*;
+import objects.*;
+import openfl.Assets;
 
-import flixel.FlxObject;
+
 
 class PlayState extends FlxState {
 	
 	var map : TiledLevel;
-	var hud : hud.Hud;
+	var hud : Hud;
 	
 	var creeps : FlxTypedGroup<Creep>;
 	var monsters : FlxTypedGroup<Monster>;
@@ -260,8 +257,8 @@ class PlayState extends FlxState {
 
 		//keep lower creeps on top of higher ones
 		creeps.sort(FlxSort.byY);
-	
-		
+		//keep lower crates on top of higher ones
+		crates.sort(FlxSort.byY);
 		
 		FlxG.collide(monsters, map.secondFloor);
 		FlxG.collide(creeps, doors);
