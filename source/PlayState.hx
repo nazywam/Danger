@@ -316,7 +316,8 @@ class PlayState extends FlxState {
 		FlxG.overlap(creeps, exits, function(c : actors.Creep, _) {
 			c.enterExit();
 			var timer = new FlxTimer();
-			timer.start(1, function(_) { creeps.remove(c); } );
+			//timer.start(.5, function(_) { creeps.remove(c); } );
+			timer.start(.5, function(_) { c.exists = false; } );
 			score++;
 			
 			if (score == creeps.length) {
