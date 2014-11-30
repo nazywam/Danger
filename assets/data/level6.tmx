@@ -49,5 +49,8 @@
   <object type="Crate" gid="153" x="256" y="256"/>
   <object type="Hole" gid="485" x="352" y="256"/>
   <object type="Hole" gid="485" x="32" y="64"/>
+  <object type="Crate" gid="153" x="480" y="96"/>
+  <object type="Hole" gid="485" x="480" y="64"/>
+  <object type="Hole" gid="485" x="448" y="256"/>
  </objectgroup>
 </map>
