@@ -1,6 +1,9 @@
 package ;
 
-import actors.Monster;
+import objects.*;
+import menu.*;
+import actors.*;
+
 import flixel.FlxG;
 import flixel.FlxObject;
 import flixel.FlxSprite;
@@ -11,10 +14,9 @@ import flixel.input.FlxAccelerometer;
 import flixel.text.FlxText;
 import flixel.util.FlxTimer;
 import haxe.Timer;
-import menu.MenuState;
-import objects.Crate;
-import objects.Hole;
+
 import openfl.Assets;
+import flixel.util.FlxSort;
 
 import flixel.FlxObject;
 
@@ -23,20 +25,20 @@ class PlayState extends FlxState {
 	var map : TiledLevel;
 	var hud : hud.Hud;
 	
-	var creeps : FlxGroup;
-	var monsters : FlxGroup;
+	var creeps : FlxTypedGroup<Creep>;
+	var monsters : FlxTypedGroup<Monster>;
 
 	var stars : Stars;
 	
-	public var doors : FlxGroup;
-	public var spikes : FlxGroup;
-	public var keys : FlxGroup;
-	public var crates : FlxGroup;
-	public var holes : FlxGroup;
+	public var doors : FlxTypedGroup<Doors>;
+	public var spikes : FlxTypedGroup<Spike>;
+	public var keys : FlxTypedGroup<Key>;
+	public var crates : FlxTypedGroup<Crate>;
+	public var holes : FlxTypedGroup<Hole>;
 	
 	public var creepSpawns : Array<FlxPoint>;
 	public var monsterSpawns : Array<FlxPoint>;
-	public var exits : FlxGroup;
+	public var exits : FlxTypedGroup<Exit>;
 	
 	public var score : Int = 0;
 	
@@ -74,20 +76,20 @@ class PlayState extends FlxState {
 		creepSpawns = new Array<FlxPoint>();
 		monsterSpawns = new Array<FlxPoint>();
 		
-		doors  = new FlxGroup();
-		keys = new FlxGroup();
-		spikes = new FlxGroup();
+		doors  = new FlxTypedGroup<Doors>();
+		keys = new FlxTypedGroup<Key>();
+		spikes = new FlxTypedGroup<Spike>();
 		add(doors);
 		add(keys);
 		add(spikes);
 		
-		exits = new FlxGroup();
+		exits = new FlxTypedGroup<Exit>();
 		add(exits);
 		
-		crates = new FlxGroup();
+		crates = new FlxTypedGroup<Crate>();
 		add(crates);
 		
-		holes = new FlxGroup();
+		holes = new FlxTypedGroup<Hole>();
 		add(holes);
 		
 		map.loadObjects(this);
@@ -99,13 +101,14 @@ class PlayState extends FlxState {
 			throw("No exits on map");
 		}
 		
-		creeps = new FlxGroup();
+		creeps = new FlxTypedGroup<Creep>();
 		add(creeps);
-		monsters = new FlxGroup();
+		monsters = new FlxTypedGroup<Monster>();
 		add(monsters);
 		
 		for (index in 0...creepSpawns.length) {
 			var c = new actors.Creep(creepSpawns[index].x + Std.random(8), creepSpawns[index].y + Std.random(8));
+			c.ID = index;
 			creeps.add(c);	
 		}
 	
@@ -255,6 +258,11 @@ class PlayState extends FlxState {
 			}
 		});
 
+		//keep lower creeps on top of higher ones
+		creeps.sort(FlxSort.byY);
+	
+		
+		
 		FlxG.collide(monsters, map.secondFloor);
 		FlxG.collide(creeps, doors);
 		FlxG.collide(monsters, doors);
