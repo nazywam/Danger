@@ -20,17 +20,23 @@ class FinishPanel extends FlxGroup {
 	
 		visible = false;
 		
-		background = new FlxSprite(FlxG.width / 2, FlxG.height / 2);
+		background = new FlxSprite(92, 110);
 		background.loadGraphic(Data.FinishPanelImg);
-		background.x -= background.width / 2;
-		background.y -= background.height / 2;
 		add(background);
 		
-		continueButton = new FlxSprite();
-		add(continueButton);
-		
-		restartButton = new FlxSprite();
+		restartButton = new FlxSprite(100, 120);
+		restartButton.loadGraphic(Data.FinishRestartImg, true, 155, 60);
+		restartButton.animation.add("default", [0]);
+		restartButton.animation.add("pressed", [1]);
+		restartButton.animation.play("default");
 		add(restartButton);
+		
+		continueButton = new FlxSprite(270, 120);
+		continueButton.loadGraphic(Data.FinishContinueImg, true, 155, 60);
+		continueButton.animation.add("default", [0]);
+		continueButton.animation.add("pressed", [1]);
+		continueButton.animation.play("default");
+		add(continueButton);
 		
 	}
 	
@@ -40,22 +46,50 @@ class FinishPanel extends FlxGroup {
 		return true;
 	}
 	
+	function handlePress(x : Float, y : Float) {
+		if (overlaps(x, y, restartButton)) {
+			restartButton.animation.play("pressed");
+		}
+		if (overlaps(x, y, continueButton)) {
+			continueButton.animation.play("pressed");
+		}
+	}
+	function handleReleased(x : Float, y : Float) {
+		if (overlaps(x, y, restartButton)) {
+			FlxG.switchState(new PlayState());
+		}
+		if (overlaps(x, y, continueButton)) {
+			Reg.activeLevel++;
+			FlxG.switchState(new PlayState());
+		}
+		restartButton.animation.play("default");
+		continueButton.animation.play("default");
+	}
+	
 	override public function update(elapsed : Float) {
 		super.update(elapsed);
 		
 		#if mobile
 			for (touch in FlxG.touches.list) {
-				if (touch.justPressed && overlaps(touch.x, touch.y, background) && visible) {
-					Reg.activeLevel++;
-					FlxG.switchState(new PlayState());
+				if (visible) {
+					if (touch.justPressed) {
+						handlePress(touch.x, touch.y);
+					}
+					if (touch.justReleased) {
+						handleReleased(touch.x, touch.y);
+					}
 				}
 			}
 		#end
 		
 		#if web
-			if (FlxG.mouse.justPressed && overlaps(FlxG.mouse.x, FlxG.mouse.y, background) && visible) {
-				Reg.activeLevel++;
-				FlxG.switchState(new PlayState());
+			if (visible) {			
+				if (FlxG.mouse.justPressed) {
+					handlePress(FlxG.mouse.x, FlxG.mouse.y);
+				}
+				if (FlxG.mouse.justReleased) {
+					handleReleased(FlxG.mouse.x, FlxG.mouse.y);
+				}
 			}
 		#end
 		
