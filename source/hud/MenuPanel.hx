@@ -29,14 +29,13 @@ class MenuPanel extends FlxGroup {
 	public function new() {
 			super();
 			
-			background = new FlxSprite(0, FlxG.height / 2);
+			background = new FlxSprite(25, FlxG.height / 2);
 			background.loadGraphic(Data.MenuPanelImg);
 			background.x -= background.width;
 			background.y -= background.height / 2;
 			add(background);
 			
-			
-			switchState = new FlxSprite(0, background.y);
+			switchState = new FlxSprite(-8, background.y);
 			switchState.loadGraphic(Data.MenuPanelSwitchStateImg);
 			add(switchState);
 			
@@ -82,8 +81,8 @@ class MenuPanel extends FlxGroup {
 				time -= .25;
 			}
 			
-			FlxTween.tween(background, { x: -188 + 188 * state }, time, { ease:FlxEase.cubeOut, type:FlxTween.PERSIST } );				
-			FlxTween.tween(switchState, { x: 188 * state }, time, { ease:FlxEase.cubeOut, type:FlxTween.PERSIST } );				
+			FlxTween.tween(background, { x: -196+25 + 171 * state }, time, { ease:FlxEase.cubeOut, type:FlxTween.PERSIST } );				
+			FlxTween.tween(switchState, { x: -8 + 171 * state }, time, { ease:FlxEase.cubeOut, type:FlxTween.PERSIST } );				
 			
 			FlxTween.tween(restart, { x: 2-170 + 188 * state }, time, { ease:FlxEase.cubeOut, type:FlxTween.PERSIST } );
 			FlxTween.tween(calibrate, { x: 2-170 + 188 * state }, time, { ease:FlxEase.cubeOut, type:FlxTween.PERSIST } );
@@ -102,6 +101,9 @@ class MenuPanel extends FlxGroup {
 		if (overlaps(x, y, exit)) {
 			exit.animation.play("pressed");
 		}
+		if (!overlaps(x, y, background) && state == 1) {
+			toggle();
+		}
 	}
 	
 	private function handleRelease(x : Float, y : Float) {
@@ -110,18 +112,18 @@ class MenuPanel extends FlxGroup {
 		}
 		
 		if (overlaps(x, y, restart)) {
-		//	FlxG.switchState(new PlayState());
+			FlxG.switchState(new PlayState());
 		}
 			
 		if (overlaps(x, y, calibrate)) {
 			#if mobile
 				Reg.calibrationPoint.set(tiltHandler.x, tiltHandler.y);
 			#end
-		//	toggle();
+			toggle();
 		}
 		
 		if (overlaps(x, y, exit)) {
-		//	FlxG.switchState(new MenuState());
+			FlxG.switchState(new MenuState());
 		}
 		
 		restart.animation.play("default");
