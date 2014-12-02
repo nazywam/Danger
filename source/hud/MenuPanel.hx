@@ -22,6 +22,8 @@ class MenuPanel extends FlxGroup {
 	public var restartButton : FlxSprite;
 	public var calibrateButton : FlxSprite;
 	
+	public var clickedButtonID : Int = -1;
+	
 	#if mobile
 		var tiltHandler : FlxAccelerometer;
 	#end
@@ -35,8 +37,10 @@ class MenuPanel extends FlxGroup {
 			background.y -= background.height / 2;
 			add(background);
 			
-			toggleButton = new FlxSprite(-8, background.y);
+			toggleButton = new FlxSprite( -8, background.y);
+			toggleButton.ID = 0;
 			toggleButton.loadGraphic(Data.MenuPanelSwitchStateImg);
+			toggleButton.height = 225;
 			add(toggleButton);
 			
 			restartButton = new FlxSprite(20-173, 67);
@@ -46,14 +50,16 @@ class MenuPanel extends FlxGroup {
 			restartButton.animation.play("default");
 			add(restartButton);
 
-			calibrateButton = new FlxSprite(20-173, restartButton.y + 60);
+			calibrateButton = new FlxSprite(20 - 173, restartButton.y + 60);
+			calibrateButton.ID  = 1;
 			calibrateButton.loadGraphic(Data.MenuPanelCalibrateImg, true, 155, 60);
 			calibrateButton.animation.add("default", [0]);
 			calibrateButton.animation.add("pressed", [1]);
 			calibrateButton.animation.play("default");
 			add(calibrateButton);
 			
-			exitButton = new FlxSprite(20-173, calibrateButton.y + 60);
+			exitButton = new FlxSprite(20 - 173, calibrateButton.y + 60);
+			exitButton.ID = 2;
 			exitButton.loadGraphic(Data.MenuPanelExitImg, true, 155, 60);
 			exitButton.animation.add("default", [0]);
 			exitButton.animation.add("pressed", [1]);
@@ -91,15 +97,19 @@ class MenuPanel extends FlxGroup {
 	
 	private function handlePress(x : Float, y : Float) {
 		if (overlaps(x, y, toggleButton)) {
+			clickedButtonID = toggleButton.ID;
 		}
 		if (overlaps(x, y, restartButton)) {
 			restartButton.animation.play("pressed");
+			clickedButtonID = restartButton.ID;
 		}
 		if (overlaps(x, y, calibrateButton)) {
 			calibrateButton.animation.play("pressed");
+			clickedButtonID = calibrateButton.ID;
 		}
 		if (overlaps(x, y, exitButton)) {
 			exitButton.animation.play("pressed");
+			clickedButtonID = exitButton.ID;
 		}
 		if (!overlaps(x, y, background) && state == 1) {
 			toggle();
@@ -107,22 +117,22 @@ class MenuPanel extends FlxGroup {
 	}
 	
 	private function handleRelease(x : Float, y : Float) {
-		if (overlaps(x, y, toggleButton)) {
+		if (overlaps(x, y, toggleButton) && clickedButtonID == toggleButton.ID) {
 			toggle();
 		}
 		
-		if (overlaps(x, y, restartButton)) {
+		if (overlaps(x, y, restartButton) && clickedButtonID == restartButton.ID ) {
 			FlxG.switchState(new PlayState());
 		}
 			
-		if (overlaps(x, y, calibrateButton)) {
+		if (overlaps(x, y, calibrateButton) && clickedButtonID == calibrateButton.ID ) {
 			#if mobile
 				Reg.calibrationPoint.set(tiltHandler.x, tiltHandler.y);
 			#end
 			toggle();
 		}
 		
-		if (overlaps(x, y, exitButton)) {
+		if (overlaps(x, y, exitButton) && clickedButtonID == exitButton.ID ) {
 			FlxG.switchState(new MenuState());
 		}
 		
