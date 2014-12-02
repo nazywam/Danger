@@ -163,12 +163,12 @@ class PlayState extends FlxState {
 	
 	function sortCreeps(order:Int, a : Creep, b : Creep) {
 		var result : Int = 0;
-		if (!a.alive) {
+		if (a.alive == b.alive) {
+			result = FlxSort.byY(order, a, b);
+		} else if (!a.alive) {
 			result = order;
 		} else if (!b.alive) {
 			result = -order;
-		} else {
-			result = FlxSort.byY(order, a, b);
 		}
 		return result;
 	}
@@ -297,6 +297,12 @@ class PlayState extends FlxState {
 		FlxG.collide(creeps, doors);
 		FlxG.collide(monsters, doors);
 
+		FlxG.overlap(creeps, crates, function(creep : Creep, crate : Crate) {
+			if (crate.popped == 1) {
+				FlxG.collide(creep, crate);
+			}
+		});
+		
 		FlxG.overlap(holes, crates, function(hole : Hole, crate : Crate) {
 			if (!hole.filled && crate.y% 32 == 0 && crate.x % 32 == 0) {
 				hole.filled = true;
