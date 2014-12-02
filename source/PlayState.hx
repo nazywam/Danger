@@ -139,6 +139,39 @@ class PlayState extends FlxState {
 		return Math.sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2));
 	}
 
+	function crateOverlapsCrates(crate : Crate) : Bool {
+		var colides = false;
+		FlxG.overlap(crate, crates, function(_, c : Crate) { 
+			if (c.popped == 1) {
+				colides = true;
+			}
+		});
+		return colides;
+	}
+	
+	function sortCrates(order:Int, a : Crate, b : Crate) {
+		var result : Int = 0;
+		if (a.popped == 0) {
+			result = order;
+		} else if (b.popped == 0) {
+			result = -order;
+		} else {
+			result = FlxSort.byY(order, a, b);
+		}
+		return result;
+	}
+	
+	function sortCreeps(order:Int, a : Creep, b : Creep) {
+		var result : Int = 0;
+		if (!a.alive) {
+			result = order;
+		} else if (!b.alive) {
+			result = -order;
+		} else {
+			result = FlxSort.byY(order, a, b);
+		}
+		return result;
+	}
 	
 	override public function update(elapsed : Float) {
 		
@@ -256,9 +289,9 @@ class PlayState extends FlxState {
 		});
 
 		//keep lower creeps on top of higher ones
-		creeps.sort(FlxSort.byY);
+		creeps.sort(sortCreeps);
 		//keep lower crates on top of higher ones
-		crates.sort(FlxSort.byY);
+		crates.sort(sortCrates);
 		
 		FlxG.collide(monsters, map.secondFloor);
 		FlxG.collide(creeps, doors);
@@ -277,28 +310,28 @@ class PlayState extends FlxState {
 					switch(crate.touching) {
 						case FlxObject.LEFT:
 							crate.x += 1;
-							if (map.secondFloor.overlaps(crate) || FlxG.overlap(crate, crates)) {
+							if (map.secondFloor.overlaps(crate) || crateOverlapsCrates(crate)) {
 								crate.x -= 1;
 							} else {
 								crate.x += 15;
 							}
 						case FlxObject.RIGHT:
 							crate.x -= 1;
-							if (map.secondFloor.overlaps(crate) || FlxG.overlap(crate, crates)) {
+							if (map.secondFloor.overlaps(crate) || crateOverlapsCrates(crate)) {
 								crate.x += 1;
 							} else {
 								crate.x -= 15;
 							}
 						case FlxObject.UP:
 							crate.y += 1;
-							if (map.secondFloor.overlaps(crate) || FlxG.overlap(crate, crates)) {
+							if (map.secondFloor.overlaps(crate) || crateOverlapsCrates(crate)) {
 								crate.y -= 1;
 							} else {
 								crate.y += 15;
 							}
 						case FlxObject.DOWN:
 							crate.y -= 1;
-							if (map.secondFloor.overlaps(crate) || FlxG.overlap(crate, crates)) {
+							if (map.secondFloor.overlaps(crate) || crateOverlapsCrates(crate)) {
 								crate.y += 1;
 							} else {
 								crate.y -= 15;
