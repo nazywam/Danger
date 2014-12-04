@@ -173,10 +173,7 @@ class PlayState extends FlxState {
 		return result;
 	}
 	
-	
-	
 	override public function update(elapsed : Float) {
-		
 		if (paused) return;
 		
 		if (hud.menuPanel.state == 1) {
