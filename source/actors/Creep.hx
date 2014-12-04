@@ -9,7 +9,6 @@ import flixel.util.FlxTimer;
  */
 class Creep extends Actor {
 	
-	public var disappearing : Bool = false;
 	
 	public var destinationPoint : FlxPoint;
 	public var originPoint : FlxPoint;
@@ -76,11 +75,7 @@ class Creep extends Actor {
 		}
 	}	
 	
-	//disappear from map
-	public function enterExit() {
-		solid = false;
-		disappearing = true;
-	}
+
 	
 	//when hit wall look for another target
 	public function bounceFromWall() {
@@ -98,14 +93,7 @@ class Creep extends Actor {
 		if (alive) {
 		
 			changeAnimation();
-			
-			//disappear from map
-			if (disappearing) {
-				angle += Rules.CreepDisappearingAngleChange;
-				scale.x = Math.max(scale.x - Rules.CreepDisappearingScaleChange, 0);
-				scale.y = Math.max(scale.y - Rules.CreepDisappearingScaleChange, 0);
-			}
-			
+
 			if (running) {
 				originPoint.set(x, y);
 			}

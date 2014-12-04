@@ -29,9 +29,9 @@ class Rules {
 	public static inline var CreepToCreepMaxRange = 100;
 	public static inline var CreepToCreepMinRange = 20;
 	
-	public static inline var CreepMaxVelocity = 40;
+	public static inline var CreepMaxVelocity = 45;
 	
 	
-	public static inline var KeyMaxVelocity = 100;
+	public static inline var KeyMaxVelocity = 75;
 	
 }

@@ -247,8 +247,8 @@ class PlayState extends FlxState {
 									ySum += dy / length;
 								}
 								else {
-									xSum -= dx / length;
-									ySum -= dy / length;
+									xSum -= dx / length * 2;
+									ySum -= dy / length * 2;
 								}
 							}
 						}
@@ -340,10 +340,27 @@ class PlayState extends FlxState {
 			}
 		});
 		
+		//monster falls into a hole
+		FlxG.overlap(monsters, holes, function(monster : Monster, hole : Hole) {
+			if (!hole.filled) {
+				monster.disappear();
+				var timer = new FlxTimer();
+				timer.start(.5, function(_) { monster.kill(); hud.finishPanel.visible = true; } );
+			}
+		});
+		
+		//creep falls into a hole
+		FlxG.overlap(creeps, holes, function(creep : Creep, hole : Hole) {
+			if (!hole.filled) {
+				creep.disappear();
+				var timer = new FlxTimer();
+				timer.start(.5, function(_) { creep.kill(); } );
+			}
+		});
 		
 		//creep completes the level
 		FlxG.overlap(creeps, exits, function(c : actors.Creep, _) {
-			c.enterExit();
+			c.disappear();
 			var timer = new FlxTimer();
 			timer.start(.5, function(_) { c.kill(); } );
 			score++;
@@ -359,12 +376,12 @@ class PlayState extends FlxState {
 					hud.scorePanel.toggle();
 				});
 			}
-			
-			
 			hud.scorePanel.score.text = Std.string(score);
 		});
 		
-		FlxG.collide(crates, map.secondFloor);
+		//FlxG.collide(crates, map.secondFloor); don't need it ?
+		
+		//bounce creeps of walls
 		FlxG.collide(creeps, map.secondFloor, function(creep : actors.Creep, _) { creep.bounceFromWall(); } );
 		
 		//kill creep when monster walks into it

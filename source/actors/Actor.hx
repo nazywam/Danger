@@ -12,6 +12,9 @@ class Actor extends FlxSprite {
 	
 	public var finalVelocity : FlxPoint;
 	
+	public var disappearing : Bool = false;
+
+	
 	public function new(X : Float, Y : Float) {
 		super(X, Y);
 		finalVelocity = new FlxPoint(0, 0);
@@ -31,8 +34,22 @@ class Actor extends FlxSprite {
 		return Math.sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2));
 	}
 	
+	//disappear from map
+	public function disappear() {
+		solid = false;
+		disappearing = true;
+	}
+	
 	override public function update(elapsed : Float) {
 		super.update(elapsed);
+		
+		//disappear from map
+		if (disappearing) {
+			angle += Rules.CreepDisappearingAngleChange;
+			scale.x = Math.max(scale.x - Rules.CreepDisappearingScaleChange, 0);
+			scale.y = Math.max(scale.y - Rules.CreepDisappearingScaleChange, 0);
+		}
+			
 		
 		velocity.x += (finalVelocity.x - velocity.x) / Rules.VelocityPercentChange;
 		velocity.y += (finalVelocity.y - velocity.y) / Rules.VelocityPercentChange;
