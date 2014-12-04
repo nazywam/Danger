@@ -138,11 +138,11 @@ class PlayState extends FlxState {
 	function distance(x1 : Float, y1 : Float, x2 : Float, y2 : Float) : Float {
 		return Math.sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2));
 	}
-
+	
 	function crateOverlapsCrates(crate : Crate) : Bool {
 		var colides = false;
 		FlxG.overlap(crate, crates, function(_, c : Crate) { 
-			if (c.popped == 1) {
+			if (!c.lowered) {
 				colides = true;
 			}
 		});
@@ -151,9 +151,9 @@ class PlayState extends FlxState {
 	
 	function sortCrates(order:Int, a : Crate, b : Crate) {
 		var result : Int = 0;
-		if (a.popped == 0) {
+		if (a.lowered) {
 			result = order;
-		} else if (b.popped == 0) {
+		} else if (b.lowered) {
 			result = -order;
 		} else {
 			result = FlxSort.byY(order, a, b);
@@ -172,6 +172,8 @@ class PlayState extends FlxState {
 		}
 		return result;
 	}
+	
+	
 	
 	override public function update(elapsed : Float) {
 		
@@ -297,59 +299,50 @@ class PlayState extends FlxState {
 		FlxG.collide(creeps, doors);
 		FlxG.collide(monsters, doors);
 
-		FlxG.overlap(creeps, crates, function(creep : Creep, crate : Crate) {
-			if (crate.popped == 1) {
-				FlxG.collide(creep, crate);
-			}
-		});
+		FlxG.collide(creeps, crates);
 		
 		FlxG.overlap(holes, crates, function(hole : Hole, crate : Crate) {
 			if (!hole.filled && crate.y% 32 == 0 && crate.x % 32 == 0) {
 				hole.filled = true;
-				crate.pop();
-			}
-		});
-		FlxG.overlap(monsters, crates, function(m : Monster, c : Crate) {
-			if (c.popped == 1 || c.tweening) {
-				FlxG.collide(m, c, function(monster : Monster, crate : Crate) {	
-				if (!crate.tweening) {
-					switch(crate.touching) {
-						case FlxObject.LEFT:
-							crate.x += 1;
-							if (map.secondFloor.overlaps(crate) || crateOverlapsCrates(crate)) {
-								crate.x -= 1;
-							} else {
-								crate.x += 15;
-							}
-						case FlxObject.RIGHT:
-							crate.x -= 1;
-							if (map.secondFloor.overlaps(crate) || crateOverlapsCrates(crate)) {
-								crate.x += 1;
-							} else {
-								crate.x -= 15;
-							}
-						case FlxObject.UP:
-							crate.y += 1;
-							if (map.secondFloor.overlaps(crate) || crateOverlapsCrates(crate)) {
-								crate.y -= 1;
-							} else {
-								crate.y += 15;
-							}
-						case FlxObject.DOWN:
-							crate.y -= 1;
-							if (map.secondFloor.overlaps(crate) || crateOverlapsCrates(crate)) {
-								crate.y += 1;
-							} else {
-								crate.y -= 15;
-							}
-						}
-					}
-				});
-
+				crate.lower();
 			}
 		});
 		
-		FlxG.collide(crates, map.secondFloor);
+		FlxG.collide(monsters, crates, function(monster : Monster, crate : Crate) {	
+		if (!crate.lowered) {
+			switch(crate.touching) {
+				case FlxObject.LEFT:
+					crate.x += 1;
+					if (map.secondFloor.overlaps(crate) || crateOverlapsCrates(crate)) {
+						crate.x -= 1;
+					} else {
+						crate.x += 3;
+					}
+				case FlxObject.RIGHT:
+					crate.x -= 1;
+					if (map.secondFloor.overlaps(crate) || crateOverlapsCrates(crate)) {
+						crate.x += 1;
+					} else {
+						crate.x -= 3;
+					}
+				case FlxObject.UP:
+					crate.y += 1;
+					if (map.secondFloor.overlaps(crate) || crateOverlapsCrates(crate)) {
+						crate.y -= 1;
+					} else {
+						crate.y += 3;
+					}
+				case FlxObject.DOWN:
+					crate.y -= 1;
+					if (map.secondFloor.overlaps(crate) || crateOverlapsCrates(crate)) {
+						crate.y += 1;
+					} else {
+						crate.y -= 3;
+					}
+				}
+			}
+		});
+		
 		
 		//creep completes the level
 		FlxG.overlap(creeps, exits, function(c : actors.Creep, _) {
@@ -373,6 +366,8 @@ class PlayState extends FlxState {
 			
 			hud.scorePanel.score.text = Std.string(score);
 		});
+		
+		FlxG.collide(crates, map.secondFloor);
 		FlxG.collide(creeps, map.secondFloor, function(creep : actors.Creep, _) { creep.bounceFromWall(); } );
 		
 		//kill creep when monster walks into it

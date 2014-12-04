@@ -6,7 +6,7 @@ package ;
  */
 class Rules {
 	
-	public static inline var VelocityPercentChange = 10;
+	public static inline var VelocityPercentChange = 5;
 	
 	public static inline var CreepRandomMoveVelocity = 25;
 	public static inline var CreepRandomMoveMaxRange = 15;

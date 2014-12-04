@@ -13,8 +13,7 @@ import flixel.tweens.FlxTween;
  */
 class Crate extends FlxSprite {
 
-	public var popped = 1;
-	public var tweening = false;
+	public var lowered : Bool = false;
 	public var top : FlxSprite;
 	
 	public function new(x : Float, y : Float) {
@@ -29,13 +28,12 @@ class Crate extends FlxSprite {
 		
 	}
 	
-	public function pop() {
+	public function lower() {
+		lowered = true;
 		
-		popped = (popped + 1) % 2;
-		FlxTween.tween(this, { y: y + 16 - 32 * popped }, 1, { type:FlxTween.PERSIST } );				
-		tweening = true;
+		FlxTween.tween(this, { y: y + 16}, 1, { type:FlxTween.PERSIST } );				
 		var t = new FlxTimer();
-		t.start(1, function(_) { tweening = false; });
+		t.start(1, function(_) { solid = false; });
 		animation.play("hide");
 	}
 	
