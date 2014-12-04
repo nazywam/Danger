@@ -19,6 +19,7 @@ class Crate extends FlxSprite {
 	public function new(x : Float, y : Float) {
 		super(x, y);		
 		immovable = true;
+		
 		loadGraphic(Data.CrateImg, true, 32, 64);
 		
 		animation.add("default", [0]);

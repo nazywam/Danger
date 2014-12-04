@@ -4,6 +4,7 @@ import actors.*;
 import flixel.FlxG;
 import flixel.FlxObject;
 import flixel.FlxState;
+import flixel.group.FlxGroup;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.input.FlxAccelerometer;
 import flixel.math.FlxPoint;
@@ -27,6 +28,7 @@ class PlayState extends FlxState {
 
 	var stars : Stars;
 	
+	public var corpses : FlxGroup;
 	public var doors : FlxTypedGroup<Doors>;
 	public var spikes : FlxTypedGroup<Spike>;
 	public var keys : FlxTypedGroup<Key>;
@@ -65,6 +67,8 @@ class PlayState extends FlxState {
 		//stars = new Stars();
 		//add(stars);
 		
+		
+		
 		map = new TiledLevel(("assets/data/level" + Std.string(Reg.activeLevel) + ".tmx"));
 		add(map.background);
 		add(map.firstFloor);
@@ -82,6 +86,9 @@ class PlayState extends FlxState {
 		
 		exits = new FlxTypedGroup<Exit>();
 		add(exits);
+		
+		corpses = new FlxGroup();
+		add(corpses);
 		
 		crates = new FlxTypedGroup<Crate>();
 		add(crates);
@@ -296,7 +303,17 @@ class PlayState extends FlxState {
 		FlxG.collide(creeps, doors);
 		FlxG.collide(monsters, doors);
 
-		FlxG.collide(creeps, crates);
+		
+		//creep gets crushed with a crate
+		FlxG.collide(creeps, crates, function(creep : Creep, _) {
+			if ( (creep.isTouching(FlxObject.LEFT) && creep.isTouching(FlxObject.RIGHT)) || (creep.isTouching(FlxObject.UP) && creep.isTouching(FlxObject.DOWN))) {
+				FlxG.camera.shake(0.02, 0.15);
+				creep.alive = false;
+				creep.animation.play("dead");
+				creeps.remove(creep, true);
+				corpses.add(creep);
+			}
+		});
 		
 		FlxG.overlap(holes, crates, function(hole : Hole, crate : Crate) {
 			if (!hole.filled && crate.y% 32 == 0 && crate.x % 32 == 0) {
@@ -365,7 +382,7 @@ class PlayState extends FlxState {
 			timer.start(.5, function(_) { c.kill(); } );
 			score++;
 			
-			if (score == creeps.length) {
+			if (creeps.countLiving() == 0) {
 				hud.finishPanel.visible = true;
 			}
 			
@@ -390,6 +407,8 @@ class PlayState extends FlxState {
 				FlxG.camera.shake(0.02, 0.15);
 				creep.alive = false;
 				creep.animation.play("dead");
+				creeps.remove(creep, true);
+				corpses.add(creep);
 			}
 		});
 
@@ -397,8 +416,8 @@ class PlayState extends FlxState {
 			
 			for (x in monsters) {
 				var m = cast(x, actors.Monster);
-				m.finalVelocity.x = Math.min((tiltHandler.y) * 250, 250);
-				m.finalVelocity.y = Math.min((tiltHandler.x - Reg.calibrationPoint.x) * 200, 250);
+				m.finalVelocity.x = Math.max(Math.min((tiltHandler.y) * 150, 60), -60);
+				m.finalVelocity.y = Math.max(Math.min((tiltHandler.x - Reg.calibrationPoint.x) * 100, 60), -60);
 			}
 			
 		#end
