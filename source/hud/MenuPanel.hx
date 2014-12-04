@@ -43,7 +43,7 @@ class MenuPanel extends FlxGroup {
 			toggleButton.height = 225;
 			add(toggleButton);
 			
-			restartButton = new FlxSprite(20-173, 67);
+			restartButton = new FlxSprite(18-173, 67);
 			restartButton.loadGraphic(Data.MenuPanelRestartImg, true, 155, 60);
 			restartButton.animation.add("default", [0]);
 			restartButton.animation.add("pressed", [1]);
@@ -98,20 +98,16 @@ class MenuPanel extends FlxGroup {
 	private function handlePress(x : Float, y : Float) {
 		if (overlaps(x, y, toggleButton)) {
 			clickedButtonID = toggleButton.ID;
-		}
-		if (overlaps(x, y, restartButton)) {
+		} else if (overlaps(x, y, restartButton)) {
 			restartButton.animation.play("pressed");
 			clickedButtonID = restartButton.ID;
-		}
-		if (overlaps(x, y, calibrateButton)) {
+		} else if (overlaps(x, y, calibrateButton)) {
 			calibrateButton.animation.play("pressed");
 			clickedButtonID = calibrateButton.ID;
-		}
-		if (overlaps(x, y, exitButton)) {
+		} else if (overlaps(x, y, exitButton)) {
 			exitButton.animation.play("pressed");
 			clickedButtonID = exitButton.ID;
-		}
-		if (!overlaps(x, y, background) && state == 1) {
+		} else if (!overlaps(x, y, background) && state == 1) {
 			toggle();
 		}
 	}
@@ -119,20 +115,14 @@ class MenuPanel extends FlxGroup {
 	private function handleRelease(x : Float, y : Float) {
 		if (overlaps(x, y, toggleButton) && clickedButtonID == toggleButton.ID) {
 			toggle();
-		}
-		
-		if (overlaps(x, y, restartButton) && clickedButtonID == restartButton.ID ) {
+		} else if (overlaps(x, y, restartButton) && clickedButtonID == restartButton.ID ) {
 			FlxG.switchState(new PlayState());
-		}
-			
-		if (overlaps(x, y, calibrateButton) && clickedButtonID == calibrateButton.ID ) {
+		} else if (overlaps(x, y, calibrateButton) && clickedButtonID == calibrateButton.ID ) {
 			#if mobile
 				Reg.calibrationPoint.set(tiltHandler.x, tiltHandler.y);
 			#end
 			toggle();
-		}
-		
-		if (overlaps(x, y, exitButton) && clickedButtonID == exitButton.ID ) {
+		} else if (overlaps(x, y, exitButton) && clickedButtonID == exitButton.ID ) {
 			FlxG.switchState(new MenuState());
 		}
 		
