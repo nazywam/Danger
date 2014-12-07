@@ -181,10 +181,18 @@ class PlayState extends FlxState {
 	}
 	
 	override public function update(elapsed : Float) {
+		
 		if (paused) return;
 		
 		if (hud.menuPanel.state == 1) {
 			hud.update(elapsed);
+			return;
+		}
+		if (creeps.countLiving() <= 0 && !hud.finishPanel.visible) {
+			hud.finishPanel.visible = true;
+		}
+		if (hud.finishPanel.visible) {
+			hud.finishPanel.update(elapsed);
 			return;
 		}
 		
@@ -381,10 +389,6 @@ class PlayState extends FlxState {
 			var timer = new FlxTimer();
 			timer.start(.5, function(_) { c.kill(); } );
 			score++;
-			
-			if (creeps.countLiving() == 0) {
-				hud.finishPanel.visible = true;
-			}
 			
 			if (hud.scorePanel.state == 0) {
 				hud.scorePanel.toggle();	
