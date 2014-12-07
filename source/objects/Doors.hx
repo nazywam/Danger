@@ -16,6 +16,9 @@ class Doors extends FlxSprite {
 		animation.add("default", [i]);
 		animation.play("default");
 		immovable = true;
+		
+		height = 32;
+		
 	}
 	
 	public function disappear() {
@@ -28,7 +31,6 @@ class Doors extends FlxSprite {
 		if (disappearing) {
 			scale.x = Math.max(0, scale.x - 0.1);
 			scale.y = Math.max(0, scale.y - 0.1);
-			
 		}
 	}
 	
