@@ -69,7 +69,6 @@ class MenuPanel extends FlxGroup {
 			#if mobile
 				tiltHandler = new FlxAccelerometer();
 			#end
-			
 	}
 	
 	
@@ -130,6 +129,8 @@ class MenuPanel extends FlxGroup {
 		calibrateButton.animation.play("default");
 		exitButton.animation.play("default");
 
+		
+		
 	}
 	
 	

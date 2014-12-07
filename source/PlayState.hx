@@ -45,10 +45,6 @@ class PlayState extends FlxState {
 	var tiltHandler : FlxAccelerometer;
 	#end
 	
-	///
-	var framerate : FlxText;
-	///
-	
 	var paused : Bool = true;
 	
 	override public function create() {
@@ -132,14 +128,10 @@ class PlayState extends FlxState {
 		hud = new hud.Hud();
 		add(hud);
 		
-		/////////////////////////////////////////////////
-		framerate = new FlxText(0, 0);
-		framerate.scrollFactor.x = framerate.scrollFactor.y = 0;
-		add(framerate);
-		/////////////////////////////////////////////////
-	
+		hud.scorePanel.time = 13;
+		hud.scorePanel.maxScore.animation.play(Std.string(creeps.countLiving()));
 		var t = new FlxTimer();
-		t.start(Rules.InitialPlayStatePauseTime, function(_) { paused = false; hud.scorePanel.toggle(); } );
+		t.start(Rules.InitialPlayStatePauseTime, function(_) { paused = false; } );
 		
 	}
 	
@@ -192,7 +184,7 @@ class PlayState extends FlxState {
 		}
 		if (creeps.countLiving() <= 0 && !hud.finishPanel.visible) {
 			hud.finishPanel.visible = true;
-			hud.scorePanel.toggle();
+			hud.scorePanel.time = -1;
 		}
 		if (hud.finishPanel.visible) {
 			hud.finishPanel.update(elapsed);
@@ -393,13 +385,7 @@ class PlayState extends FlxState {
 			timer.start(.5, function(_) { c.kill(); } );
 			score++;
 			
-			if (hud.scorePanel.state == 0) {
-				hud.scorePanel.toggle();	
-				var t = new FlxTimer();
-				t.start(2, function(_) {
-					hud.scorePanel.toggle();
-				});
-			}
+			hud.scorePanel.time += 7;
 			hud.scorePanel.score.animation.play(Std.string(score));
 		});
 		
@@ -438,8 +424,5 @@ class PlayState extends FlxState {
 				if (FlxG.keys.pressed.DOWN) m.finalVelocity.y = Rules.KeyMaxVelocity;
 			}
 		#end
-		
-		framerate.text = Std.string(Math.round(1 / FlxG.elapsed));
-
 	}
 }
