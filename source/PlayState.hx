@@ -190,6 +190,7 @@ class PlayState extends FlxState {
 		}
 		if (creeps.countLiving() <= 0 && !hud.finishPanel.visible) {
 			hud.finishPanel.visible = true;
+			hud.scorePanel.toggle();
 		}
 		if (hud.finishPanel.visible) {
 			hud.finishPanel.update(elapsed);
@@ -393,11 +394,11 @@ class PlayState extends FlxState {
 			if (hud.scorePanel.state == 0) {
 				hud.scorePanel.toggle();	
 				var t = new FlxTimer();
-				t.start(1, function(_) {
+				t.start(2, function(_) {
 					hud.scorePanel.toggle();
 				});
 			}
-			hud.scorePanel.score.text = Std.string(score);
+			hud.scorePanel.score.animation.play(Std.string(score));
 		});
 		
 		//FlxG.collide(crates, map.secondFloor); don't need it ?
