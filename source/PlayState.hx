@@ -40,6 +40,7 @@ class PlayState extends FlxState {
 	public var exits : FlxTypedGroup<Exit>;
 	
 	public var score : Int = 0;
+	public var maxScore : Int = 0;
 	
 	#if mobile
 	var tiltHandler : FlxAccelerometer;
@@ -125,11 +126,14 @@ class PlayState extends FlxState {
 		FlxG.camera.setScrollBounds(0, map.width * 32, 0,  map.height * 32);
 		FlxG.worldBounds.set(0, 0, map.width * 32, map.height * 32);
 		
+		score = 0;
+		maxScore = creeps.countLiving();
+		
 		hud = new hud.Hud();
 		add(hud);
 		
 		hud.scorePanel.time = 13;
-		hud.scorePanel.maxScore.animation.play(Std.string(creeps.countLiving()));
+		hud.scorePanel.maxScore.animation.play(Std.string(maxScore));
 		var t = new FlxTimer();
 		t.start(Rules.InitialPlayStatePauseTime, function(_) { paused = false; } );
 		
@@ -185,6 +189,12 @@ class PlayState extends FlxState {
 		if (creeps.countLiving() <= 0 && !hud.finishPanel.visible) {
 			hud.finishPanel.visible = true;
 			hud.scorePanel.time = -1;
+			
+			if (score >= maxScore / 2) {
+				hud.finishPanel.continueButton.clickable = true;
+				hud.finishPanel.continueButton.animation.play("default");
+			}
+			
 		}
 		if (hud.finishPanel.visible) {
 			hud.finishPanel.update(elapsed);

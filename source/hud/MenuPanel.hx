@@ -18,9 +18,9 @@ class MenuPanel extends FlxGroup {
 	public var background : FlxSprite;
 	
 	public var toggleButton : FlxSprite;
-	public var exitButton : FlxSprite;
-	public var restartButton : FlxSprite;
-	public var calibrateButton : FlxSprite;
+	public var exitButton : Button;
+	public var restartButton : Button;
+	public var calibrateButton : Button;
 	
 	public var clickedButtonID : Int = -1;
 	
@@ -43,27 +43,16 @@ class MenuPanel extends FlxGroup {
 			toggleButton.height = 225;
 			add(toggleButton);
 			
-			restartButton = new FlxSprite(18-173, 67);
-			restartButton.loadGraphic(Data.MenuPanelRestartImg, true, 155, 60);
-			restartButton.animation.add("default", [0]);
-			restartButton.animation.add("pressed", [1]);
-			restartButton.animation.play("default");
+			restartButton = new Button(18 - 173, 67, Data.MenuPanelRestartImg, true);
+			restartButton.ID = 0;
 			add(restartButton);
 
-			calibrateButton = new FlxSprite(20 - 173, restartButton.y + 60);
+			calibrateButton = new Button(20 - 173, restartButton.y + 60, Data.MenuPanelCalibrateImg, true);
 			calibrateButton.ID  = 1;
-			calibrateButton.loadGraphic(Data.MenuPanelCalibrateImg, true, 155, 60);
-			calibrateButton.animation.add("default", [0]);
-			calibrateButton.animation.add("pressed", [1]);
-			calibrateButton.animation.play("default");
 			add(calibrateButton);
 			
-			exitButton = new FlxSprite(20 - 173, calibrateButton.y + 60);
+			exitButton = new Button(20 - 173, calibrateButton.y + 60, Data.MenuPanelExitImg, true);
 			exitButton.ID = 2;
-			exitButton.loadGraphic(Data.MenuPanelExitImg, true, 155, 60);
-			exitButton.animation.add("default", [0]);
-			exitButton.animation.add("pressed", [1]);
-			exitButton.animation.play("default");
 			add(exitButton);
 			
 			#if mobile

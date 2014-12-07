@@ -10,32 +10,22 @@ import flixel.FlxG;
  */
 class FinishPanel extends FlxGroup {
 
-	var background : FlxSprite;
-	
-	var continueButton : FlxSprite;
-	var restartButton : FlxSprite;
+	public var background : FlxSprite;
+	public var continueButton : Button;
+	public var restartButton : Button;
 	
 	public function new()  {
 		super();
 	
 		visible = false;
 		
-		background = new FlxSprite(92, 110);
-		background.loadGraphic(Data.FinishPanelImg);
+		background = new FlxSprite(92, 110, Data.FinishPanelImg);
 		add(background);
 		
-		restartButton = new FlxSprite(100, 120);
-		restartButton.loadGraphic(Data.FinishRestartImg, true, 155, 60);
-		restartButton.animation.add("default", [0]);
-		restartButton.animation.add("pressed", [1]);
-		restartButton.animation.play("default");
+		restartButton = new Button(100, 120, Data.FinishRestartImg, true);
 		add(restartButton);
 		
-		continueButton = new FlxSprite(270, 120);
-		continueButton.loadGraphic(Data.FinishContinueImg, true, 155, 60);
-		continueButton.animation.add("default", [0]);
-		continueButton.animation.add("pressed", [1]);
-		continueButton.animation.play("default");
+		continueButton = new Button(270, 120, Data.FinishContinueImg, false);
 		add(continueButton);
 		
 	}
@@ -59,11 +49,16 @@ class FinishPanel extends FlxGroup {
 			FlxG.switchState(new PlayState());
 		}
 		if (overlaps(x, y, continueButton)) {
-			Reg.activeLevel++;
-			FlxG.switchState(new PlayState());
+			if (continueButton.clickable) {
+				Reg.activeLevel++;
+				FlxG.switchState(new PlayState());	
+			}
+		}
+		
+		if (continueButton.clickable) {
+			continueButton.animation.play("default");
 		}
 		restartButton.animation.play("default");
-		continueButton.animation.play("default");
 	}
 	
 	override public function update(elapsed : Float) {
