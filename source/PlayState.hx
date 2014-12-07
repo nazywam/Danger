@@ -8,7 +8,6 @@ import flixel.group.FlxGroup;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.input.FlxAccelerometer;
 import flixel.math.FlxPoint;
-import flixel.text.FlxText;
 import flixel.util.FlxSort;
 import flixel.util.FlxTimer;
 import hud.*;

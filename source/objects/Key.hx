@@ -1,5 +1,10 @@
 package objects ;
 import flixel.FlxSprite;
+
+import flixel.tweens.FlxEase;
+import flixel.tweens.FlxTween;
+import flixel.math.FlxPoint;
+
 /**
  * ...
  * @author Michael
@@ -16,6 +21,14 @@ class Key extends FlxSprite {
 		}
 		ID = i;
 		animation.play(Std.string(ID));
+		
+		
+		var path = new Array<FlxPoint>();
+		path.push(new FlxPoint(x, y));
+		path.push(new FlxPoint(x, y + 4));
+		path.push(new FlxPoint(x, y));
+		
+		FlxTween.linearPath(this, path, 1.5, true,  { type:FlxTween.LOOPING } );
 	}
 	
 	

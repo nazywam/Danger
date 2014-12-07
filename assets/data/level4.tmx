@@ -44,7 +44,7 @@
   <object type="Creepspawn" gid="481" x="96" y="192"/>
   <object type="Creepspawn" gid="481" x="128" y="192"/>
   <object type="MonsterSpawn" gid="483" x="32" y="224"/>
-  <object type="Exit" gid="11" x="480" y="160"/>
+  <object type="Exit" gid="11" x="480" y="176"/>
   <object type="Key" gid="482" x="224" y="128">
    <properties>
     <property name="id" value="0"/>

@@ -9,6 +9,7 @@ import flixel.math.FlxPoint;
 import flixel.tile.FlxTilemap;
 import haxe.io.Path;
 import objects.Crate;
+import objects.Exit;
 import objects.Hole;
 
 /**
@@ -83,7 +84,7 @@ class TiledLevel extends TiledMap {
 		switch (o.type.toLowerCase()) {
 				
 			case "exit":
-				var exit = new objects.Exit(x, y + 16);
+				var exit = new Exit(x, y);
 				state.exits.add(exit);
 			case "creepspawn":
 				state.creepSpawns.push(new FlxPoint(x, y));

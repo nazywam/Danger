@@ -40,7 +40,7 @@
  </layer>
  <objectgroup name="Objects" width="17" height="10">
   <object type="MonsterSpawn" gid="483" x="256" y="96"/>
-  <object type="Exit" gid="11" x="32" y="80"/>
+  <object type="Exit" gid="11" x="32" y="96"/>
   <object type="Creepspawn" gid="481" x="192" y="160"/>
   <object type="Creepspawn" gid="481" x="192" y="96"/>
   <object type="Creepspawn" gid="481" x="192" y="224"/>
@@ -109,10 +109,10 @@
     <property name="id" value="0"/>
    </properties>
   </object>
-  <object type="Exit" gid="11" x="32" y="144"/>
-  <object type="Exit" gid="11" x="32" y="208"/>
-  <object type="Exit" gid="11" x="480" y="208"/>
-  <object type="Exit" gid="11" x="480" y="144"/>
-  <object type="Exit" gid="11" x="480" y="80"/>
+  <object type="Exit" gid="11" x="32" y="160"/>
+  <object type="Exit" gid="11" x="32" y="224"/>
+  <object type="Exit" gid="11" x="480" y="224"/>
+  <object type="Exit" gid="11" x="480" y="160"/>
+  <object type="Exit" gid="11" x="480" y="96"/>
  </objectgroup>
 </map>
