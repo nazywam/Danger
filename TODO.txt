@@ -1,2 +1,3 @@
 Better menu
 Ustawić fixed obracanie ekranu
+gott fix holes

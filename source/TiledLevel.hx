@@ -98,7 +98,7 @@ class TiledLevel extends TiledMap {
 			case "crate":
 				state.crates.add(new Crate(x, y));
 			case "hole":
-				state.holes.add(new Hole(x, y));
+				state.holes.add(new Hole(x, y + 16));
 		}
 	}
 	

@@ -53,7 +53,6 @@ class ScorePanel extends FlxGroup {
 	}
 	
 	override public function update(elapsed : Float) {
-		trace(time);
 		if (time == -1 && state == 0) {
 			toggle();
 		} else if (time > 0) {

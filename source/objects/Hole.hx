@@ -13,7 +13,13 @@ class Hole extends FlxSprite {
 			super(X, Y);
 			immovable = true;
 			loadGraphic(Data.EmptyImg, false, 32, 32);
-			offset.y = 16;
+			//offset.y = 16;
+			
+			height = 8;
+			width = 10;
+			x += 11;
+			y += 8;
+			
 	}
 	
 }
