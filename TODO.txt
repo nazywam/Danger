@@ -1,3 +1,5 @@
 Better menu
 Ustawić fixed obracanie ekranu
-gott fix holes
+tablety
+arena like level
+change level to flxsprite?

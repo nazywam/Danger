@@ -6,22 +6,22 @@ import flixel.FlxState;
 import flixel.math.FlxPoint;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
+import hud.Button;
 import openfl.Assets;
 
 
 class MenuState extends FlxState {
 	
-	var touchPoint : FlxPoint;
-	
 	var levels : Array<Level>;
 	
 	var background : FlxSprite;
-	
-	var playButton : FlxSprite;
+	var playButton : Button;
 	
 	var activeScreen : Int = 0;
 	
 	var levelsBackground : FlxSprite;
+	
+	var pressedID : Int = -1;
 	
 	override public function create() {
 		super.create();
@@ -29,20 +29,16 @@ class MenuState extends FlxState {
 		FlxG.log.redirectTraces = true;
 		FlxG.fixedTimestep = false;
 		
-		touchPoint = new FlxPoint(0, 0);
-		
 		background = new FlxSprite(0, 0);
 		background.loadGraphic(Data.Background);
-		background.scrollFactor.x = background.scrollFactor.y = 0;
 		add(background);
 		
-		playButton = new FlxSprite(FlxG.width / 2, FlxG.height / 2);
-		playButton.loadGraphic(Data.PlayButton);
+		playButton = new Button(FlxG.width / 2 + 125, FlxG.height / 2 + 30, Data.PlayButton, true);
 		playButton.x -= playButton.width / 2;
 		playButton.y -= playButton.height / 2;
 		add(playButton);
 		
-		levelsBackground = new FlxSprite(FlxG.width * 3 / 2, FlxG.height / 2);
+		levelsBackground = new FlxSprite(FlxG.width * 3 / 2, FlxG.height / 2 - 22);
 		levelsBackground.loadGraphic(Data.LevelsBackground);
 		levelsBackground.x -= levelsBackground.width / 2;
 		levelsBackground.y -= levelsBackground.height / 2;
@@ -53,9 +49,7 @@ class MenuState extends FlxState {
 		for (y in 0...3) {
 			for (x in 0...4) {
 				if (Assets.getText("assets/data/level" + Std.string(y * 4 + x) + ".tmx") != null) {
-					var l = new Level(x * 65 + levelsBackground.x + 26, y * 68 + levelsBackground.y + 28);
-					l.ID = y * 4 + x;
-					l.text.text = Std.string(l.ID);
+					var l = new Level(x * 65 + levelsBackground.x + 13 -4, y * 68 + levelsBackground.y + 13 -4, y * 4 + x);
 					l.text.x -= l.text.width / 2;
 					l.text.y -= l.text.height/ 2;
 					levels.push(l);
@@ -68,7 +62,7 @@ class MenuState extends FlxState {
 		
 	}
 	
-	function switchLevel(lvl : Int) {
+	function switchScreen(lvl : Int) {
 		if (activeScreen == lvl) {
 			activeScreen = 0;
 		} else {
@@ -77,46 +71,70 @@ class MenuState extends FlxState {
 		FlxTween.tween(FlxG.camera.scroll, { x:FlxG.width*activeScreen }, Rules.SwitchLevelTweenTime, { ease:FlxEase.cubeOut, type:FlxTween.PERSIST } );				
 	}
 
-	function clickLevel(id : Int) {
+	function switchLevel(id : Int) {
 		Reg.activeLevel = id;
 		FlxG.switchState(new PlayState());
 	}
 	
-	function overlaps(click : FlxPoint, target : FlxSprite) : Bool {
-		if (click.x < target.x || click.x > target.x + target.width) return false;
-		if (click.y < target.y || click.y > target.y + target.height) return false;
+	function handlePress(x : Float, y : Float) {
+		for (l in levels) {
+			var level = cast(l, Level);
+			if (overlaps(x, y, level.icon)) { 
+				level.icon.animation.play("pressed");
+				pressedID = l.ID;
+			}
+		}
+		
+		if (overlaps(x, y, playButton)) {
+			playButton.animation.play("pressed");
+		}
+		
+	}
+	
+	function handleReleased(x : Float, y : Float) {
+		for (l in levels) {
+			var level = cast(l, Level);
+			if (overlaps(x, y, level.icon)) { 
+				if (pressedID == level.ID) {
+					switchLevel(level.ID);
+				}
+			}
+			level.icon.animation.play("default");
+		}
+		if (overlaps(x, y, playButton)) {
+			switchScreen(1);
+		}
+		playButton.animation.play("default");
+	}
+	
+	function overlaps(clickX : Float, clickY : Float, target : FlxSprite) : Bool {
+		if (clickX < target.x || clickX > target.x + target.width) return false;
+		if (clickY < target.y || clickY > target.y + target.height) return false;
 		return true;
 	}
 	
 	override public function update(elapsed : Float) {
 		super.update(elapsed);
 		
-		touchPoint.set( -1, -1);
-		
 		#if mobile
 			for (t in FlxG.touches.list) {
 				if (t.justPressed) {
-					touchPoint.set(t.x, t.y);
+					handlePress(t.x, t.y);
+				}
+				if (t.justReleased) {
+					handleReleased(t.x, t.y);
 				}
 			}
 		#end
 		
 		#if !mobile
 			if (FlxG.mouse.justPressed) {				
-				touchPoint.set(FlxG.mouse.x, FlxG.mouse.y);
+				handlePress(FlxG.mouse.x, FlxG.mouse.y);
+			}
+			if (FlxG.mouse.justReleased) {
+				handleReleased(FlxG.mouse.x, FlxG.mouse.y);
 			}
 		#end
-		
-		
-		for (x in levels) {
-			var l = cast(x, Level);
-			if (overlaps(touchPoint, l.icon)) { 
-				clickLevel(x.ID);
-			}
-		}
-		
-		if (overlaps(touchPoint, playButton)) {
-			switchLevel(1);
-		}
+	
 	}
 }
