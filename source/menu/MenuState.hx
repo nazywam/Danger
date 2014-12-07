@@ -18,7 +18,6 @@ class MenuState extends FlxState {
 	var background : FlxSprite;
 	
 	var playButton : FlxSprite;
-	var optionsButton : FlxSprite;
 	
 	var activeScreen : Int = 0;
 	
@@ -37,13 +36,11 @@ class MenuState extends FlxState {
 		background.scrollFactor.x = background.scrollFactor.y = 0;
 		add(background);
 		
-		playButton = new FlxSprite(FlxG.width - 190, 20);
+		playButton = new FlxSprite(FlxG.width / 2, FlxG.height / 2);
 		playButton.loadGraphic(Data.PlayButton);
+		playButton.x -= playButton.width / 2;
+		playButton.y -= playButton.height / 2;
 		add(playButton);
-		
-		optionsButton = new FlxSprite(-50, 20);
-		optionsButton.loadGraphic(Data.OptionsButton);
-		add(optionsButton);
 		
 		levelsBackground = new FlxSprite(FlxG.width * 3 / 2, FlxG.height / 2);
 		levelsBackground.loadGraphic(Data.LevelsBackground);
@@ -120,9 +117,6 @@ class MenuState extends FlxState {
 		
 		if (overlaps(touchPoint, playButton)) {
 			switchLevel(1);
-		}
-		if (overlaps(touchPoint, optionsButton)) {
-			switchLevel(-1);
 		}
 	}
 }

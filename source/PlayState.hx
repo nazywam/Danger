@@ -72,6 +72,8 @@ class PlayState extends FlxState {
 		map = new TiledLevel(("assets/data/level" + Std.string(Reg.activeLevel) + ".tmx"));
 		add(map.background);
 		add(map.firstFloor);
+		
+		
 		add(map.bricks);
 
 		creepSpawns = new Array<FlxPoint>();

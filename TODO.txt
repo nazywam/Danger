@@ -1,1 +1,2 @@
 Better menu
+Ustawić fixed obracanie ekranu
