@@ -69,6 +69,12 @@ class PlayState extends FlxState {
 		add(map.background);
 		add(map.firstFloor);
 		
+		spikes = new FlxTypedGroup<Spike>();
+		add(spikes);
+		
+				
+		exits = new FlxTypedGroup<Exit>();
+		add(exits);
 		
 		add(map.bricks);
 
@@ -77,13 +83,10 @@ class PlayState extends FlxState {
 		
 		doors  = new FlxTypedGroup<Doors>();
 		keys = new FlxTypedGroup<Key>();
-		spikes = new FlxTypedGroup<Spike>();
+		
 		add(doors);
 		add(keys);
-		add(spikes);
-		
-		exits = new FlxTypedGroup<Exit>();
-		add(exits);
+
 		
 		corpses = new FlxGroup();
 		add(corpses);
