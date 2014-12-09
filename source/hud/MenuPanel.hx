@@ -66,8 +66,14 @@ class MenuPanel extends FlxGroup {
 		if (clickY < target.y || clickY > target.y + target.height) return false;
 		return true;
 	}
-	
-	function toggle() {
+	#if mobile
+		public function calibrate() {
+			Reg.calibrationYaw = Math.atan(tiltHandler.y / ( -tiltHandler.x));
+			Reg.calibrationPitch = Math.atan(Math.sqrt(tiltHandler.x * tiltHandler.x + tiltHandler.y * tiltHandler.y) / tiltHandler.z);
+		}
+	#end
+		
+	public function toggle() {
 		state = (state+1) % 2; 
 			
 			var time = Rules.MenuPanelTweenTime;
@@ -107,7 +113,7 @@ class MenuPanel extends FlxGroup {
 			FlxG.switchState(new PlayState());
 		} else if (overlaps(x, y, calibrateButton) && clickedButtonID == calibrateButton.ID ) {
 			#if mobile
-				Reg.calibrationPoint.set(tiltHandler.x, tiltHandler.y);
+				calibrate();
 			#end
 			toggle();
 		} else if (overlaps(x, y, exitButton) && clickedButtonID == exitButton.ID ) {
@@ -117,9 +123,6 @@ class MenuPanel extends FlxGroup {
 		restartButton.animation.play("default");
 		calibrateButton.animation.play("default");
 		exitButton.animation.play("default");
-
-		
-		
 	}
 	
 	

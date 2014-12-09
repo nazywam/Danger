@@ -26,7 +26,7 @@ class MenuState extends FlxState {
 	override public function create() {
 		super.create();
 		
-		FlxG.log.redirectTraces = true;
+		//FlxG.log.redirectTraces = true;
 		FlxG.fixedTimestep = false;
 		
 		background = new FlxSprite(0, 0);
@@ -57,9 +57,6 @@ class MenuState extends FlxState {
 				}
 			}	
 		}	
-		
-		Reg.calibrationPoint = new FlxPoint(0, 0);
-		
 	}
 	
 	function switchScreen(lvl : Int) {

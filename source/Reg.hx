@@ -11,6 +11,8 @@ class Reg {
 	*/
 	
 	public static var activeLevel : Int = 0;
-	public static var calibrationPoint : FlxPoint;
+
+	public static var calibrationYaw = .0;
+	public static var calibrationPitch = .0;
 	
 }

@@ -14,7 +14,9 @@ import hud.*;
 import menu.*;
 import objects.*;
 import openfl.Assets;
-
+import openfl.Lib;
+import openfl.events.Event;
+import openfl.events.KeyboardEvent;
 
 
 class PlayState extends FlxState {
@@ -53,13 +55,7 @@ class PlayState extends FlxState {
 		//load map
 		if (Assets.getText("assets/data/level" + Std.string(Reg.activeLevel) + ".tmx") == null) {
 			throw("assets/data/level" + Std.string(Reg.activeLevel) + ".tmx, no such File");
-		}
-		
-		#if mobile
-			tiltHandler = new FlxAccelerometer();
-			Reg.calibrationPoint.set(tiltHandler.x, tiltHandler.y);
-		#end
-		
+		}		
 		//stars = new Stars();
 		//add(stars);
 		
@@ -99,12 +95,12 @@ class PlayState extends FlxState {
 		
 		map.loadObjects(this);
 		
-		if (creepSpawns.length == 0) {
-			throw("No creepspawn on map");
-		}
-		if (exits.length == 0) {
-			throw("No exits on map");
-		}
+		//if (creepSpawns.length == 0) {
+		//	throw("No creepspawn on map");
+		//}
+		//if (exits.length == 0) {
+		//	throw("No exits on map");
+		//}
 		
 		creeps = new FlxTypedGroup<Creep>();
 		add(creeps);
@@ -136,10 +132,45 @@ class PlayState extends FlxState {
 		
 		hud.scorePanel.time = 13;
 		hud.scorePanel.maxScore.animation.play(Std.string(maxScore));
+		
+		#if mobile
+			hud.menuPanel.calibrate();
+			tiltHandler = new FlxAccelerometer();
+		#end
+		
 		var t = new FlxTimer();
 		t.start(Rules.InitialPlayStatePauseTime, function(_) { paused = false; } );
 		
+		Lib.current.stage.addEventListener(KeyboardEvent.KEY_UP, onKeyUp);
+		Lib.current.stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
 	}
+
+	private function onKeyUp(event : KeyboardEvent) {
+		#if android
+			trace(event.keyCode);
+			
+			switch(event.keyCode) {
+				case 27:
+					event.stopPropagation();
+				case 16777234:
+					event.stopPropagation();
+			}
+		#end
+	}
+	private function onKeyDown(event : KeyboardEvent) {
+		#if android
+			trace(event.keyCode);
+			
+			switch(event.keyCode) {
+				case 27:
+					event.stopPropagation();
+				case 16777234:
+					event.stopPropagation();
+					hud.menuPanel.toggle();
+			}
+		#end
+	}
+
 	
 	//get distance between point 1 and 2
 	function distance(x1 : Float, y1 : Float, x2 : Float, y2 : Float) : Float {
@@ -419,10 +450,18 @@ class PlayState extends FlxState {
 
 		#if mobile
 			
+		
+			var yaw = Math.atan(tiltHandler.y / ( -tiltHandler.x));
+			var pitch = Math.atan(Math.sqrt(tiltHandler.x * tiltHandler.x + tiltHandler.y * tiltHandler.y) / tiltHandler.z);
+	
+			yaw -= Reg.calibrationYaw;
+			pitch -= Reg.calibrationPitch;
+		
+		
 			for (x in monsters) {
 				var m = cast(x, actors.Monster);
-				m.finalVelocity.x = Math.max(Math.min((tiltHandler.y) * 150, 60), -60);
-				m.finalVelocity.y = Math.max(Math.min((tiltHandler.x - Reg.calibrationPoint.x) * 100, 60), -60);
+				m.finalVelocity.x = Math.max(Math.min(tiltHandler.y * 150, 75), -75);
+				m.finalVelocity.y = Math.max(Math.min(tiltHandler.x * 125, 75), -75);
 			}
 			
 		#end
