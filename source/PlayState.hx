@@ -189,9 +189,9 @@ class PlayState extends FlxState {
 	
 	function sortCrates(order:Int, a : Crate, b : Crate) {
 		var result : Int = 0;
-		if (a.lowered) {
+		if (!a.solid) {
 			result = order;
-		} else if (b.lowered) {
+		} else if (!b.solid) {
 			result = -order;
 		} else {
 			result = FlxSort.byY(order, a, b);
