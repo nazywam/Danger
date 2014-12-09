@@ -147,8 +147,6 @@ class PlayState extends FlxState {
 
 	private function onKeyUp(event : KeyboardEvent) {
 		#if android
-			trace(event.keyCode);
-			
 			switch(event.keyCode) {
 				case 27:
 					event.stopPropagation();
@@ -159,11 +157,13 @@ class PlayState extends FlxState {
 	}
 	private function onKeyDown(event : KeyboardEvent) {
 		#if android
-			trace(event.keyCode);
-			
+			//trace(event.keyCode);
 			switch(event.keyCode) {
 				case 27:
 					event.stopPropagation();
+					if (hud.menuPanel.state == 1) {
+						hud.menuPanel.toggle();
+					}
 				case 16777234:
 					event.stopPropagation();
 					hud.menuPanel.toggle();

@@ -8,11 +8,11 @@ class Data {
 	public static inline var MonsterImg = "assets/images/monster.png";
 	
 	//objects
-	public static inline var ExitImg = "assets/images/exit.png";
-	public static inline var KeysImg = "assets/images/keys.png";
-	public static inline var DoorsImg = "assets/images/doors.png";
-	public static inline var SpikeImg = "assets/images/trap.png";
-	public static inline var CrateImg = "assets/images/crate.png";
+	public static inline var ExitImg = "assets/images/objects/exit.png";
+	public static inline var KeysImg = "assets/images/objects/keys.png";
+	public static inline var DoorsImg = "assets/images/objects/doors.png";
+	public static inline var SpikeImg = "assets/images/objects/trap.png";
+	public static inline var CrateImg = "assets/images/objects/crate.png";
 	
 	//menu
 	public static inline var LevelIcon = "assets/images/menu/levelIcon.png";
