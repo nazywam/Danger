@@ -90,6 +90,7 @@ class MenuPanel extends FlxGroup {
 			FlxTween.tween(exitButton, { x: 20-173 + 173 * state }, time, { ease:FlxEase.cubeOut, type:FlxTween.PERSIST } );
 	}
 	
+	// handle mouse presses
 	private function handlePress(x : Float, y : Float) {
 		if (overlaps(x, y, toggleButton)) {
 			toggleButton.animation.play("pressed");
@@ -110,6 +111,7 @@ class MenuPanel extends FlxGroup {
 		} else if (overlaps(x, y, restartButton) && restartButton.animation.name == "pressed") {
 			FlxG.switchState(new PlayState());
 		} else if (overlaps(x, y, calibrateButton) && calibrateButton.animation.name == "pressed" ) {
+			
 			#if mobile
 				calibrate();
 			#end
