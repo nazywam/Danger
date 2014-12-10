@@ -453,10 +453,12 @@ class PlayState extends FlxState {
 		
 			var yaw = Math.atan(tiltHandler.y / ( -tiltHandler.x));
 			var pitch = Math.atan(Math.sqrt(tiltHandler.x * tiltHandler.x + tiltHandler.y * tiltHandler.y) / tiltHandler.z);
-	
+				
 			yaw -= Reg.calibrationYaw;
 			pitch -= Reg.calibrationPitch;
 		
+			trace(yaw, pitch);
+
 		
 			for (x in monsters) {
 				var m = cast(x, actors.Monster);
