@@ -14,9 +14,8 @@ import hud.*;
 import menu.*;
 import objects.*;
 import openfl.Assets;
-import openfl.Lib;
-import openfl.events.Event;
 import openfl.events.KeyboardEvent;
+import openfl.Lib;
 
 
 class PlayState extends FlxState {
@@ -362,7 +361,7 @@ class PlayState extends FlxState {
 			}
 		});
 		
-		//creep gets crushed with a crate
+		//creep gets crushed with a crate and dies
 		FlxG.collide(creeps, crates, function(creep : Creep, _) {
 			if ( (creep.isTouching(FlxObject.LEFT) && creep.isTouching(FlxObject.RIGHT)) || (creep.isTouching(FlxObject.UP) && creep.isTouching(FlxObject.DOWN))) {
 				FlxG.camera.shake(0.02, 0.15);
@@ -373,6 +372,7 @@ class PlayState extends FlxState {
 			}
 		});
 		
+		//crate fills the hole
 		FlxG.overlap(holes, crates, function(hole : Hole, crate : Crate) {
 			if (!hole.filled && crate.y% 32 == 0 && crate.x % 32 == 0) {
 				hole.filled = true;
@@ -380,6 +380,7 @@ class PlayState extends FlxState {
 			}
 		});
 		
+		//monster pushes the crate
 		FlxG.collide(monsters, crates, function(monster : Monster, crate : Crate) {	
 		if (!crate.lowered) {
 			switch(crate.touching) {
@@ -443,10 +444,7 @@ class PlayState extends FlxState {
 			hud.scorePanel.time += 7;
 			hud.scorePanel.score.animation.play(Std.string(score));
 		});
-		
-		//FlxG.collide(crates, map.secondFloor); don't need it ?
-		
-		//bounce creeps of walls
+		//bounce creeps from walls
 		FlxG.collide(creeps, map.secondFloor, function(creep : actors.Creep, _) { creep.bounceFromWall(); } );
 		
 		//kill creep when monster walks into it
@@ -462,7 +460,6 @@ class PlayState extends FlxState {
 
 		#if mobile
 			
-		
 			var yaw = Math.atan(tiltHandler.y / ( -tiltHandler.x));
 			var pitch = Math.atan(Math.sqrt(tiltHandler.x * tiltHandler.x + tiltHandler.y * tiltHandler.y) / tiltHandler.z);
 				
@@ -480,6 +477,7 @@ class PlayState extends FlxState {
 			
 		#end
 		
+		//web controls used for debugging
 		#if !mobile
 			for (x in monsters) {
 				var m = cast(x, actors.Monster);

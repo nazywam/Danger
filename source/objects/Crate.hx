@@ -1,11 +1,9 @@
 package objects;
 
 import flixel.FlxSprite;
-import flixel.group.FlxGroup;
+import flixel.tweens.FlxTween;
 import flixel.util.FlxTimer;
 
-import flixel.tweens.FlxEase;
-import flixel.tweens.FlxTween;
 
 /**
  * ...
@@ -26,9 +24,9 @@ class Crate extends FlxSprite {
 		animation.add("hide", [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16], 16, false);
 		
 		height = 32;
-		
 	}
 	
+	//crate falls into a hole
 	public function lower() {
 		lowered = true;
 		

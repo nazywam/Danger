@@ -6,6 +6,9 @@ import flixel.math.FlxPoint;
  * ...
  * @author Michael
  */
+
+ 
+//base class for Creep and Monster
 class Actor extends FlxSprite {
 	
 	public var running = false;
@@ -50,7 +53,7 @@ class Actor extends FlxSprite {
 			scale.y = Math.max(scale.y - Rules.CreepDisappearingScaleChange, 0);
 		}
 			
-		
+		//change the current velocity to finalVelocity by some percent
 		velocity.x += (finalVelocity.x - velocity.x) / Rules.VelocityPercentChange;
 		velocity.y += (finalVelocity.y - velocity.y) / Rules.VelocityPercentChange;
 		

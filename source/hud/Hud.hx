@@ -7,6 +7,8 @@ import hud.ScorePanel;
  * ...
  * @author Michael
  */
+
+//a class that hold all panels which appear on top of the screen
 class Hud extends FlxGroup {
 	
 	public var scorePanel : ScorePanel;

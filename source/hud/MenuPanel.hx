@@ -22,8 +22,6 @@ class MenuPanel extends FlxGroup {
 	public var restartButton : Button;
 	public var calibrateButton : Button;
 	
-	public var clickedButtonID : Int = -1;
-	
 	#if mobile
 		var tiltHandler : FlxAccelerometer;
 	#end
@@ -40,6 +38,9 @@ class MenuPanel extends FlxGroup {
 			toggleButton = new FlxSprite( -8, background.y);
 			toggleButton.ID = 0;
 			toggleButton.loadGraphic(Data.MenuPanelSwitchStateImg);
+			toggleButton.animation.add("default", [0]);
+			toggleButton.animation.add("pressed", [0]);
+			toggleButton.animation.play("default");
 			toggleButton.height = 225;
 			add(toggleButton);
 			
@@ -91,35 +92,33 @@ class MenuPanel extends FlxGroup {
 	
 	private function handlePress(x : Float, y : Float) {
 		if (overlaps(x, y, toggleButton)) {
-			clickedButtonID = toggleButton.ID;
+			toggleButton.animation.play("pressed");
 		} else if (overlaps(x, y, restartButton)) {
 			restartButton.animation.play("pressed");
-			clickedButtonID = restartButton.ID;
 		} else if (overlaps(x, y, calibrateButton)) {
 			calibrateButton.animation.play("pressed");
-			clickedButtonID = calibrateButton.ID;
 		} else if (overlaps(x, y, exitButton)) {
 			exitButton.animation.play("pressed");
-			clickedButtonID = exitButton.ID;
 		} else if (!overlaps(x, y, background) && state == 1) {
 			toggle();
 		}
 	}
 	
 	private function handleRelease(x : Float, y : Float) {
-		if (overlaps(x, y, toggleButton) && clickedButtonID == toggleButton.ID) {
+		if (overlaps(x, y, toggleButton) && toggleButton.animation.name == "pressed") {
 			toggle();
-		} else if (overlaps(x, y, restartButton) && clickedButtonID == restartButton.ID ) {
+		} else if (overlaps(x, y, restartButton) && restartButton.animation.name == "pressed") {
 			FlxG.switchState(new PlayState());
-		} else if (overlaps(x, y, calibrateButton) && clickedButtonID == calibrateButton.ID ) {
+		} else if (overlaps(x, y, calibrateButton) && calibrateButton.animation.name == "pressed" ) {
 			#if mobile
 				calibrate();
 			#end
 			toggle();
-		} else if (overlaps(x, y, exitButton) && clickedButtonID == exitButton.ID ) {
+		} else if (overlaps(x, y, exitButton) && exitButton.animation.name == "pressed") {
 			FlxG.switchState(new MenuState());
 		}
 		
+		toggleButton.animation.play("default");
 		restartButton.animation.play("default");
 		calibrateButton.animation.play("default");
 		exitButton.animation.play("default");

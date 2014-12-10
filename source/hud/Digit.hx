@@ -6,6 +6,8 @@ import flixel.FlxSprite;
  * ...
  * @author Michael
  */
+
+//a changing sprite used to show the score
 class Digit extends FlxSprite {
 	
 	var digit : Int;
@@ -18,7 +20,5 @@ class Digit extends FlxSprite {
 		for (x in 0...10) {
 			animation.add(Std.string(x), [x]);
 		}
-		
 	}
-	
 }

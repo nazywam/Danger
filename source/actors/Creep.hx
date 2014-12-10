@@ -9,7 +9,6 @@ import flixel.util.FlxTimer;
  */
 class Creep extends Actor {
 	
-	
 	public var destinationPoint : FlxPoint;
 	public var originPoint : FlxPoint;
 	
@@ -32,6 +31,7 @@ class Creep extends Actor {
 			offset.x = 3;
 	}
 
+	//change the animation accordingly to creeps movement
 	override private function changeAnimation() {
 		super.changeAnimation();
 		
@@ -44,10 +44,11 @@ class Creep extends Actor {
 		}
 	}
 	
-	//Generate another target
+	//Generate another random target
 	function getAnotherTarget() {
 		destinationPoint.set(originPoint.x + Std.random(Rules.CreepRandomMoveMaxRange*2) - Rules.CreepRandomMoveMaxRange, originPoint.y + (Std.random(Rules.CreepRandomMoveMaxRange*2) - Rules.CreepRandomMoveMaxRange));
 	}
+	
 	//apply velocity, move randomly if not chased
 	private function moveRandomly() {
 		if (Math.abs(destinationPoint.x - x) > 1) {
@@ -63,7 +64,7 @@ class Creep extends Actor {
 			finalVelocity.y = 0;
 		}
 		
-		//If targetPoint is close look for another target
+		//If targetPoint is close engouth look for another target
 		if (Math.abs(destinationPoint.x - x) < 3 && Math.abs(destinationPoint.y - y) < 3) needAnotherDestination = true;
 		
 		if (needAnotherDestination) {
