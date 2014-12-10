@@ -144,7 +144,8 @@ class PlayState extends FlxState {
 		Lib.current.stage.addEventListener(KeyboardEvent.KEY_UP, onKeyUp);
 		Lib.current.stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
 	}
-
+	
+	//prevent default android physical buttons reactions
 	private function onKeyUp(event : KeyboardEvent) {
 		#if android
 			switch(event.keyCode) {
@@ -177,6 +178,7 @@ class PlayState extends FlxState {
 		return Math.sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2));
 	}
 	
+	//check overlap between crates
 	function crateOverlapsCrates(crate : Crate) : Bool {
 		var colides = false;
 		FlxG.overlap(crate, crates, function(_, c : Crate) { 
@@ -187,6 +189,7 @@ class PlayState extends FlxState {
 		return colides;
 	}
 	
+	//helper function used in sorting to make the crates render correctly
 	function sortCrates(order:Int, a : Crate, b : Crate) {
 		var result : Int = 0;
 		if (!a.solid) {
@@ -198,7 +201,7 @@ class PlayState extends FlxState {
 		}
 		return result;
 	}
-	
+	//helper function used in sorting to make the creeps render correctly
 	function sortCreeps(order:Int, a : Creep, b : Creep) {
 		var result : Int = 0;
 		if (a.alive == b.alive) {
@@ -211,31 +214,8 @@ class PlayState extends FlxState {
 		return result;
 	}
 	
-	override public function update(elapsed : Float) {
-		
-		if (paused) return;
-		
-		if (hud.menuPanel.state == 1) {
-			hud.update(elapsed);
-			return;
-		}
-		if (creeps.countLiving() <= 0 && !hud.finishPanel.visible) {
-			hud.finishPanel.visible = true;
-			hud.scorePanel.time = -1;
-			
-			if (score >= maxScore / 2) {
-				hud.finishPanel.continueButton.clickable = true;
-				hud.finishPanel.continueButton.animation.play("default");
-			}
-			
-		}
-		if (hud.finishPanel.visible) {
-			hud.finishPanel.update(elapsed);
-			return;
-		}
-		
-		super.update(elapsed);		
-		
+	//calculate forces between creeps, monsters, crates, etc..
+	function simulate() {
 		for (c in creeps) {
 			var creep = cast(c, actors.Creep);
 			
@@ -318,7 +298,49 @@ class PlayState extends FlxState {
 				}
 			}
 		}	
+	}
+	
+	//main update loop
+	override public function update(elapsed : Float) {
+		
+		if (paused) return;
+		
+		//pause the game if menuPanel is open
+		if (hud.menuPanel.state == 1) {
+			hud.update(elapsed);
+			return;
+		}
+		
+		//pause the game if finishPanel is open
+		if (hud.finishPanel.visible) {
+			hud.finishPanel.update(elapsed);
+			return;
+		}
+		
+		//finish the game and bring up finishPanel
+		if (creeps.countLiving() <= 0 && !hud.finishPanel.visible) {
+			hud.finishPanel.visible = true;
+			hud.scorePanel.time = -1;
+			
+			if (score >= maxScore / 2) {
+				hud.finishPanel.continueButton.clickable = true;
+				hud.finishPanel.continueButton.animation.play("default");
+			}
+		}
+		
+		super.update(elapsed);		
+		simulate();
 
+		//keep lower creeps on top of higher ones
+		creeps.sort(sortCreeps);
+		//keep lower crates on top of higher ones
+		crates.sort(sortCrates);
+		
+		//collision with map
+		FlxG.collide(monsters, map.secondFloor);
+		FlxG.collide(creeps, doors);
+		FlxG.collide(monsters, doors);
+		
 		//kill creep when he walks into spikes
 		FlxG.overlap(creeps, spikes, function(creep : actors.Creep, _) {
 			if (creep.alive) {				
@@ -339,16 +361,6 @@ class PlayState extends FlxState {
 				}
 			}
 		});
-
-		//keep lower creeps on top of higher ones
-		creeps.sort(sortCreeps);
-		//keep lower crates on top of higher ones
-		crates.sort(sortCrates);
-		
-		FlxG.collide(monsters, map.secondFloor);
-		FlxG.collide(creeps, doors);
-		FlxG.collide(monsters, doors);
-
 		
 		//creep gets crushed with a crate
 		FlxG.collide(creeps, crates, function(creep : Creep, _) {
