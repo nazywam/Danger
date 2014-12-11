@@ -451,8 +451,7 @@ class PlayState extends FlxState {
 		FlxG.overlap(creeps, monsters, function(creep : actors.Creep, m : actors.Monster) {
 			if (creep.alive) {
 				FlxG.camera.shake(0.02, 0.15);
-				creep.alive = false;
-				creep.animation.play("dead");
+				creep.die();
 				creeps.remove(creep, true);
 				corpses.add(creep);
 			}

@@ -28,7 +28,7 @@ class Key extends FlxSprite {
 		path.push(new FlxPoint(x, y + 4));
 		path.push(new FlxPoint(x, y));
 		
-		FlxTween.linearPath(this, path, 1.5, true,  { type:FlxTween.LOOPING } );
+		FlxTween.linearPath(this, path, 1.5, true,  { type:FlxTween.PINGPONG } );
 	}
 	
 	

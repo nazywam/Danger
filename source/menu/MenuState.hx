@@ -50,8 +50,6 @@ class MenuState extends FlxState {
 			for (x in 0...4) {
 				if (Assets.getText("assets/data/level" + Std.string(y * 4 + x) + ".tmx") != null) {
 					var l = new Level(x * 65 + levelsBackground.x + 13 -4, y * 68 + levelsBackground.y + 13 -4, y * 4 + x);
-					l.text.x -= l.text.width / 2;
-					l.text.y -= l.text.height/ 2;
 					levels.push(l);
 					add(l);
 				}
@@ -76,8 +74,8 @@ class MenuState extends FlxState {
 	function handlePress(x : Float, y : Float) {
 		for (l in levels) {
 			var level = cast(l, Level);
-			if (overlaps(x, y, level.icon)) { 
-				level.icon.animation.play("pressed");
+			if (overlaps(x, y, level)) { 
+				level.animation.play("pressed");
 				pressedID = l.ID;
 			}
 		}
@@ -91,12 +89,12 @@ class MenuState extends FlxState {
 	function handleReleased(x : Float, y : Float) {
 		for (l in levels) {
 			var level = cast(l, Level);
-			if (overlaps(x, y, level.icon)) { 
+			if (overlaps(x, y, level)) { 
 				if (pressedID == level.ID) {
 					switchLevel(level.ID);
 				}
 			}
-			level.icon.animation.play("default");
+			level.animation.play("default");
 		}
 		if (overlaps(x, y, playButton)) {
 			switchScreen(1);

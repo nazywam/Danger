@@ -1,6 +1,8 @@
 package actors ;
 import flixel.FlxSprite;
 import flixel.math.FlxPoint;
+import flixel.tweens.FlxTween;
+import flixel.tweens.FlxEase;
 
 /**
  * ...
@@ -41,6 +43,16 @@ class Actor extends FlxSprite {
 	public function disappear() {
 		solid = false;
 		disappearing = true;
+	}
+	
+	public function die() {
+		
+		alive = false;
+		animation.play("dead");
+		
+		FlxTween.angle(this, angle, angle + 90, .3, {ease:FlxEase.circInOut, type:FlxTween.PERSIST } );
+		//FlxTween.circularMotion(this, x, y, width, -90, true, 1.5, true, { type:FlxTween.PERSIST } );
+		
 	}
 	
 	override public function update(elapsed : Float) {
