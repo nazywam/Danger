@@ -24,8 +24,9 @@ class Actor extends FlxSprite {
 		super(X, Y);
 		finalVelocity = new FlxPoint(0, 0);
 	}
-	
-	//change to appropiate animation/direction
+	/*
+	*change to appropiate animation/direction
+	*/
 	private function changeAnimation() {
 		if (velocity.x < 0 ) {
 			flipX = true;

@@ -1,15 +1,13 @@
 package menu;
 
 import flixel.FlxSprite;
-import flixel.group.FlxGroup;
-import flixel.text.FlxText;
 
 /**
  * ...
  * @author Michael
  */
 class Level extends FlxSprite {
-	public function new(X:Float=0, Y:Float=0, id){
+	public function new(X : Float=0, Y:Float=0, id){
 		super();
 		x = X;
 		y = Y;
