@@ -34,6 +34,8 @@
 	<classpath name="source" />
 	<assets path="assets" />
 	
+	<template path="MainActivity.java" rename="src/MainActivity.java" if="android" />
+	
 	<!--------------------------------LIBRARIES------------------------------------->
 
 	<haxelib name="flixel"/>
