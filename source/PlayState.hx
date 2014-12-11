@@ -25,8 +25,6 @@ class PlayState extends FlxState {
 	
 	var creeps : FlxTypedGroup<Creep>;
 	var monsters : FlxTypedGroup<Monster>;
-
-	var stars : Stars;
 	
 	public var corpses : FlxGroup;
 	public var doors : FlxTypedGroup<Doors>;
@@ -55,10 +53,6 @@ class PlayState extends FlxState {
 		if (Assets.getText("assets/data/level" + Std.string(Reg.activeLevel) + ".tmx") == null) {
 			throw("assets/data/level" + Std.string(Reg.activeLevel) + ".tmx, no such File");
 		}		
-		//stars = new Stars();
-		//add(stars);
-		
-		
 		
 		map = new TiledLevel(("assets/data/level" + Std.string(Reg.activeLevel) + ".tmx"));
 		add(map.background);
