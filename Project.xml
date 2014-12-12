@@ -16,10 +16,7 @@
 	<!--------------------------------WINDOW SETTINGS------------------------------->
 	
 	<!--These window settings apply to all targets-->
-	<window width="1088" height="612" fps="60" background="#000000" hardware="true" vsync="true" />
-	
-	<!--Web-specific-->
-	<window if="web" orientation="portrait"  />
+	<window width="1088" height="612" fps="60" background="#000000" hardware="false" vsync="true" />
 	
 	<!--Desktop-specific-->
 	<window if="desktop" orientation="landscape" fullscreen="false" resizable="true" />
@@ -33,8 +30,6 @@
 	<set name="BUILD_DIR" value="export" />
 	<classpath name="source" />
 	<assets path="assets" />
-	
-	<template path="MainActivity.java" rename="src/MainActivity.java" if="android" />
 	
 	<!--------------------------------LIBRARIES------------------------------------->
 
@@ -59,4 +54,3 @@
 	
 	<!--Place custom nodes like icons here (higher priority to override the HaxeFlixel icon)-->
 </project>
-
