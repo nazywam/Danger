@@ -26,7 +26,9 @@ class MenuState extends FlxState {
 	override public function create() {
 		super.create();
 		
-		//FlxG.log.redirectTraces = true;
+		#if !mobile
+			FlxG.log.redirectTraces = true;
+		#end
 		FlxG.fixedTimestep = false;
 		
 		background = new FlxSprite(0, 0);
@@ -83,7 +85,6 @@ class MenuState extends FlxState {
 		if (overlaps(x, y, playButton)) {
 			playButton.animation.play("pressed");
 		}
-		
 	}
 	
 	function handleReleased(x : Float, y : Float) {

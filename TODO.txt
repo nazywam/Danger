@@ -1,3 +1,2 @@
-Fixed screen rotation // happend only on tablets?
 tablety (x/y vs y/x)
 arena like level

@@ -41,7 +41,7 @@ class PlayState extends FlxState {
 	public var maxScore : Int = 0;
 	
 	#if mobile
-	var tiltHandler : FlxAccelerometer;
+		var tiltHandler : FlxAccelerometer;
 	#end
 	
 	var paused : Bool = true;
