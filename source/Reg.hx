@@ -15,4 +15,5 @@ class Reg {
 	public static var calibrationYaw = .0;
 	public static var calibrationPitch = .0;
 	
+	public static var rotation : Rotation;
 }

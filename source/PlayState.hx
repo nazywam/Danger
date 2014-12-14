@@ -127,8 +127,8 @@ class PlayState extends FlxState {
 		hud.scorePanel.maxScore.animation.play(Std.string(maxScore));
 		
 		#if mobile
-			hud.menuPanel.calibrate();
 			tiltHandler = new FlxAccelerometer();
+			Reg.rotation = new Rotation(tiltHandler.x, tiltHandler.y, tiltHandler.z);
 		#end
 		
 		var t = new FlxTimer();
@@ -453,19 +453,15 @@ class PlayState extends FlxState {
 
 		#if mobile
 			
-			var yaw = Math.atan(tiltHandler.y / ( -tiltHandler.x));
-			var pitch = Math.atan(Math.sqrt(tiltHandler.x * tiltHandler.x + tiltHandler.y * tiltHandler.y) / tiltHandler.z);
-				
-			yaw -= Reg.calibrationYaw;
-			pitch -= Reg.calibrationPitch;
 		
-			trace(yaw, pitch);
-
+			var rotation = Reg.rotation.getMovementVector(tiltHandler.x, tiltHandler.y, tiltHandler.z);
 		
+			trace(rotation.x, ' ' , rotation.y);
+			
 			for (x in monsters) {
 				var m = cast(x, actors.Monster);
-				m.finalVelocity.x = Math.max(Math.min(tiltHandler.y * 150, 75), -75);
-				m.finalVelocity.y = Math.max(Math.min(tiltHandler.x * 125, 75), -75);
+				m.finalVelocity.x = Math.max(Math.min(rotation.y * 150, 75), -75);
+				m.finalVelocity.y = Math.max(Math.min(rotation.x * 125, 75), -75);
 			}
 			
 		#end

@@ -67,12 +67,12 @@ class MenuPanel extends FlxGroup {
 		if (clickY < target.y || clickY > target.y + target.height) return false;
 		return true;
 	}
-	#if mobile
-		public function calibrate() {
-			Reg.calibrationYaw = Math.atan(tiltHandler.y / ( -tiltHandler.x));
-			Reg.calibrationPitch = Math.atan(Math.sqrt(tiltHandler.x * tiltHandler.x + tiltHandler.y * tiltHandler.y) / tiltHandler.z);
-		}
-	#end
+	
+	public function calibrate() {
+		#if mobile
+			Reg.rotation.setCalibration(tiltHandler.x, tiltHandler.y, tiltHandler.z);
+		#end
+	}
 		
 	public function toggle() {
 		state = (state+1) % 2; 

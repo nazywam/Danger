@@ -16,7 +16,7 @@
 	<!--------------------------------WINDOW SETTINGS------------------------------->
 	
 	<!--These window settings apply to all targets-->
-	<window width="1088" height="612" fps="60" background="#000000" hardware="false" vsync="true" />
+	<window width="1088" height="612" fps="5" background="#000000" hardware="false" vsync="true" />
 	
 	<!--Desktop-specific-->
 	<window if="desktop" orientation="landscape" fullscreen="false" resizable="true" />
