@@ -3,6 +3,10 @@ package ;
 @:build(flixel.system.FlxAssets.buildFileReferences("assets", true))
 class Data {
 	
+	//intro
+	public static inline var IntroBackground = "assets/images/intro/introBackground.png";
+	public static inline var IntroTarget = "assets/images/intro/target.png";
+	
 	//actors
 	public static inline var CreepImg = "assets/images/creep.png";
 	public static inline var MonsterImg = "assets/images/monster.png";

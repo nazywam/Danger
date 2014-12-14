@@ -11,11 +11,11 @@ class Main extends Sprite
 {
 	var gameWidth:Int = 544;
 	var gameHeight:Int = 306;
-	var initialState:Class<FlxState> = menu.MenuState;
+	var initialState:Class<FlxState> = Intro;
 	var zoom:Float = -1;
 	var framerate:Int = 60;
 	var skipSplash:Bool = false;
-	var startFullscreen:Bool = false;
+	var startFullscreen:Bool = true;
 	
 	public static function main() {	
 		Lib.current.addChild(new Main());
