@@ -3,6 +3,7 @@ package hud;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.group.FlxGroup;
+import menu.MenuState;
 
 /**
  * ...
@@ -55,8 +56,12 @@ class FinishPanel extends FlxGroup {
 		}
 		if (overlaps(x, y, continueButton) && continueButton.animation.name == "pressed") {
 			if (continueButton.clickable) {
-				Reg.activeLevel++;
-				FlxG.switchState(new PlayState());	
+				if (Reg.activeLevel < 10) {
+					Reg.activeLevel++;
+					FlxG.switchState(new PlayState());		
+				} else {
+					FlxG.switchState(new MenuState());
+				}
 			}
 		}
 		
