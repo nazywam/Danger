@@ -128,7 +128,6 @@ class PlayState extends FlxState {
 		
 		#if mobile
 			tiltHandler = new FlxAccelerometer();
-			Reg.rotation = new Rotation(tiltHandler.x, tiltHandler.y, tiltHandler.z);
 		#end
 		
 		var t = new FlxTimer();
@@ -452,16 +451,10 @@ class PlayState extends FlxState {
 		});
 
 		#if mobile
-			
-		
-			var rotation = Reg.rotation.getMovementVector(tiltHandler.x, tiltHandler.y, tiltHandler.z);
-		
-			trace(rotation.x, ' ' , rotation.y);
-			
 			for (x in monsters) {
 				var m = cast(x, actors.Monster);
-				m.finalVelocity.x = Math.max(Math.min(rotation.y * 150, 75), -75);
-				m.finalVelocity.y = Math.max(Math.min(rotation.x * 125, 75), -75);
+				m.finalVelocity.x = Math.max(Math.min(tiltHandler.y * 150, 75), -75);
+				m.finalVelocity.y = Math.max(Math.min(tiltHandler.x * 125, 75), -75);
 			}
 			
 		#end

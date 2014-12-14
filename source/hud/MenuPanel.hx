@@ -20,11 +20,6 @@ class MenuPanel extends FlxGroup {
 	public var toggleButton : FlxSprite;
 	public var exitButton : Button;
 	public var restartButton : Button;
-	public var calibrateButton : Button;
-	
-	#if mobile
-		var tiltHandler : FlxAccelerometer;
-	#end
 	
 	public function new() {
 			super();
@@ -41,24 +36,17 @@ class MenuPanel extends FlxGroup {
 			toggleButton.animation.add("default", [0]);
 			toggleButton.animation.add("pressed", [0]);
 			toggleButton.animation.play("default");
-			toggleButton.height = 225;
+			toggleButton.height = background.height;
+			toggleButton.width += 10;
 			add(toggleButton);
 			
-			restartButton = new Button(18 - 173, 67, Data.MenuPanelRestartImg, true);
+			restartButton = new Button(18 - 173, background.y + 27, Data.MenuPanelRestartImg, true);
 			restartButton.ID = 0;
 			add(restartButton);
 
-			calibrateButton = new Button(20 - 173, restartButton.y + 60, Data.MenuPanelCalibrateImg, true);
-			calibrateButton.ID  = 1;
-			add(calibrateButton);
-			
-			exitButton = new Button(20 - 173, calibrateButton.y + 60, Data.MenuPanelExitImg, true);
+			exitButton = new Button(20 - 173, restartButton.y + 60, Data.MenuPanelExitImg, true);
 			exitButton.ID = 2;
 			add(exitButton);
-			
-			#if mobile
-				tiltHandler = new FlxAccelerometer();
-			#end
 	}
 	
 	
@@ -68,12 +56,6 @@ class MenuPanel extends FlxGroup {
 		return true;
 	}
 	
-	public function calibrate() {
-		#if mobile
-			Reg.rotation.setCalibration(tiltHandler.x, tiltHandler.y, tiltHandler.z);
-		#end
-	}
-		
 	public function toggle() {
 		state = (state+1) % 2; 
 			
@@ -86,7 +68,6 @@ class MenuPanel extends FlxGroup {
 			FlxTween.tween(toggleButton, { x: -8 + 171 * state }, time, { ease:FlxEase.cubeOut, type:FlxTween.PERSIST } );				
 			
 			FlxTween.tween(restartButton, { x: 20-173 + 173 * state }, time, { ease:FlxEase.cubeOut, type:FlxTween.PERSIST } );
-			FlxTween.tween(calibrateButton, { x: 20-173 + 173 * state }, time, { ease:FlxEase.cubeOut, type:FlxTween.PERSIST } );
 			FlxTween.tween(exitButton, { x: 20-173 + 173 * state }, time, { ease:FlxEase.cubeOut, type:FlxTween.PERSIST } );
 	}
 	
@@ -96,8 +77,6 @@ class MenuPanel extends FlxGroup {
 			toggleButton.animation.play("pressed");
 		} else if (overlaps(x, y, restartButton)) {
 			restartButton.animation.play("pressed");
-		} else if (overlaps(x, y, calibrateButton)) {
-			calibrateButton.animation.play("pressed");
 		} else if (overlaps(x, y, exitButton)) {
 			exitButton.animation.play("pressed");
 		} else if (!overlaps(x, y, background) && state == 1) {
@@ -110,19 +89,12 @@ class MenuPanel extends FlxGroup {
 			toggle();
 		} else if (overlaps(x, y, restartButton) && restartButton.animation.name == "pressed") {
 			FlxG.switchState(new PlayState());
-		} else if (overlaps(x, y, calibrateButton) && calibrateButton.animation.name == "pressed" ) {
-			
-			#if mobile
-				calibrate();
-			#end
-			toggle();
 		} else if (overlaps(x, y, exitButton) && exitButton.animation.name == "pressed") {
 			FlxG.switchState(new MenuState());
 		}
 		
 		toggleButton.animation.play("default");
 		restartButton.animation.play("default");
-		calibrateButton.animation.play("default");
 		exitButton.animation.play("default");
 	}
 	
