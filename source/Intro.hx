@@ -3,6 +3,7 @@ import flixel.FlxSprite;
 import flixel.FlxState;
 import flixel.input.FlxAccelerometer;
 import flixel.FlxG;
+import menu.MenuState;
 
 /**
  * ...
@@ -45,6 +46,18 @@ class Intro extends FlxState {
 		
 		monster.x += (tiltHandler.y * FlxG.width + FlxG.width / 2 - monster.x) / 50;
 		monster.y += (tiltHandler.x * FlxG.height + FlxG.height * 3 / 4 + 10 - monster.y) / 50;
+		
+		if (FlxG.overlap(monster, target)) {
+			target.scale.x = Math.max(target.scale.x - 0.01, 0);
+			target.scale.y = Math.max(target.scale.y - 0.01, 0);
+			
+			if (target.scale.x == 0 && target.scale.y == 0) {
+				FlxG.camera.alpha -= 0.05;
+				if (FlxG.camera.alpha == 0) {
+					FlxG.switchState(new MenuState());
+				}
+			}
+		}
 	}
 	
 }
