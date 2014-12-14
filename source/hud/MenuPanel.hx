@@ -3,7 +3,6 @@ package hud ;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.group.FlxGroup;
-import flixel.input.FlxAccelerometer;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import menu.MenuState;

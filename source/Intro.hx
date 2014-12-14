@@ -1,8 +1,8 @@
 package ;
+import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.FlxState;
 import flixel.input.FlxAccelerometer;
-import flixel.FlxG;
 import menu.MenuState;
 
 /**
@@ -12,7 +12,6 @@ import menu.MenuState;
 class Intro extends FlxState {
 
 	var background : FlxSprite;
-	
 	var monster : FlxSprite;
 	var target : FlxSprite;
 	

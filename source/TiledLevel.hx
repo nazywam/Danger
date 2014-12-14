@@ -4,7 +4,6 @@ import flixel.addons.editors.tiled.TiledMap;
 import flixel.addons.editors.tiled.TiledObject;
 import flixel.addons.editors.tiled.TiledObjectGroup;
 import flixel.addons.editors.tiled.TiledTileSet;
-import flixel.group.FlxGroup;
 import flixel.math.FlxPoint;
 import flixel.tile.FlxTilemap;
 import haxe.io.Path;

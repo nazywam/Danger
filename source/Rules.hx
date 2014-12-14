@@ -18,7 +18,7 @@ class Rules {
 	public static inline var ScorePanelTweenTime = .5;
 	public static inline var SwitchLevelTweenTime = .75;	
 
-	public static inline var InitialPlayStatePauseTime = 0;
+	public static inline var InitialPlayStatePauseTime = 1;
 
 	public static inline var CreepToMonsterPower = 3;
 	public static inline var CreepToMonsterMinRange = 75;

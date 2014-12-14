@@ -1,8 +1,8 @@
 package hud;
 
+import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.group.FlxGroup;
-import flixel.FlxG;
 
 /**
  * ...

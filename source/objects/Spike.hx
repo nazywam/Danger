@@ -1,7 +1,6 @@
 package objects ;
 
 import flixel.FlxSprite;
-import flixel.system.FlxAssets.FlxGraphicAsset;
 
 /**
  * ...

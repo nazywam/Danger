@@ -88,13 +88,6 @@ class PlayState extends FlxState {
 		
 		map.loadObjects(this);
 		
-		//if (creepSpawns.length == 0) {
-		//	throw("No creepspawn on map");
-		//}
-		//if (exits.length == 0) {
-		//	throw("No exits on map");
-		//}
-		
 		creeps = new FlxTypedGroup<Creep>();
 		add(creeps);
 		monsters = new FlxTypedGroup<Monster>();
