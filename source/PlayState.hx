@@ -101,7 +101,7 @@ class PlayState extends FlxState {
 
         add(map.secondFloor);
 
-
+		FlxG.camera.bgColor = 0xAA1d1e20;
         FlxG.camera.setScrollBounds(0, map.width * 32, 0, map.height * 32);
         FlxG.worldBounds.set(0, 0, map.width * 32, map.height * 32);
 
@@ -114,9 +114,9 @@ class PlayState extends FlxState {
         hud.scorePanel.time = 13;
         hud.scorePanel.maxScore.animation.play(Std.string(maxScore));
 
-                #if mobile
+			#if mobile
         tiltHandler = new FlxAccelerometer();
-                #end
+            #end
 
         var t = new FlxTimer();
         t.start(Rules.InitialPlayStatePauseTime, function(_) {
@@ -129,17 +129,17 @@ class PlayState extends FlxState {
 
     //prevent default android physical buttons reactions
     private function onKeyUp(event : KeyboardEvent) {
-                #if android
+			#if android
         switch(event.keyCode) {
         case 27:
             event.stopPropagation();
         case 16777234:
             event.stopPropagation();
         }
-                #end
+			#end
     }
     private function onKeyDown(event : KeyboardEvent) {
-                #if android
+			#if android
         //trace(event.keyCode);
         switch(event.keyCode) {
         case 27:
@@ -151,7 +151,7 @@ class PlayState extends FlxState {
             event.stopPropagation();
             hud.menuPanel.toggle();
         }
-                #end
+			#end
     }
 
 
