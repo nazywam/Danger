@@ -3,11 +3,6 @@ import flixel.FlxSprite;
 import flixel.math.FlxPoint;
 import flixel.tweens.FlxTween;
 
-
-/**
- * ...
- * @author Michael
- */
 class Key extends FlxSprite {
 
     public var taken : Bool = false;
@@ -27,9 +22,9 @@ class Key extends FlxSprite {
         path.push(new FlxPoint(x, y + 4));
         path.push(new FlxPoint(x, y));
 
+		//make the key hover
         FlxTween.linearPath(this, path, 1.5, true, { type: FlxTween.PINGPONG } );
     }
-
 
     override public function update (elapsed : Float) {
         super.update(elapsed);

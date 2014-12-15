@@ -3,17 +3,14 @@ package actors;
 import flixel.math.FlxPoint;
 import flixel.util.FlxTimer;
 
-/**
- * ...
- * @author Michael
- */
 class Creep extends Actor {
 
-    public var destinationPoint : FlxPoint;
-    public var originPoint : FlxPoint;
+	var destinationPoint : FlxPoint;
+	var originPoint : FlxPoint;
 
-    public var needAnotherDestination : Bool = true;
-    public var waitingForRandomMove : Bool = false;
+
+	var needAnotherDestination : Bool = true;
+	var waitingForRandomMove : Bool = false;
 
     public function new(X : Float, Y : Float) {
         super(X, Y);
@@ -31,7 +28,6 @@ class Creep extends Actor {
         offset.x = 3;
     }
 
-    //change the animation accordingly to creeps movement
     override private function changeAnimation() {
         super.changeAnimation();
 
@@ -46,7 +42,6 @@ class Creep extends Actor {
         }
     }
 
-    //Generate another random target
     function getAnotherTarget() {
         destinationPoint.set(originPoint.x + Std.random(Rules.CreepRandomMoveMaxRange * 2) - Rules.CreepRandomMoveMaxRange, originPoint.y + (Std.random(Rules.CreepRandomMoveMaxRange * 2) - Rules.CreepRandomMoveMaxRange));
     }
@@ -81,8 +76,6 @@ class Creep extends Actor {
                 } );
         }
     }
-
-
 
     //when hit wall look for another target
     public function bounceFromWall() {

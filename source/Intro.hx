@@ -5,10 +5,6 @@ import flixel.FlxState;
 import flixel.input.FlxAccelerometer;
 import menu.MenuState;
 
-/**
- * ...
- * @author Michael
- */
 class Intro extends FlxState {
 
     var background : FlxSprite;

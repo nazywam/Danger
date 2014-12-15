@@ -6,20 +6,15 @@ import flixel.group.FlxGroup;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 
-
-/**
- * ...
- * @author Michael
- */
 class ScorePanel extends FlxGroup {
 
     public var score : Digit;
-    public var slash : FlxSprite;
+    var slash : FlxSprite;
     public var maxScore : Digit;
 
-    public var background : FlxSprite;
+    var background : FlxSprite;
 
-    public var state : Int = 1;
+    var state : Int = 1;
 
     public var time : Float = 0;
 

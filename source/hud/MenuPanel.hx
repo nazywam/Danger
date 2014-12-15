@@ -7,21 +7,18 @@ import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxTimer;
 import menu.MenuState;
-/**
- * ...
- * @author Michael
- */
+
 class MenuPanel extends FlxGroup {
 
     public var state : Int = 0;
 
-    public var background : FlxSprite;
+    var background : FlxSprite;
 
-    public var toggleButton : FlxSprite;
-    public var exitButton : Button;
-    public var restartButton : Button;
+    var toggleButton : FlxSprite;
+    var exitButton : Button;
+    var restartButton : Button;
 
-	public var dooming : Bool = false;
+	var dooming : Bool = false;
 	
     public function new() {
         super();
@@ -76,7 +73,6 @@ class MenuPanel extends FlxGroup {
         FlxTween.tween(exitButton, { x: 20 - 173 + 173 * state }, time, { ease: FlxEase.cubeOut, type: FlxTween.PERSIST } );
     }
 
-    // handle mouse presses
     private function handlePress(x : Float, y : Float) {
         if (overlaps(x, y, toggleButton)) {
             toggleButton.animation.play("pressed");

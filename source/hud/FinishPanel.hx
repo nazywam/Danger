@@ -7,17 +7,11 @@ import flixel.group.FlxGroup;
 import menu.MenuState;
 import flixel.util.FlxTimer;
 
-/**
- * ...
- * @author Michael
- */
-
-//a panel which shows up after all creeps have been rescued or killed, or the monster has died
 class FinishPanel extends FlxGroup {
 
-    public var background : FlxSprite;
+    var background : FlxSprite;
     public var continueButton : Button;
-    public var restartButton : Button;
+    var restartButton : Button;
 
 	var dooming : Bool = false;
 	
@@ -34,17 +28,14 @@ class FinishPanel extends FlxGroup {
 
         continueButton = new Button(270, 120, Data.FinishContinueImg, false);
         add(continueButton);
-
     }
 
-    // a handy function used for checking mouse overlap with buttons
     function overlaps(clickX : Float, clickY : Float, target : FlxSprite): Bool {
         if (clickX < target.x || clickX > target.x + target.width) return false;
         if (clickY < target.y || clickY > target.y + target.height) return false;
         return true;
     }
 
-    //handle mouse presses
     function handlePress(x : Float, y : Float) {
         if (overlaps(x, y, restartButton)) {
             restartButton.animation.play("pressed");
@@ -53,7 +44,7 @@ class FinishPanel extends FlxGroup {
             continueButton.animation.play("pressed");
         }
     }
-    //handle mouse releases, check animations to ensure that the same button has been pressed and released
+	
     function handleReleased(x : Float, y : Float) {
         if (overlaps(x, y, restartButton) && restartButton.animation.name == "pressed" ) {
             FlxG.switchState(new PlayState());

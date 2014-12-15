@@ -2,10 +2,6 @@ package menu;
 
 import flixel.FlxSprite;
 
-/**
- * ...
- * @author Michael
- */
 class Level extends FlxSprite {
     public function new(X : Float = 0, Y : Float = 0, id){
         super();

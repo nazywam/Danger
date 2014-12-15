@@ -2,10 +2,6 @@ package actors;
 
 import flixel.FlxSprite;
 
-/**
- * ...
- * @author Michael
- */
 class Monster extends Actor {
 
     public function new(X : Float, Y : Float) {

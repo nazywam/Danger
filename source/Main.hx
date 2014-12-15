@@ -7,15 +7,11 @@ import flixel.FlxGame;
 import flixel.FlxState;
 import menu.MenuState;
 
-class Main extends Sprite
-{
+class Main extends Sprite {
+	
+    var initialState : Class<FlxState> = Intro;
     var gameWidth : Int = 544;
     var gameHeight : Int = 306;
-		#if mobile
-    var initialState : Class<FlxState> = Intro;
-		#else
-	var initialState : Class<FlxState> = MenuState;
-		#end
     var zoom : Float = -1;
     var framerate : Int = 60;
     var skipSplash : Bool = false;

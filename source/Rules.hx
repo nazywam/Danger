@@ -1,9 +1,6 @@
 package;
 
-/**
- * ...
- * @author Michael
- */
+//keep all static game variables
 class Rules {
 
     public static inline var VelocityPercentChange = 5;

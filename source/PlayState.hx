@@ -17,7 +17,6 @@ import openfl.Assets;
 import openfl.events.KeyboardEvent;
 import openfl.Lib;
 
-
 class PlayState extends FlxState {
 
     var map : TiledLevel;
@@ -36,8 +35,8 @@ class PlayState extends FlxState {
     public var monsterSpawns : Array<FlxPoint>;
     public var exits : FlxTypedGroup<Exit>;
 
-    public var score : Int = 0;
-    public var maxScore : Int = 0;
+    var score : Int = 0;
+    var maxScore : Int = 0;
 
         #if mobile
     var tiltHandler : FlxAccelerometer;
@@ -45,12 +44,7 @@ class PlayState extends FlxState {
 
     override public function create() {
         super.create();
-
-        //load map
-        if (Assets.getText("assets/data/level" + Std.string(Reg.activeLevel) + ".tmx") == null) {
-            throw("assets/data/level" + Std.string(Reg.activeLevel) + ".tmx, no such File");
-        }
-
+		
         map = new TiledLevel(("assets/data/level" + Std.string(Reg.activeLevel) + ".tmx"));
         add(map.background);
         add(map.firstFloor);
@@ -133,7 +127,6 @@ class PlayState extends FlxState {
     }
     private function onKeyDown(event : KeyboardEvent) {
 			#if android
-        //trace(event.keyCode);
         switch(event.keyCode) {
         case 27:
             event.stopPropagation();
@@ -148,12 +141,10 @@ class PlayState extends FlxState {
     }
 
 
-    //get distance between point 1 and 2
     function distance(x1 : Float, y1 : Float, x2 : Float, y2 : Float): Float {
         return Math.sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2));
     }
 
-    //check overlap between crates
     function crateOverlapsCrates(crate : Crate): Bool {
         var colides = false;
         FlxG.overlap(crate, crates, function(_, c: Crate) {
@@ -164,7 +155,6 @@ class PlayState extends FlxState {
         return colides;
     }
 
-    //helper function used in sorting to make the crates render correctly
     function sortCrates(order : Int, a : Crate, b : Crate) {
         var result : Int = 0;
         if (!a.solid) {
@@ -178,7 +168,7 @@ class PlayState extends FlxState {
         }
         return result;
     }
-    //helper function used in sorting to make the creeps render correctly
+	
     function sortCreeps(order : Int, a : Creep, b : Creep) {
         var result : Int = 0;
         if (a.alive == b.alive) {
@@ -280,22 +270,18 @@ class PlayState extends FlxState {
         }
     }
 
-    //main update loop
     override public function update(elapsed : Float) {
 
-        //pause the game if menuPanel is open
         if (hud.menuPanel.state == 1) {
             hud.update(elapsed);
             return;
         }
 
-        //pause the game if finishPanel is open
         if (hud.finishPanel.visible) {
             hud.finishPanel.update(elapsed);
             return;
         }
 
-        //finish the game and bring up finishPanel
         if (creeps.countLiving() <= 0 && !hud.finishPanel.visible) {
             hud.finishPanel.visible = true;
             hud.scorePanel.time = -1;
@@ -314,12 +300,10 @@ class PlayState extends FlxState {
         //keep lower crates on top of higher ones
         crates.sort(sortCrates);
 
-        //collision with map
         FlxG.collide(monsters, map.secondFloor);
         FlxG.collide(creeps, doors);
         FlxG.collide(monsters, doors);
 
-        //collect key
         FlxG.overlap(creeps, keys, function(_, x: objects.Key) {
                 var key = cast(x, objects.Key);
                 key.taken = true;

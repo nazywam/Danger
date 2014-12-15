@@ -1,10 +1,6 @@
 package objects;
 import flixel.FlxSprite;
 
-/**
- * ...
- * @author Michael
- */
 class Doors extends FlxSprite {
 
     var disappearing : Bool = false;
@@ -18,7 +14,6 @@ class Doors extends FlxSprite {
         immovable = true;
 
         height = 32;
-
     }
 
     public function disappear() {

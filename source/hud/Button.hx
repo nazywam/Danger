@@ -2,13 +2,6 @@ package hud;
 
 import flixel.FlxSprite;
 
-
-/**
- * ...
- * @author Michael
- */
-
-//button class used in various huds
 class Button extends FlxSprite {
 
     public var clickable : Bool;

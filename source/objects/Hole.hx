@@ -1,10 +1,6 @@
 package objects;
 import flixel.FlxSprite;
 
-/**
- * ...
- * @author Michael
- */
 class Hole extends FlxSprite {
 
     public var filled = false;

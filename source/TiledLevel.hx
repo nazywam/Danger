@@ -11,10 +11,6 @@ import objects.Crate;
 import objects.Exit;
 import objects.Hole;
 
-/**
- * ...
- * @author Michael
- */
 class TiledLevel extends TiledMap {
 
     public var firstFloor : FlxTilemap;

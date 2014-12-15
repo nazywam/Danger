@@ -7,10 +7,6 @@ import hud.Button;
 import flixel.FlxG;
 import menu.MenuState;
 
-/**
- * ...
- * @author Michael
- */
 class Outro extends FlxState {
 
     var background : FlxSprite;
@@ -67,7 +63,7 @@ class Outro extends FlxState {
     override public function update(elapsed : Float) {
         super.update(elapsed);
 
-        if (dooming) FlxG.camera.alpha -= 0.05;
+        if (dooming) FlxG.camera.alpha -= 0.03;
 
                 #if mobile
         for (touch in FlxG.touches.list) {

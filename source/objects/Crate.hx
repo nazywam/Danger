@@ -4,15 +4,9 @@ import flixel.FlxSprite;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxTimer;
 
-
-/**
- * ...
- * @author Michael
- */
 class Crate extends FlxSprite {
 
     public var lowered : Bool = false;
-    public var top : FlxSprite;
 
     public function new(x : Float, y : Float) {
         super(x, y);
