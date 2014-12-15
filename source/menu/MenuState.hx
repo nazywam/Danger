@@ -8,6 +8,7 @@ import flixel.tweens.FlxTween;
 import hud.Button;
 import openfl.Assets;
 import flixel.util.FlxTimer;
+import openfl.Lib;
 
 class MenuState extends FlxState {
 
@@ -26,7 +27,7 @@ class MenuState extends FlxState {
 	
     override public function create() {
         super.create();
-
+		
                 #if !mobile
         FlxG.log.redirectTraces = true;
                 #end

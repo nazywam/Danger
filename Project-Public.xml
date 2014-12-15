@@ -4,7 +4,8 @@
 	
 	<app title="Danger" file="Danger" main="Main" version="1.0.0" company="Nazywam" />
 	<meta title="Danger" package="com.nazywam.Danger"/>
-
+	
+	
 	
 	<!--The flixel preloader is not accurate in Chrome. You can use it regularly if you embed the swf into a html file
 	<!--or you can set the actual size of your file manually at "FlxPreloaderBase-onUpdate-bytesTotal"!-->
@@ -16,7 +17,7 @@
 	<!--------------------------------WINDOW SETTINGS------------------------------->
 	
 	<!--These window settings apply to all targets-->
-	<window width="1088" height="612" fps="5" background="#000000" hardware="false" vsync="true" />
+	<window width="0" height="0" fps="5" background="#000000" hardware="false" vsync="true" />
 	
 	<!--Desktop-specific-->
 	<window if="desktop" orientation="landscape" fullscreen="false" resizable="true" />

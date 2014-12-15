@@ -2,3 +2,4 @@ export
 *.xcf
 TODO.txt
 *.keystore
+Project-Private.xml
