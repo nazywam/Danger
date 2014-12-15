@@ -40,7 +40,10 @@ class Data {
     public static inline var FinishRestartImg = "assets/images/hud/finishRestart.png";
     public static inline var FinishContinueImg = "assets/images/hud/finishContinue.png";
 
-    public static inline var StarImg = "assets/images/star.png";
+	//outro
+	public static inline var OutroBackground = "assets/images/outro/outroBackground.png";
+	public static inline var OutroFollowButton = "assets/images/outro/outroFollowButton.png";
+	
     public static inline var EmptyImg = "assets/images/empty.png";
 
 }

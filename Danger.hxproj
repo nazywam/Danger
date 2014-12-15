@@ -20,17 +20,16 @@
     <class path="d:\Development\flixel\git" />
     <class path="d:\Development\lime\2,0,1" />
     <class path="source" />
-    <class path="d:\Development\\lime\2,0,1\legacy" />
-    <class path="export\android\haxe" />
+    <class path="export\flash\haxe" />
   </classpaths>
   <!-- Build options -->
   <build>
-    <option directives="flixel-addons=1.1.0&#xA;openfl=2.1.7&#xA;flixel=3.3.6&#xA;lime=2.0.1&#xA;FLX_NO_KEYBOARD&#xA;FLX_NO_MOUSE&#xA;FLX_NO_FOCUS_LOST_SCREEN&#xA;tools=2.0.1&#xA;lime-legacy&#xA;FLX_NO_DEBUG&#xA;no-compilation&#xA;native&#xA;lime-native&#xA;openfl-native&#xA;android&#xA;mobile&#xA;android&#xA;android-9" />
+    <option directives="flixel-addons=1.1.0&#xA;openfl=2.1.7&#xA;flixel=3.3.6&#xA;lime=2.0.1&#xA;FLX_NO_FOCUS_LOST_SCREEN&#xA;tools=2.0.1&#xA;no-compilation&#xA;openfl-flash&#xA;web" />
     <option flashStrict="False" />
     <option noInlineOnDebug="False" />
     <option mainClass="ApplicationMain" />
     <option enabledebug="False" />
-    <option additional="--remap flash:openfl&#xA;--macro flixel.system.macros.FlxConditionals.run()&#xA;#--macro keep(&quot;Main&quot;)" />
+    <option additional="--macro flixel.system.macros.FlxConditionals.run()&#xA;-swf-version 11.8" />
   </build>
   <!-- haxelib libraries -->
   <haxelib>

@@ -1,5 +1,6 @@
 package hud;
 
+import Outro;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.group.FlxGroup;
@@ -61,7 +62,7 @@ class FinishPanel extends FlxGroup {
                     FlxG.switchState(new PlayState());
                 }
                 else {
-                    FlxG.switchState(new MenuState());
+                    FlxG.switchState(new Outro());
                 }
             }
         }

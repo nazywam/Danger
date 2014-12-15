@@ -23,6 +23,8 @@ class MenuPanel extends FlxGroup {
     public function new() {
         super();
 
+		FlxG.camera.bgColor = 0xFF1d1e20;
+
         background = new FlxSprite(25, FlxG.height / 2);
         background.loadGraphic(Data.MenuPanelImg);
         background.x -= background.width;
@@ -46,7 +48,8 @@ class MenuPanel extends FlxGroup {
         exitButton = new Button(20 - 173, restartButton.y + 60, Data.MenuPanelExitImg, true);
         exitButton.ID = 2;
         add(exitButton);
-    }
+		
+	}
 
 
     function overlaps(clickX : Float, clickY : Float, target : FlxSprite): Bool {
