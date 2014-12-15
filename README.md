@@ -6,7 +6,8 @@
 
 #### 1. Android
   * [Google Play](https://play.google.com/store/apps/details?id=com.nazywam.Danger) 
-  * [.APK](nazywam.github.io/projects/Danger/Danger.apk) ![QR code](https://i.imgur.com/IAk0Oyn.png "QR code")
+  * [.APK](nazywam.github.io/projects/Danger/Danger.apk) 
+  * ![QR code](https://i.imgur.com/IAk0Oyn.png "QR code")
 
 #### 2. Web
   * Raw flash version is avaible at [my site](https://nazywam.github.io/projects/Danger/)
