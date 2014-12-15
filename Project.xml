@@ -2,7 +2,7 @@
 <project>
 	<!------------------------------APPLICATION SETTINGS---------------------------->
 	
-	<app title="Danger" file="Danger" main="Main" version="0.0.1" company="Michael" />
+	<app title="Danger" file="Danger" main="Main" version="1.0.0" company="Nazywam" />
 	<meta title="Danger" package="com.nazywam.Danger"/>
 
 	
@@ -51,6 +51,7 @@
 	<haxedef name="FLX_NO_DEBUG" if="mobile" />
 	
 	<!--------------------------------CUSTOM---------------------------------------->
-	
+	<icon path="assets/icon.png" />
+
 	<!--Place custom nodes like icons here (higher priority to override the HaxeFlixel icon)-->
 </project>
