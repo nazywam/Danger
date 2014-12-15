@@ -28,7 +28,6 @@ class PlayState extends FlxState {
 
     public var corpses : FlxGroup;
     public var doors : FlxTypedGroup<Doors>;
-    public var spikes : FlxTypedGroup<Spike>;
     public var keys : FlxTypedGroup<Key>;
     public var crates : FlxTypedGroup<Crate>;
     public var holes : FlxTypedGroup<Hole>;
@@ -57,10 +56,6 @@ class PlayState extends FlxState {
         map = new TiledLevel(("assets/data/level" + Std.string(Reg.activeLevel) + ".tmx"));
         add(map.background);
         add(map.firstFloor);
-
-        spikes = new FlxTypedGroup<Spike>();
-        add(spikes);
-
 
         exits = new FlxTypedGroup<Exit>();
         add(exits);
@@ -332,15 +327,6 @@ class PlayState extends FlxState {
         FlxG.collide(monsters, map.secondFloor);
         FlxG.collide(creeps, doors);
         FlxG.collide(monsters, doors);
-
-        //kill creep when he walks into spikes
-        FlxG.overlap(creeps, spikes, function(creep: actors.Creep, _) {
-                if (creep.alive) {
-                    creep.animation.play("dead");
-                    creep.alive = false;
-                    FlxG.camera.shake(0.02, 0.15);
-                }
-            });
 
         //collect key
         FlxG.overlap(creeps, keys, function(_, x: objects.Key) {

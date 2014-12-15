@@ -37,14 +37,18 @@ class Intro extends FlxState {
         monster.scale.x = monster.scale.y = 2;
         add(monster);
 
+			#if mobile
         tiltHandler = new FlxAccelerometer();
+			#end
     }
 
     override public function update(elapsed : Float) {
         super.update(elapsed);
-
+		
+			#if mobile
         monster.x += (tiltHandler.y * FlxG.width + FlxG.width / 2 - monster.x) / 50;
         monster.y += (tiltHandler.x * FlxG.height + FlxG.height * 3 / 4 + 10 - monster.y) / 50;
+			#end
 
         if (FlxG.overlap(monster, target)) {
             target.scale.x = Math.max(target.scale.x - 0.01, 0);
