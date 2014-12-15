@@ -1,2 +1,3 @@
-tablety (x/y vs y/x)
-arena like level
+Tablet Support
+Maybe add calibration
+More levels

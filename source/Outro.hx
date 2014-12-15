@@ -1,4 +1,4 @@
-package  ;
+package;
 
 import flixel.FlxSprite;
 import flixel.FlxState;
@@ -13,33 +13,33 @@ import menu.MenuState;
  */
 class Outro extends FlxState {
 
-	var background : FlxSprite;
-	
-	var followButton :  Button;
-	var continueButton :  Button;
-	
-	var dooming : Bool = false;
-	
-	override public function create() {
-		super.create();
+    var background : FlxSprite;
 
-		background = new FlxSprite(0, 0, Data.OutroBackground);
-		add(background);
-		
-		followButton = new Button(80, 220, Data.OutroFollowButton, true);
-		add(followButton);
-		
-		continueButton = new Button(300, 220, Data.FinishContinueImg, true);
-		add(continueButton);
-	}
-	
-	function overlaps(clickX : Float, clickY : Float, target : FlxSprite): Bool {
+    var followButton :  Button;
+    var continueButton :  Button;
+
+    var dooming : Bool = false;
+
+    override public function create() {
+        super.create();
+
+        background = new FlxSprite(0, 0, Data.OutroBackground);
+        add(background);
+
+        followButton = new Button(80, 220, Data.OutroFollowButton, true);
+        add(followButton);
+
+        continueButton = new Button(300, 220, Data.FinishContinueImg, true);
+        add(continueButton);
+    }
+
+    function overlaps(clickX : Float, clickY : Float, target : FlxSprite): Bool {
         if (clickX < target.x || clickX > target.x + target.width) return false;
         if (clickY < target.y || clickY > target.y + target.height) return false;
         return true;
     }
-	
-	 private function handlePress(x : Float, y : Float) {
+
+    private function handlePress(x : Float, y : Float) {
         if (overlaps(x, y, followButton)) {
             followButton.animation.play("pressed");
         }
@@ -50,45 +50,45 @@ class Outro extends FlxState {
 
     private function handleRelease(x : Float, y : Float) {
         if (overlaps(x, y, followButton) && followButton.animation.name == "pressed") {
-			FlxG.openURL("https://twitter.com/nazywam");
+            FlxG.openURL("https://twitter.com/nazywam");
         }
         else if (overlaps(x, y, continueButton) && continueButton.animation.name == "pressed") {
-			dooming = true;
-			var t = new FlxTimer();
-			t.start(.5, function(_) {
-				FlxG.switchState(new MenuState());
-			});
+            dooming = true;
+            var t = new FlxTimer();
+            t.start(.5, function(_) {
+                    FlxG.switchState(new MenuState());
+                });
         }
 
         followButton.animation.play("default");
         continueButton.animation.play("default");
     }
-	
-	override public function update(elapsed : Float) {
-		super.update(elapsed);
-		
-		if (dooming) FlxG.camera.alpha -= 0.05;
-		
-		#if mobile
-		for (touch in FlxG.touches.list) {
-			if (touch.justPressed) {
-				handlePress(touch.x, touch.y);
-			}
-			if (touch.justReleased) {
-				handleRelease(touch.x, touch.y);
-			}
+
+    override public function update(elapsed : Float) {
+        super.update(elapsed);
+
+        if (dooming) FlxG.camera.alpha -= 0.05;
+
+                #if mobile
+        for (touch in FlxG.touches.list) {
+            if (touch.justPressed) {
+                handlePress(touch.x, touch.y);
+            }
+            if (touch.justReleased) {
+                handleRelease(touch.x, touch.y);
+            }
         }
-		#end
+                #end
 
        #if web
-            if (FlxG.mouse.justPressed) {
-                handlePress(FlxG.mouse.x, FlxG.mouse.y);
-            }
-            if (FlxG.mouse.justReleased) {
-                handleRelease(FlxG.mouse.x, FlxG.mouse.y);
-            }
+        if (FlxG.mouse.justPressed) {
+            handlePress(FlxG.mouse.x, FlxG.mouse.y);
+        }
+        if (FlxG.mouse.justReleased) {
+            handleRelease(FlxG.mouse.x, FlxG.mouse.y);
+        }
         #end
 
-		
-	}
+
+    }
 }
