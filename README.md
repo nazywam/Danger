@@ -1,17 +1,17 @@
 #Danger
 
-###Entry for Mobicas "Game of Codes"
+####Entry for Mobicas "Game of Codes"
 
 ##Download
 
-### 1. Android
-  * [Google Play](https://play.google.com/store/apps/details?id=com.nazywam.Danger)
-  * [.APK](nazywam.github.io/projects/Danger/Danger.apk)
+#### 1. Android
+  * [Google Play](https://play.google.com/store/apps/details?id=com.nazywam.Danger) 
+  * [.APK](nazywam.github.io/projects/Danger/Danger.apk) ![QR code](https://i.imgur.com/IAk0Oyn.png "QR code")
 
-### 2. Web
+#### 2. Web
   * Raw flash version is avaible at [my site](https://nazywam.github.io/projects/Danger/)
 
-### 3. iOS
+#### 3. iOS
   * Unfortunately you need Xcode to compile for iOS, You can compile it yourself if You have it
 
 
@@ -33,7 +33,7 @@ Building it from source:
 -------------
 The code itself is pretty explanatory but **feel free to ask me any questions** You may have :)
 
-You have to have latest[dev] versions of flixel, flixel-addons, openfl and lime.
+You have to have latest[dev] versions of **flixel**, **flixel-addons**, **openfl** and **lime**.
 
 To compile use `haxelib test openfl build Project-Public.xml [android, ios, flash...]`
 
