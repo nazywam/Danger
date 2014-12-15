@@ -5,6 +5,7 @@ import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.group.FlxGroup;
 import menu.MenuState;
+import flixel.util.FlxTimer;
 
 /**
  * ...
@@ -18,6 +19,8 @@ class FinishPanel extends FlxGroup {
     public var continueButton : Button;
     public var restartButton : Button;
 
+	var dooming : Bool = false;
+	
     public function new() {
         super();
 
@@ -59,10 +62,19 @@ class FinishPanel extends FlxGroup {
             if (continueButton.clickable) {
                 if (Reg.activeLevel < 10) {
                     Reg.activeLevel++;
-                    FlxG.switchState(new PlayState());
+					dooming = true;
+					
+					var t = new FlxTimer();
+					t.start(.5, function(_) {
+						FlxG.switchState(new PlayState());
+					});
                 }
                 else {
-                    FlxG.switchState(new Outro());
+                    dooming = true;
+					var t = new FlxTimer();
+					t.start(.5, function(_) {
+						FlxG.switchState(new Outro());
+					});
                 }
             }
         }
@@ -77,6 +89,8 @@ class FinishPanel extends FlxGroup {
     override public function update(elapsed : Float) {
         super.update(elapsed);
 
+		if (dooming) FlxG.camera.alpha -= 0.03;
+		
                 #if mobile
         for (touch in FlxG.touches.list) {
             if (visible) {

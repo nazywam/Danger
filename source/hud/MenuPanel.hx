@@ -5,6 +5,7 @@ import flixel.FlxSprite;
 import flixel.group.FlxGroup;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
+import flixel.util.FlxTimer;
 import menu.MenuState;
 /**
  * ...
@@ -20,6 +21,8 @@ class MenuPanel extends FlxGroup {
     public var exitButton : Button;
     public var restartButton : Button;
 
+	public var dooming : Bool = false;
+	
     public function new() {
         super();
 
@@ -38,7 +41,7 @@ class MenuPanel extends FlxGroup {
         toggleButton.animation.add("pressed", [0]);
         toggleButton.animation.play("default");
         toggleButton.height = background.height;
-        toggleButton.width += 10;
+        toggleButton.width += 20;
         add(toggleButton);
 
         restartButton = new Button(18 - 173, background.y + 27, Data.MenuPanelRestartImg, true);
@@ -97,7 +100,11 @@ class MenuPanel extends FlxGroup {
             FlxG.switchState(new PlayState());
         }
         else if (overlaps(x, y, exitButton) && exitButton.animation.name == "pressed") {
-            FlxG.switchState(new MenuState());
+			dooming = true;
+			var t = new FlxTimer();
+			t.start(.5, function(_) {
+				FlxG.switchState(new MenuState());
+			});
         }
 
         toggleButton.animation.play("default");
@@ -109,6 +116,8 @@ class MenuPanel extends FlxGroup {
     override public function update(elapsed : Float) {
         super.update(elapsed);
 
+		if (dooming) FlxG.camera.alpha -= 0.03;
+		
                 #if web
 
         if (FlxG.mouse.justPressed) {

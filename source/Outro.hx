@@ -2,6 +2,7 @@ package  ;
 
 import flixel.FlxSprite;
 import flixel.FlxState;
+import flixel.util.FlxTimer;
 import hud.Button;
 import flixel.FlxG;
 import menu.MenuState;
@@ -16,6 +17,8 @@ class Outro extends FlxState {
 	
 	var followButton :  Button;
 	var continueButton :  Button;
+	
+	var dooming : Bool = false;
 	
 	override public function create() {
 		super.create();
@@ -50,7 +53,11 @@ class Outro extends FlxState {
 			FlxG.openURL("https://twitter.com/nazywam");
         }
         else if (overlaps(x, y, continueButton) && continueButton.animation.name == "pressed") {
-            FlxG.switchState(new MenuState());
+			dooming = true;
+			var t = new FlxTimer();
+			t.start(.5, function(_) {
+				FlxG.switchState(new MenuState());
+			});
         }
 
         followButton.animation.play("default");
@@ -59,6 +66,8 @@ class Outro extends FlxState {
 	
 	override public function update(elapsed : Float) {
 		super.update(elapsed);
+		
+		if (dooming) FlxG.camera.alpha -= 0.05;
 		
 		#if mobile
 		for (touch in FlxG.touches.list) {

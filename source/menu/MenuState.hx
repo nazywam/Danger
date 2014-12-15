@@ -7,7 +7,7 @@ import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import hud.Button;
 import openfl.Assets;
-
+import flixel.util.FlxTimer;
 
 class MenuState extends FlxState {
 
@@ -22,6 +22,8 @@ class MenuState extends FlxState {
 
     var pressedID : Int = -1;
 
+	var dooming : Bool = false;
+	
     override public function create() {
         super.create();
 
@@ -70,7 +72,12 @@ class MenuState extends FlxState {
 
     function switchLevel(id : Int) {
         Reg.activeLevel = id;
-        FlxG.switchState(new PlayState());
+		
+		dooming = true;
+		var t = new FlxTimer();
+		t.start(.5, function(_) {
+				FlxG.switchState(new PlayState());
+		});
     }
 
     function handlePress(x : Float, y : Float) {
@@ -112,6 +119,9 @@ class MenuState extends FlxState {
     override public function update(elapsed : Float) {
         super.update(elapsed);
 
+		if (dooming) FlxG.camera.alpha -= 0.03;
+		
+		
                 #if mobile
         for (t in FlxG.touches.list) {
             if (t.justPressed) {

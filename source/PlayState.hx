@@ -43,8 +43,6 @@ class PlayState extends FlxState {
     var tiltHandler : FlxAccelerometer;
         #end
 
-    var paused : Bool = true;
-
     override public function create() {
         super.create();
 
@@ -117,12 +115,7 @@ class PlayState extends FlxState {
 			#if mobile
         tiltHandler = new FlxAccelerometer();
             #end
-
-        var t = new FlxTimer();
-        t.start(Rules.InitialPlayStatePauseTime, function(_) {
-                paused = false;
-            } );
-
+			
         Lib.current.stage.addEventListener(KeyboardEvent.KEY_UP, onKeyUp);
         Lib.current.stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
     }
@@ -289,8 +282,6 @@ class PlayState extends FlxState {
 
     //main update loop
     override public function update(elapsed : Float) {
-
-        if (paused) return;
 
         //pause the game if menuPanel is open
         if (hud.menuPanel.state == 1) {
