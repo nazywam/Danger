@@ -6,11 +6,11 @@
 
 #### 1. Android
   * [Google Play](https://play.google.com/store/apps/details?id=com.nazywam.Danger) 
-  * [.APK](nazywam.github.io/projects/Danger/Danger.apk) 
-  * ![QR code](https://i.imgur.com/IAk0Oyn.png "QR code")
+  * [.APK](http://nazywam.github.io/projects/DangerZone/Danger.apk) 
+  * ![QR code](http://i.imgur.com/chrzI8J.png "QR code")
 
 #### 2. Web
-  * Raw flash version is available at [my site](https://nazywam.github.io/projects/Danger/)
+  * Raw flash version is available at [my site](https://nazywam.github.io/projects/DangerZone/)
 
 #### 3. iOS
   * Unfortunately you need Xcode to compile for iOS, You can compile it yourself if You have it
